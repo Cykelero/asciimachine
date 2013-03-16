@@ -1,27 +1,17 @@
 // provides ASCIIMachine
 
-// needs 
+// needs machine.js
 
-ASCIIMachine = (function() {
-
-var common = {};
+ASCIIMachine = SVP2.staticClass(function(common) {
 
 // Exposed
-common.exposed = function() {
-	var exposed = this;
-	var internal = {};
-	var self = this;
-	
-	// Exposed methods
-	
-	// Internal methods
-	
-	// Init
-	
+var exposed = common.exposed;
+
+exposed.newMachine = function(machineText) {
+	return new Machine(machineText);
 };
 
 // Internal
-common.internal = {};
+var internal = common.internal;
 
-return common.exposed;
-})();
+});

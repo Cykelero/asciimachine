@@ -1,6 +1,6 @@
 <?php
 
-/* SVPbuild 0.4 */
+/* SVPbuild 0.5 */
 
 $shouldReturnCompiled = $_GET['returnSource'];
 
@@ -21,6 +21,7 @@ $provided = array();
 $internalClasses = array();
 $tabs = str_repeat("\t", $tabCount);
 
+$libraryList = null;
 $fileList = null;
 $productName = null;
 
@@ -31,6 +32,10 @@ $description = null;
 
 // Makefile parsing
 $makefileContents = file_get_contents($sourceFolderPath.'_make.json');
+
+preg_match('/"libraries"\s*:\s*\\[(([^a]|a)+?)\\]/', $makefileContents, $libraryStringListResults);
+preg_match_all('/"([^"]+)"/', $libraryStringListResults[1], $libraryListResults);
+$libraryList = $libraryListResults[1];
 
 preg_match('/"files"\s*:\s*\\[(([^a]|a)+?)\\]/', $makefileContents, $fileStringListResults);
 preg_match_all('/"([^"]+)"/', $fileStringListResults[1], $fileListResults);
@@ -100,7 +105,7 @@ foreach ($fileList as $fileName) {
 }
 
 // Building
-$fileList = array_reverse($fileList);
+$fileList = array_merge($libraryList, array_reverse($fileList));
 
 // // Header
 $compiled .= '/* ';
