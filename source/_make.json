@@ -1,0 +1,12 @@
+{
+	"productName": "asciimachine.js",
+	
+	"fancyName": "ASCII Machine",
+	"version": "0.1",
+	"author": "Nathan Manceaux-Panot (@Cykelero)",
+	"description": "An ASCII sandbox where you build machines with characters.",
+	
+	"files": [
+		"ASCIIMachine.js"
+	]
+}
