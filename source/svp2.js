@@ -40,31 +40,31 @@ common.exposed = function(defineList, isStatic) {
 			surfaceConstructor;
 		
 		// Base
+		var exposableConstructor = function() {
+			// SVP2 class
+			// Access the `naked` property to get the actual constructor
+			initializeInstance(this, arguments);
+		};
+		
 		if (!internal.static) {
-			returned = function() {
-				// SVP2 class
-				// Access the `naked` property to get the actual constructor
-				initializeInstance(this, arguments);
-			};
+			returned = exposableConstructor;
 		} else {
 			returned = {};
 		}
 		
 		// Applying definition functions
-		var internalObject = {};
 		var defineEnv = function(construct) {
 			if (constructors[currentDefinitionLevel]) throw new Error("A constructor has already been defined.");
 			
 			constructors.push(construct);
 			surfaceConstructor = construct;
 		};
-		defineEnv.__defineGetter__("class", function() {
-			return returned;
-		});
+		
+		var commonParameter = {internal: {}, exposed: returned, constructor: exposableConstructor};
 		
 		for (var currentDefinitionLevel = 0 ; currentDefinitionLevel < internal.defineList.length ; currentDefinitionLevel++) {
 			var defineFunction = internal.defineList[currentDefinitionLevel];
-			defineFunction.call(defineEnv, {internal: internalObject, exposed: returned});
+			defineFunction.call(defineEnv, commonParameter);
 			
 			var constructorFunction = constructors[currentDefinitionLevel];
 			if (!constructorFunction) {
