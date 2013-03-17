@@ -125,6 +125,7 @@ attr.conductor = [attr.powerNode, function(common) {
 			parent = this.parent,
 			self = exposed;
 		
+		internal.wiredDirections = [0, 1, 2, 3];
 		internal.cachedWiredNeighbors = null;
 		
 		exposed.beginFrame = function() {
@@ -137,11 +138,17 @@ attr.conductor = [attr.powerNode, function(common) {
 				return info.entity.getPowerState(network).state[(info.direction+2)%4];
 			});
 			
-			return {state: [powered, powered, powered, powered]};
+			var state = [false, false, false, false];
+			
+			internal.wiredDirections.forEach(function(direction) {
+				state[direction] = powered;
+			});
+			
+			return {state: state};
 		};
 		
 		internal.getWiredNeighbors = function() {
-			return internal.getCloseNeighbors();
+			return internal.getNeighborsFrom(internal.wiredDirections);
 		};
 		
 		internal.getCachedWiredNeighbors = function() {
@@ -196,10 +203,8 @@ internal.types = {
 				internal = this.internal,
 				parent = this.parent,
 				self = exposed;
-		
-			internal.getWiredNeighbors = function() {
-				return internal.getNeighborsFrom([1, 3]);
-			};
+			
+			internal.wiredDirections = [1, 3];
 		});
 	}],
 	"|": [attr.wire, function(common) {
@@ -208,10 +213,8 @@ internal.types = {
 				internal = this.internal,
 				parent = this.parent,
 				self = exposed;
-		
-			internal.getWiredNeighbors = function() {
-				return internal.getNeighborsFrom([0, 2]);
-			};
+			
+			internal.wiredDirections = [0, 2];
 		});
 	}],
 	"+": [attr.wire, function(common) {
