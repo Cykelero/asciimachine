@@ -3,7 +3,7 @@
 var PowerNetwork = SVP2.class(function(common) {
 
 // Constants
-common.internal.maximumIterations = 100;
+common.internal.maximumIterations = 1000;
 
 this(function() {
 	var exposed = this.exposed,
