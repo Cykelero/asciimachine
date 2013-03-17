@@ -153,6 +153,32 @@ attr.conductor = [attr.powerNode, function(common) {
 
 // // Types
 internal.types = {
+	// Basic blocks
+	"X": [attr.solid, function(common) {
+		this(function() {
+			var exposed = this.exposed,
+				internal = this.internal,
+				parent = this.parent,
+				self = exposed;
+			
+			internal.backgroundColor = [130, 130, 130];
+		});
+	}],
+	
+	// Power blocks
+	// // Support
+	"H": [attr.solid, attr.conductor, function(common) {
+		this(function() {
+			var exposed = this.exposed,
+				internal = this.internal,
+				parent = this.parent,
+				self = exposed;
+			
+			internal.backgroundColor = [140, 110, 100];
+		});
+	}],
+	
+	// // Other
 	"#": [attr.solid, attr.powerNode, function(common) {
 		this(function() {
 			var exposed = this.exposed,
@@ -198,26 +224,6 @@ internal.types = {
 					return {state: [false, false, false, false]};
 				}
 			};
-		});
-	}],
-	"X": [attr.solid, function(common) {
-		this(function() {
-			var exposed = this.exposed,
-				internal = this.internal,
-				parent = this.parent,
-				self = exposed;
-			
-			internal.backgroundColor = [130, 130, 130];
-		});
-	}],
-	"H": [attr.solid, attr.conductor, function(common) {
-		this(function() {
-			var exposed = this.exposed,
-				internal = this.internal,
-				parent = this.parent,
-				self = exposed;
-			
-			internal.backgroundColor = [140, 110, 100];
 		});
 	}]
 };
