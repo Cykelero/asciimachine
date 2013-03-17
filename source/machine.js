@@ -55,6 +55,12 @@ this(function(worldText) {
 		}
 	};
 	
+	// // Entity management
+	exposed.addEntity = function(entity) {
+		entity.cell.addObject(entity);
+		internal.entities.push(entity);
+	};
+	
 	// Internal methods
 	
 	// Init
@@ -82,10 +88,7 @@ this(function(worldText) {
 			var char = line[x],
 				cell = internal.grid.getCell(x, y);
 			
-			var entity = MachineEntityFactory.makeEntity(getOtherChar, char, cell);
-			cell.addObject(entity);
-			
-			internal.entities.push(entity);
+			exposed.addEntity(MachineEntityFactory.makeEntity(getOtherChar, char, cell));
 		}
 	}
 });
