@@ -122,12 +122,28 @@ attr.conductor = [attr.powerNode, function(common) {
 			parent = this.parent,
 			self = exposed;
 		
+		internal.cachedWiredNeighbors = null;
+		
+		exposed.beginFrame = function() {
+			parent.exposed.beginFrame();
+			internal.cachedWiredNeighbors = null;
+		};
+		
 		exposed.computePowerState = function(network) {
-			var powered = internal.getCloseNeighbors().some(function(info) {
+			var powered = internal.getCachedWiredNeighbors().some(function(info) {
 				return info.entity.getPowerState(network).state[(info.direction+2)%4];
 			});
 			
 			return {state: [powered, powered, powered, powered]};
+		};
+		
+		internal.getWiredNeighbors = function() {
+			return internal.getCloseNeighbors();
+		};
+		
+		internal.getCachedWiredNeighbors = function() {
+			if (!internal.cachedWiredNeighbors) internal.cachedWiredNeighbors = internal.getWiredNeighbors();
+			return internal.cachedWiredNeighbors;
 		};
 	});
 }];
