@@ -209,6 +209,16 @@ internal.types = {
 			
 			internal.backgroundColor = [130, 130, 130];
 		});
+	}],
+	"H": [attr.solid, attr.conductor, function(common) {
+		this(function() {
+			var exposed = this.exposed,
+				internal = this.internal,
+				parent = this.parent,
+				self = exposed;
+			
+			internal.backgroundColor = [140, 110, 100];
+		});
 	}]
 };
 
