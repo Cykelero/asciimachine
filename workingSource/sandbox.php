@@ -7,7 +7,11 @@
 	</style>
 <?php include('../workingSource/build.php'); ?>
 <script type="text/x-asciimachine" id="sampleMachine">
-#@@
+
+ H--|-H
+ @  H H
+ #-@H H-H
+XXXXXXXXX
 </script>
 </head>
 <body>
