@@ -57,6 +57,9 @@ attr.solid = [function(common) {
 			self = exposed;
 		
 		internal.isSolid = true;
+		
+		internal.color = [0, 0, 0];
+		internal.backgroundColor = [255, 255, 255];
 	});
 }];
 
@@ -157,6 +160,7 @@ internal.types = {
 				parent = this.parent,
 				self = exposed;
 			
+			internal.backgroundColor = [50, 100, 170];
 			internal.poweredColor = [100, 220, 255];
 			
 			exposed.computePowerState = function(network) {
@@ -173,11 +177,18 @@ internal.types = {
 			
 			internal.enabled = false;
 			
+			internal.color = [0, 0, 0];
 			internal.poweredColor = [100, 255, 220];
 			
 			exposed.userAction = function() {
 				internal.enabled = !internal.enabled;
 				console.log(internal.enabled);
+			};
+			
+			exposed.getBackgroundColor = function() {
+				return internal.enabled ?
+					[50, 170, 100]
+					: [130, 10, 10];
 			};
 			
 			exposed.computePowerState = function(network) {

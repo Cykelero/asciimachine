@@ -28,7 +28,19 @@ this(function(worldText) {
 		renderer.beginFrame(internal.grid.width, internal.grid.height);
 		
 		internal.entities.forEach(function(entity) {
-			renderer.drawObject(entity.cell.x, entity.cell.y, entity.getChar(), entity.getColor());
+			var entityColor = entity.getColor();
+			if (entityColor.length < 4) entityColor = entityColor.concat([1]);
+			
+			var entityBGColor = entity.getBackgroundColor();
+			if (entityBGColor.length < 4) entityBGColor = entityBGColor.concat([1]);
+			
+			renderer.drawObject({
+				x: entity.cell.x,
+				y: entity.cell.y,
+				char: entity.getChar(),
+				color: entityColor,
+				backgroundColor: entityBGColor
+			});
 		});
 		
 		renderer.flushFrame();

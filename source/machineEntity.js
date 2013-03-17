@@ -13,6 +13,7 @@ this(function(char, cell) {
 	
 	internal.displayChar = char;
 	internal.color = [255, 255, 255];
+	internal.backgroundColor = [255, 255, 255, 0];
 	
 	// Exposed methods
 	// // Attributes
@@ -47,6 +48,10 @@ this(function(char, cell) {
 	
 	exposed.getColor = function() {
 		return internal.color;
+	};
+	
+	exposed.getBackgroundColor = function() {
+		return internal.backgroundColor;
 	};
 	
 	// Internal methods
