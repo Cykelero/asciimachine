@@ -1,6 +1,7 @@
 notes/*
 build/*
 workingSource/sandbox.js
+workingSource/sandboxMachine.txt
 
 # osx noise
 .DS_Store

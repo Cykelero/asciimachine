@@ -6,14 +6,7 @@
 	<style type="text/css" media="all">
 	</style>
 <?php include('../workingSource/build.php'); ?>
-<script type="text/x-asciimachine" id="sampleMachine">
-      |
-|     |
-| HH--|-H
-H |@  H H
-H-|#-@H H-H
-XXXXXXXXXXX
-</script>
+<script type="text/x-asciimachine" id="sampleMachine"><?php echo file_get_contents("sandboxMachine.txt") ?></script>
 </head>
 <body>
 
