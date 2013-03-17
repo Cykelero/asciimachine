@@ -6,7 +6,7 @@ var MachineEntityFactory = SVP2.staticClass(function(common) {
 // Exposed
 var exposed = common.exposed;
 
-exposed.makeEntity = function(getOtherChar, char, cell) {
+exposed.makeEntity = function(getOtherChar, parent, char, cell) {
 	var entityClass,
 		entity;
 	
@@ -19,7 +19,7 @@ exposed.makeEntity = function(getOtherChar, char, cell) {
 	
 	// Creating entity
 	if (entityClass) {
-		entity = new entityClass(char, cell);
+		entity = new entityClass(parent, char, cell);
 	} else {
 		throw(new Error("Unknown entity type: "+char));
 	}
@@ -168,8 +168,46 @@ attr.wire = [attr.conductor, function(common) {
 	});
 }];
 
+attr.crossedWire = [attr.wire, function(common) {
+	this(function() {
+		var exposed = this.exposed,
+			internal = this.internal,
+			parent = this.parent,
+			self = exposed;
+		
+		internal.cachedShouldCross = null;
+		
+		exposed.beginFrame = function() {
+			parent.exposed.beginFrame();
+			internal.cachedRemoteEntities = null;
+		};
+		
+		exposed.computePowerState = function(network) {
+			var shouldCross = false;
+			
+			if (internal.cachedShouldCross == null) {
+				var neighbors = internal.getCachedWiredNeighbors();
+				
+				internal.cachedShouldCross = neighbors.some(function(info) {
+					if (!info.entity) return;
+					
+					var expectedWireType = (info.direction%2 == 0) ? "|" : "-";
+					
+					return info.entity.getChar() == expectedWireType;
+				});
+			}
+			
+			if (internal.cachedShouldCross) {
+				return parent.exposed.computePowerState(network);
+			} else {
+				return {state: [false, false, false, false]};
+			}
+		};
+	});
+}];
+
 // // Types
-internal.types = {
+var types = internal.types = {
 	// Basic blocks
 	"X": [attr.solid, function(common) {
 		this(function() {
@@ -205,6 +243,9 @@ internal.types = {
 				self = exposed;
 			
 			internal.wiredDirections = [1, 3];
+			
+			// Init
+			internal.parent.addEntity(new types.verticalCrossedWire(internal.parent, "", internal.cell));
 		});
 	}],
 	"|": [attr.wire, function(common) {
@@ -215,6 +256,9 @@ internal.types = {
 				self = exposed;
 			
 			internal.wiredDirections = [0, 2];
+			
+			// Init
+			internal.parent.addEntity(new types.horizontalCrossedWire(internal.parent, "", internal.cell));
 		});
 	}],
 	"+": [attr.wire, function(common) {
@@ -273,6 +317,28 @@ internal.types = {
 					return {state: [false, false, false, false]};
 				}
 			};
+		});
+	}],
+	
+	// Generated
+	horizontalCrossedWire: [attr.crossedWire, function(common) {
+		this(function() {
+			var exposed = this.exposed,
+				internal = this.internal,
+				parent = this.parent,
+				self = exposed;
+			
+			internal.wiredDirections = [1, 3];
+		});
+	}],
+	verticalCrossedWire: [attr.crossedWire, function(common) {
+		this(function() {
+			var exposed = this.exposed,
+				internal = this.internal,
+				parent = this.parent,
+				self = exposed;
+			
+			internal.wiredDirections = [0, 2];
 		});
 	}]
 };

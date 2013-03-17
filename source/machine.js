@@ -88,7 +88,7 @@ this(function(worldText) {
 			var char = line[x],
 				cell = internal.grid.getCell(x, y);
 			
-			exposed.addEntity(MachineEntityFactory.makeEntity(getOtherChar, char, cell));
+			exposed.addEntity(MachineEntityFactory.makeEntity(getOtherChar, self, char, cell));
 		}
 	}
 });

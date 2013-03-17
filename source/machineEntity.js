@@ -1,11 +1,12 @@
 
 var MachineEntity = SVP2.class(function(common) {
 
-this(function(char, cell) {
+this(function(parent, char, cell) {
 	var exposed = this.exposed,
 		internal = this.internal,
 		self = exposed;
 	
+	internal.parent = parent;
 	internal.cell = cell;
 	
 	internal.isSolid = false;
