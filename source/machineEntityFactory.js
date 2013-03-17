@@ -199,6 +199,16 @@ internal.types = {
 				}
 			};
 		});
+	}],
+	"X": [attr.solid, function(common) {
+		this(function() {
+			var exposed = this.exposed,
+				internal = this.internal,
+				parent = this.parent,
+				self = exposed;
+			
+			internal.backgroundColor = [130, 130, 130];
+		});
 	}]
 };
 
