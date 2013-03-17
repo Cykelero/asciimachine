@@ -41,6 +41,11 @@ this(function(char, cell) {
 		
 	};
 	
+	// // // World
+	exposed.getPowerState = function() {
+		return {state: [false, false, false, false]};
+	};
+	
 	// // Rendering
 	exposed.getChar = function() {
 		return internal.displayChar;
