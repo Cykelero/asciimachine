@@ -174,6 +174,7 @@ internal.types = {
 			internal.backgroundColor = [130, 130, 130];
 		});
 	}],
+	" ": [],
 	
 	// Power blocks
 	// // Support
