@@ -151,6 +151,16 @@ attr.conductor = [attr.powerNode, function(common) {
 	});
 }];
 
+attr.wire = [attr.conductor, function(common) {
+	this(function() {
+		var exposed = this.exposed,
+			internal = this.internal,
+			parent = this.parent,
+			self = exposed;
+		
+	});
+}];
+
 // // Types
 internal.types = {
 	// Basic blocks
@@ -175,6 +185,41 @@ internal.types = {
 				self = exposed;
 			
 			internal.backgroundColor = [140, 110, 100];
+		});
+	}],
+	
+	// // Wires
+	"-": [attr.wire, function(common) {
+		this(function() {
+			var exposed = this.exposed,
+				internal = this.internal,
+				parent = this.parent,
+				self = exposed;
+		
+			internal.getWiredNeighbors = function() {
+				return internal.getNeighborsFrom([1, 3]);
+			};
+		});
+	}],
+	"|": [attr.wire, function(common) {
+		this(function() {
+			var exposed = this.exposed,
+				internal = this.internal,
+				parent = this.parent,
+				self = exposed;
+		
+			internal.getWiredNeighbors = function() {
+				return internal.getNeighborsFrom([0, 2]);
+			};
+		});
+	}],
+	"+": [attr.wire, function(common) {
+		this(function() {
+			var exposed = this.exposed,
+				internal = this.internal,
+				parent = this.parent,
+				self = exposed;
+			
 		});
 	}],
 	
