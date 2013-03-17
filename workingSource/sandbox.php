@@ -6,11 +6,14 @@
 	<style type="text/css" media="all">
 	</style>
 <?php include('../workingSource/build.php'); ?>
-<script src="sandbox.js" type="text/javascript" language="Javascript"></script>
+<script type="text/x-asciimachine" id="sampleMachine">
+#@@
+</script>
 </head>
 <body>
 
 
 
+<script src="sandbox.js" type="text/javascript" language="Javascript"></script>
 </body>
 </html>
