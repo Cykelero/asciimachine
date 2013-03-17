@@ -61,14 +61,18 @@ this(function(char, cell) {
 	
 	// Internal methods
 	internal.getCloseNeighbors = function() {
+		return internal.getNeighborsFrom([0, 1, 2, 3]);
+	};
+	
+	internal.getNeighborsFrom = function(directions) {
 		var neighbors = [],
 			neighborCells;
 		
 		neighborCells = [
-			internal.cell.getTop(),
-			internal.cell.getRight(),
-			internal.cell.getBottom(),
-			internal.cell.getLeft()
+			directions.indexOf(0) > -1 ? internal.cell.getTop() : null,
+			directions.indexOf(1) > -1 ? internal.cell.getRight() : null,
+			directions.indexOf(2) > -1 ? internal.cell.getBottom() : null,
+			directions.indexOf(3) > -1 ? internal.cell.getLeft() : null
 		];
 		
 		neighborCells.forEach(function(cell, direction) {
