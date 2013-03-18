@@ -23,8 +23,6 @@ this(function(width, height) {
 		return internal.columns[x][y];
 	};
 	
-	// Internal methods
-	
 	// Init
 	for (var x = 0 ; x < width ; x++) {
 		var column = [];
@@ -34,9 +32,5 @@ this(function(width, height) {
 		}
 	}
 });
-
-// Exposed
-
-// Internal
 
 });

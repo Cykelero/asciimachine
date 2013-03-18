@@ -98,12 +98,6 @@ this(function(parent, char, cell) {
 		internal.cell.addObject(self);
 	};
 	
-	// Init
-	
 });
-
-// Exposed
-
-// Internal
 
 });

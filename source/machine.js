@@ -93,9 +93,5 @@ this(function(worldText) {
 	}
 });
 
-// Exposed
-
-// Internal
-
 });
 

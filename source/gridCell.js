@@ -74,14 +74,6 @@ this(function(parentGrid, x, y) {
 		return exposed.getCellInDirection(3, count);
 	};
 	
-	// Internal methods
-	
-	// Init
-	
 });
-
-// Exposed
-
-// Internal
 
 });

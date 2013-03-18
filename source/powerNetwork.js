@@ -51,10 +51,6 @@ this(function() {
 		}
 	};
 	
-	// Internal methods
-	
-	// Init
-	
 });
 
 // Exposed
@@ -62,7 +58,5 @@ common.exposed.makeNode = function(parent) {
 	var network = new common.constructor();
 	return new PowerNetworkNode(network, parent);
 };
-
-// Internal
 
 });

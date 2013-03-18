@@ -38,15 +38,9 @@ this(function(network, parent) {
 		return internal.cachedPowerState.state.join();
 	};
 	
-	// Internal methods
-	
 	// Init
 	network.addNode(self);
 	
 });
-
-// Exposed
-
-// Internal
 
 });
