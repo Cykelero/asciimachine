@@ -3,7 +3,7 @@
 
 var Machine = SVP2.class(function(common) {
 
-this(function(worldText) {
+common.constructor = function(worldText) {
 	var exposed = this.exposed,
 		internal = this.internal,
 		self = exposed;
@@ -91,7 +91,7 @@ this(function(worldText) {
 			exposed.addEntity(MachineEntityFactory.makeEntity(getOtherChar, self, char, cell));
 		}
 	}
-});
+};
 
 });
 

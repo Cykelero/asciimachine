@@ -9,7 +9,7 @@ var exposed = common.exposed;
 var attr = exposed.attributes = {};
 
 attr.solid = [function(common) {
-	this(function() {
+	common.constructor = function() {
 		var exposed = this.exposed,
 			internal = this.internal,
 			parent = this.parent,
@@ -19,11 +19,11 @@ attr.solid = [function(common) {
 		
 		internal.color = [0, 0, 0];
 		internal.backgroundColor = [255, 255, 255];
-	});
+	};
 }];
 
 attr.powerNode = [function(common) {
-	this(function() {
+	common.constructor = function() {
 		var exposed = this.exposed,
 			internal = this.internal,
 			parent = this.parent,
@@ -74,11 +74,11 @@ attr.powerNode = [function(common) {
 				internal.poweredColor
 				: parent.exposed.getColor();
 		};
-	});
+	};
 }];
 
 attr.conductor = [attr.powerNode, function(common) {
-	this(function() {
+	common.constructor = function() {
 		var exposed = this.exposed,
 			internal = this.internal,
 			parent = this.parent,
@@ -114,21 +114,21 @@ attr.conductor = [attr.powerNode, function(common) {
 			if (!internal.cachedWiredNeighbors) internal.cachedWiredNeighbors = internal.getWiredNeighbors();
 			return internal.cachedWiredNeighbors;
 		};
-	});
+	};
 }];
 
 attr.wire = [attr.conductor, function(common) {
-	this(function() {
+	common.constructor = function() {
 		var exposed = this.exposed,
 			internal = this.internal,
 			parent = this.parent,
 			self = exposed;
 		
-	});
+	};
 }];
 
 attr.crossedWire = [attr.wire, function(common) {
-	this(function() {
+	common.constructor = function() {
 		var exposed = this.exposed,
 			internal = this.internal,
 			parent = this.parent,
@@ -162,40 +162,40 @@ attr.crossedWire = [attr.wire, function(common) {
 				return {state: [false, false, false, false]};
 			}
 		};
-	});
+	};
 }];
 
 // // !Types
 var types = exposed.types = {
 	// Basic blocks
 	"X": [attr.solid, function(common) {
-		this(function() {
+		common.constructor = function() {
 			var exposed = this.exposed,
 				internal = this.internal,
 				parent = this.parent,
 				self = exposed;
 			
 			internal.backgroundColor = [130, 130, 130];
-		});
+		};
 	}],
 	" ": [],
 	
 	// Power blocks
 	// // Support
 	"H": [attr.solid, attr.conductor, function(common) {
-		this(function() {
+		common.constructor = function() {
 			var exposed = this.exposed,
 				internal = this.internal,
 				parent = this.parent,
 				self = exposed;
 			
 			internal.backgroundColor = [140, 110, 100];
-		});
+		};
 	}],
 	
 	// // Wires
 	"-": [attr.wire, function(common) {
-		this(function() {
+		common.constructor = function() {
 			var exposed = this.exposed,
 				internal = this.internal,
 				parent = this.parent,
@@ -205,10 +205,10 @@ var types = exposed.types = {
 			
 			// Init
 			internal.parent.addEntity(new types.verticalCrossedWire(internal.parent, "", internal.cell));
-		});
+		};
 	}],
 	"|": [attr.wire, function(common) {
-		this(function() {
+		common.constructor = function() {
 			var exposed = this.exposed,
 				internal = this.internal,
 				parent = this.parent,
@@ -218,21 +218,21 @@ var types = exposed.types = {
 			
 			// Init
 			internal.parent.addEntity(new types.horizontalCrossedWire(internal.parent, "", internal.cell));
-		});
+		};
 	}],
 	"+": [attr.wire, function(common) {
-		this(function() {
+		common.constructor = function() {
 			var exposed = this.exposed,
 				internal = this.internal,
 				parent = this.parent,
 				self = exposed;
 			
-		});
+		};
 	}],
 	
 	// // Other
 	"#": [attr.solid, attr.powerNode, function(common) {
-		this(function() {
+		common.constructor = function() {
 			var exposed = this.exposed,
 				internal = this.internal,
 				parent = this.parent,
@@ -244,10 +244,10 @@ var types = exposed.types = {
 			exposed.computePowerState = function(network) {
 				return {state: [true, true, true, true]};
 			};
-		});
+		};
 	}],
 	"@": [attr.solid, attr.conductor, function(common) {
-		this(function() {
+		common.constructor = function() {
 			var exposed = this.exposed,
 				internal = this.internal,
 				parent = this.parent,
@@ -276,29 +276,29 @@ var types = exposed.types = {
 					return {state: [false, false, false, false]};
 				}
 			};
-		});
+		};
 	}],
 	
 	// Generated
 	horizontalCrossedWire: [attr.crossedWire, function(common) {
-		this(function() {
+		common.constructor = function() {
 			var exposed = this.exposed,
 				internal = this.internal,
 				parent = this.parent,
 				self = exposed;
 			
 			internal.wiredDirections = [1, 3];
-		});
+		};
 	}],
 	verticalCrossedWire: [attr.crossedWire, function(common) {
-		this(function() {
+		common.constructor = function() {
 			var exposed = this.exposed,
 				internal = this.internal,
 				parent = this.parent,
 				self = exposed;
 			
 			internal.wiredDirections = [0, 2];
-		});
+		};
 	}]
 };
 

@@ -1,7 +1,7 @@
 
 var GridCell = SVP2.class(function(common) {
 
-this(function(parentGrid, x, y) {
+common.constructor = function(parentGrid, x, y) {
 	var exposed = this.exposed,
 		internal = this.internal,
 		self = exposed;
@@ -74,6 +74,6 @@ this(function(parentGrid, x, y) {
 		return exposed.getCellInDirection(3, count);
 	};
 	
-});
+};
 
 });

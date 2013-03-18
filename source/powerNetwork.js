@@ -5,7 +5,7 @@ var PowerNetwork = SVP2.class(function(common) {
 // Constants
 common.internal.maximumIterations = 1000;
 
-this(function() {
+common.constructor = function() {
 	var exposed = this.exposed,
 		internal = this.internal,
 		self = exposed;
@@ -51,7 +51,7 @@ this(function() {
 		}
 	};
 	
-});
+};
 
 // Exposed
 common.exposed.makeNode = function(parent) {

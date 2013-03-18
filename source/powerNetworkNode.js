@@ -1,7 +1,7 @@
 
 var PowerNetworkNode = SVP2.class(function(common) {
 
-this(function(network, parent) {
+common.constructor = function(network, parent) {
 	var exposed = this.exposed,
 		internal = this.internal,
 		self = exposed;
@@ -41,6 +41,6 @@ this(function(network, parent) {
 	// Init
 	network.addNode(self);
 	
-});
+};
 
 });

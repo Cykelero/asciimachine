@@ -2,7 +2,7 @@
 
 var Grid = SVP2.class(function(common) {
 
-this(function(width, height) {
+common.constructor = function(width, height) {
 	var exposed = this.exposed,
 		internal = this.internal,
 		self = exposed;
@@ -31,6 +31,6 @@ this(function(width, height) {
 			column[y] = new GridCell(self, x, y);
 		}
 	}
-});
+};
 
 });

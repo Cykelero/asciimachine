@@ -1,4 +1,4 @@
-/* SVP2.js 0.1 - Nathan Manceaux-Panot (@Cykelero) */
+/* SVP2.js 0.2 - Nathan Manceaux-Panot (@Cykelero) */
 /* A library to write programs using the SVP2 pattern. */
 
 var SVP2;
@@ -53,14 +53,20 @@ common.exposed = function(defineList, isStatic) {
 		}
 		
 		// Applying definition functions
-		var defineEnv = function(construct) {
+		var defineEnv = {}; // nothing (yet?)
+		
+		var commonParameter = {internal: {}, exposed: returned};
+		
+		commonParameter.__defineGetter__("constructor", function() {
+			return exposableConstructor;
+		});
+		
+		commonParameter.__defineSetter__("constructor", function(construct) {
 			if (constructors[currentDefinitionLevel]) throw new Error("A constructor has already been defined.");
 			
 			constructors.push(construct);
 			surfaceConstructor = construct;
-		};
-		
-		var commonParameter = {internal: {}, exposed: returned, constructor: exposableConstructor};
+		});
 		
 		for (var currentDefinitionLevel = 0 ; currentDefinitionLevel < internal.defineList.length ; currentDefinitionLevel++) {
 			var defineFunction = internal.defineList[currentDefinitionLevel];
@@ -71,7 +77,7 @@ common.exposed = function(defineList, isStatic) {
 				// Adding a default pass-through constructor
 				var standIn = function() {};
 				standIn.isPassthrough = true;
-				defineEnv(standIn);
+				commonParameter.constructor = standIn;
 			} else if (defineFunction.withPassthroughConstructor) {
 				constructorFunction.isPassthrough = true;
 			}

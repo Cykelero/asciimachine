@@ -1,7 +1,7 @@
 
 var MachineEntity = SVP2.class(function(common) {
 
-this(function(parent, char, cell) {
+common.constructor = function(parent, char, cell) {
 	var exposed = this.exposed,
 		internal = this.internal,
 		self = exposed;
@@ -98,6 +98,6 @@ this(function(parent, char, cell) {
 		internal.cell.addObject(self);
 	};
 	
-});
+};
 
 });
