@@ -10,7 +10,6 @@ common.constructor = function(parent, char, cell) {
 	internal.cell = cell;
 	
 	internal.isSolid = false;
-	internal.isPowerNode = false;
 	
 	internal.displayChar = char;
 	internal.color = [255, 255, 255];

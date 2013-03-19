@@ -13,6 +13,10 @@ common.constructor = function(network, parent) {
 	internal.cachedPowerStateStep = -1;
 	
 	// Exposed methods
+	this.expose({
+		network: false
+	});
+	
 	exposed.getPowerState = function(returnFinalOnly) {
 		var currentStep = internal.network.getStep(),
 			shouldIterate = returnFinalOnly && internal.cachedPowerStateStep < currentStep;
