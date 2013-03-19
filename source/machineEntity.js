@@ -69,17 +69,10 @@ common.constructor = function(parent, char, cell) {
 	};
 	
 	internal.getNeighborsFrom = function(directions) {
-		var neighbors = [],
-			neighborCells;
+		var neighbors = [];
 		
-		neighborCells = [
-			directions.indexOf(0) > -1 ? internal.cell.getTop() : null,
-			directions.indexOf(1) > -1 ? internal.cell.getRight() : null,
-			directions.indexOf(2) > -1 ? internal.cell.getBottom() : null,
-			directions.indexOf(3) > -1 ? internal.cell.getLeft() : null
-		];
-		
-		neighborCells.forEach(function(cell, direction) {
+		directions.forEach(function(direction) {
+			var cell = internal.cell.getCellInDirection(direction);
 			if (!cell) return;
 			
 			cell.getObjects().forEach(function(entity) {
