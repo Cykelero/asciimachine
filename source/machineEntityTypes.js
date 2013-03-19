@@ -59,7 +59,7 @@ attr.powerNode = [function(common) {
 		
 		internal.poweredColor = [70, 190, 255];
 		
-		// Exposed methods
+		// Behavior
 		exposed.beginFrame = function() {
 			parent.exposed.beginFrame();
 			
