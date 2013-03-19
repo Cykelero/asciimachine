@@ -298,7 +298,6 @@ var types = exposed.types = {
 			
 			exposed.userAction = function() {
 				internal.enabled = !internal.enabled;
-				console.log(internal.enabled);
 			};
 			
 			exposed.getBackgroundColor = function() {
@@ -324,9 +323,6 @@ var types = exposed.types = {
 				self = exposed;
 			
 			internal.backgroundColor = [100, 0, 170];
-			
-			// RETHINK, REWRITE
-			// SHOULD NOT OUTPUT POWER ON ITS INPUT SIDES (geez)
 			
 			exposed.initializeRelationships = function() {
 				parent.exposed.initializeRelationships();

@@ -14,7 +14,6 @@ common.constructor = function(worldText) {
 	
 	// Exposed methods
 	exposed.tick = function() {
-		console.log("###### TICK ######");
 		internal.entities.forEach(function(entity) {
 			entity.beginFrame();
 		});

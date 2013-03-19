@@ -32,15 +32,12 @@ common.constructor = function() {
 		
 		
 		// Iterating
-		console.log("--- power iteration ---");
 		do {
 			internal.step++;
 			internal.nodes[0].getPowerState();
 			
 			oldGlobalSnapshot = newGlobalSnapshot;
 			newGlobalSnapshot = internal.nodes.toString();
-			
-			console.log(newGlobalSnapshot);
 		} while (oldGlobalSnapshot != newGlobalSnapshot && internal.step < common.internal.maximumIterations);
 		
 		if (internal.step >= common.internal.maximumIterations) {
