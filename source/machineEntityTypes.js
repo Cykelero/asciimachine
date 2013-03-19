@@ -22,6 +22,30 @@ attr.solid = [function(common) {
 	};
 }];
 
+attr.hasArrows = [function(common) {
+	common.constructor = function() {
+		var exposed = this.exposed,
+			internal = this.internal,
+			parent = this.parent,
+			self = exposed;
+		
+		internal.arrows = [];
+		
+		exposed.initializeRelationships = function() {
+			parent.exposed.initializeRelationships();
+			
+			internal.getCloseNeighbors().forEach(function(info) {
+				var entity = info.entity;
+				if (entity.getChar() == common.internal.arrows[info.direction]) {
+					internal.arrows.push(info);
+				}
+			});
+		};
+		
+		common.internal.arrows = ["A", ">", "V", "<"];
+	};
+}];
+
 attr.powerNode = [function(common) {
 	common.constructor = function() {
 		var exposed = this.exposed,
@@ -93,9 +117,7 @@ attr.conductor = [attr.powerNode, function(common) {
 		};
 		
 		exposed.computePowerState = function(network) {
-			var powered = internal.getCachedWiredNeighbors().some(function(info) {
-				return info.entity.getPowerState(network).state[(info.direction+2)%4];
-			});
+			var powered = !!internal.getPowerCount(network);
 			
 			var state = [false, false, false, false];
 			
@@ -104,6 +126,12 @@ attr.conductor = [attr.powerNode, function(common) {
 			});
 			
 			return {state: state};
+		};
+		
+		internal.getPowerCount = function(network) {
+			return internal.getCachedWiredNeighbors().reduce(function(count, info) {
+				return count + 1*info.entity.getPowerState(network).state[(info.direction+2)%4];
+			}, 0);
 		};
 		
 		internal.getWiredNeighbors = function() {
@@ -176,6 +204,17 @@ var types = exposed.types = {
 				self = exposed;
 			
 			internal.backgroundColor = [130, 130, 130];
+		};
+	}],
+	">": [attr.solid, function(common) {
+		common.constructor = function() {
+			var exposed = this.exposed,
+				internal = this.internal,
+				parent = this.parent,
+				self = exposed;
+			
+			internal.color = [255, 255, 255];
+			internal.backgroundColor = [100, 180, 100];
 		};
 	}],
 	" ": [],
@@ -255,7 +294,6 @@ var types = exposed.types = {
 			
 			internal.enabled = false;
 			
-			internal.color = [0, 0, 0];
 			internal.poweredColor = [100, 255, 220];
 			
 			exposed.userAction = function() {
@@ -275,6 +313,43 @@ var types = exposed.types = {
 				} else {
 					return {state: [false, false, false, false]};
 				}
+			};
+		};
+	}],
+	"%": [attr.solid, attr.conductor, attr.hasArrows, function(common) {
+		common.constructor = function() {
+			var exposed = this.exposed,
+				internal = this.internal,
+				parent = this.parent,
+				self = exposed;
+			
+			internal.backgroundColor = [100, 0, 170];
+			
+			// RETHINK, REWRITE
+			// SHOULD NOT OUTPUT POWER ON ITS INPUT SIDES (geez)
+			
+			exposed.initializeRelationships = function() {
+				parent.exposed.initializeRelationships();
+				
+				internal.arrows.forEach(function(info) {
+					internal.parent.addEntity(new types.H(internal.parent, "•", info.entity.cell)); // testtest!
+					
+					var directionIndex = internal.wiredDirections.indexOf(info.direction);
+					if (directionIndex > -1) internal.wiredDirections.splice(directionIndex, 1);
+				});
+			};
+			
+			exposed.computePowerState = function(network) {
+				var powerCount = internal.getPowerCount(network),
+					outputsPower = (powerCount == 1);
+				
+				var state = [false, false, false, false];
+				
+				internal.arrows.forEach(function(info) {
+					state[info.direction] = outputsPower;
+				});
+				
+				return {state: state};
 			};
 		};
 	}],

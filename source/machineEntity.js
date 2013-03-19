@@ -30,6 +30,10 @@ common.constructor = function(parent, char, cell) {
 	});
 	
 	// // Behavior
+	exposed.initializeRelationships = function() {
+		
+	};
+	
 	exposed.beginFrame = function() {
 		
 	};

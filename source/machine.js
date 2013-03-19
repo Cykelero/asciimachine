@@ -91,6 +91,11 @@ common.constructor = function(worldText) {
 			exposed.addEntity(MachineEntityFactory.makeEntity(getOtherChar, self, char, cell));
 		}
 	}
+	
+	// // Initializing relationships
+	internal.entities.forEach(function(entity) {
+		entity.initializeRelationships();
+	});
 };
 
 });
