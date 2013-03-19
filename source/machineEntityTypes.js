@@ -1,4 +1,5 @@
 // needs machineEntity.js
+// needs powerState.js
 
 var MachineEntityTypes = SVP2.staticClass(function(common) {
 
@@ -85,7 +86,7 @@ attr.powerNode = [function(common) {
 		
 		// // Power network-requested calculations
 		exposed.computePowerState = function() {
-			return {state: [false, false, false, false]};
+			return new PowerState();
 		};
 		
 		internal.getPowerCountFrom = function(directions) {
@@ -94,7 +95,7 @@ attr.powerNode = [function(common) {
 				var flippedDirection = (info.direction+2)%4,
 					neighborPowerState = info.entity.getPowerState(internal.getNetwork());
 				
-				return count + neighborPowerState.state[flippedDirection];
+				return count + neighborPowerState.get(flippedDirection);
 			}, 0);
 		};
 		
@@ -104,7 +105,7 @@ attr.powerNode = [function(common) {
 		
 		// Display
 		internal.isPowered = function() {
-			return exposed.getPowerState().state.some(function(state) {return state});
+			return exposed.getPowerState().any();
 		};
 		
 		exposed.getColor = function() {
@@ -127,13 +128,11 @@ attr.conductor = [attr.powerNode, function(common) {
 		exposed.computePowerState = function() {
 			var powered = !!internal.getPowerCountFrom(internal.wiredDirections);
 			
-			var state = [false, false, false, false];
-			
-			internal.wiredDirections.forEach(function(direction) {
-				state[direction] = powered;
-			});
-			
-			return {state: state};
+			if (powered) {
+				return PowerState.makeFromDirections(internal.wiredDirections);
+			} else {
+				return new PowerState();
+			}
 		};
 	};
 }];
@@ -180,7 +179,7 @@ attr.crossedWire = [attr.wire, function(common) {
 			if (internal.cachedShouldCross) {
 				return parent.exposed.computePowerState();
 			} else {
-				return {state: [false, false, false, false]};
+				return new PowerState();
 			}
 		};
 	};
@@ -274,7 +273,7 @@ var types = exposed.types = {
 			internal.poweredColor = [100, 220, 255];
 			
 			exposed.computePowerState = function() {
-				return {state: [true, true, true, true]};
+				return new PowerState(true);
 			};
 		};
 	}],
@@ -297,7 +296,7 @@ var types = exposed.types = {
 				if (internal.enabled) {
 					return parent.exposed.computePowerState();
 				} else {
-					return {state: [false, false, false, false]};
+					return new PowerState();
 				}
 			};
 			
@@ -332,13 +331,14 @@ var types = exposed.types = {
 				var powerCount = internal.getPowerCountFrom(internal.wiredDirections),
 					outputsPower = (powerCount == 1);
 				
-				var state = [false, false, false, false];
+				var state = new PowerState();
+				if (outputsPower) {
+					internal.arrows.forEach(function(info) {
+						state.set(info.direction, true);
+					});
+				}
 				
-				internal.arrows.forEach(function(info) {
-					state[info.direction] = outputsPower;
-				});
-				
-				return {state: state};
+				return state;
 			};
 		};
 	}],

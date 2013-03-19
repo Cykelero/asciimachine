@@ -47,7 +47,7 @@ common.constructor = function(parent, char, cell) {
 	
 	// // // World
 	exposed.getPowerState = function() {
-		return {state: [false, false, false, false]};
+		return new PowerState();
 	};
 	
 	// // Rendering

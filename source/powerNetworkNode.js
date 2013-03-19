@@ -33,9 +33,7 @@ common.constructor = function(network, parent) {
 	};
 	
 	exposed.setPowerStateOff = function() {
-		internal.cachedPowerState = {
-			state: [false, false, false, false]
-		};
+		internal.cachedPowerState = new PowerState();
 	};
 	
 	exposed.toString = function() {
