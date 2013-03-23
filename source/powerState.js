@@ -1,3 +1,4 @@
+// needs direction.js
 
 var PowerState = SVP2.class(function(common) {
 
@@ -11,23 +12,23 @@ common.constructor = function(defaultState) {
 	// Exposed methods
 	// // Get
 	exposed.get = function(direction) {
-		return exposed.state[internal.toDirection(direction)];
+		return exposed.state[Direction(direction)];
 	};
 	
 	exposed.getTop = function() {
-		return exposed.get(0);
+		return exposed.get(Direction.up);
 	};
 	
 	exposed.getRight = function() {
-		return exposed.get(1);
+		return exposed.get(Direction.right);
 	};
 	
 	exposed.getBottom = function() {
-		return exposed.get(2);
+		return exposed.get(Direction.down);
 	};
 	
 	exposed.getLeft = function() {
-		return exposed.get(3);
+		return exposed.get(Direction.left);
 	};
 	
 	exposed.any = function() {
@@ -38,28 +39,23 @@ common.constructor = function(defaultState) {
 	
 	// // Set
 	exposed.set = function(direction, value) {
-		exposed.state[internal.toDirection(direction)] = !!value;
+		exposed.state[Direction(direction)] = !!value;
 	};
 	
 	exposed.setTop = function(value) {
-		return exposed.set(0, value);
+		return exposed.set(Direction.up, value);
 	};
 	
 	exposed.setRight = function(value) {
-		return exposed.set(1, value);
+		return exposed.set(Direction.right, value);
 	};
 	
 	exposed.setBottom = function(value) {
-		return exposed.set(2, value);
+		return exposed.set(Direction.down, value);
 	};
 	
 	exposed.setLeft = function(value) {
-		return exposed.set(3, value);
-	};
-	
-	// Internal methods
-	internal.toDirection = function(direction) {
-		return direction%4 || 0;
+		return exposed.set(Direction.left, value);
 	};
 	
 	// Init
