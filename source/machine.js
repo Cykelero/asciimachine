@@ -69,6 +69,14 @@ common.constructor = function(worldText) {
 	exposed.addEntity = function(entity) {
 		entity.cell.addObject(entity);
 		internal.entities.push(entity);
+		return entity;
+	};
+	
+	exposed.removeEntity = function(entity) {
+		entity.cell.removeObject(entity);
+		var entityIndex = internal.entities.indexOf(entity);
+		internal.entities.splice(entityIndex, 1);
+		return entity;
 	};
 	
 	// Internal methods
