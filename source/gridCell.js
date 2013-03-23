@@ -41,7 +41,7 @@ common.constructor = function(parentGrid, x, y) {
 	};
 	
 	// // Neighbor cells
-	exposed.getCellInDirection = function(direction, count) {
+	exposed.getInDirection = function(direction, count) {
 		if (count == undefined) count = 1;
 		
 		var offset = {
@@ -51,27 +51,27 @@ common.constructor = function(parentGrid, x, y) {
 			3: [-count, 0]
 		}[direction];
 		
-		return exposed.getCellWithOffset(offset);
+		return exposed.getWithOffset(offset);
 	};
 	
-	exposed.getCellWithOffset = function(offset) {
+	exposed.getWithOffset = function(offset) {
 		return internal.parentGrid.getCell(internal.x+offset[0], internal.y+offset[1]);
 	};
 	
 	exposed.getTop = function(count) {
-		return exposed.getCellInDirection(0, count);
+		return exposed.getInDirection(0, count);
 	};
 	
 	exposed.getRight = function(count) {
-		return exposed.getCellInDirection(1, count);
+		return exposed.getInDirection(1, count);
 	};
 	
 	exposed.getBottom = function(count) {
-		return exposed.getCellInDirection(2, count);
+		return exposed.getInDirection(2, count);
 	};
 	
 	exposed.getLeft = function(count) {
-		return exposed.getCellInDirection(3, count);
+		return exposed.getInDirection(3, count);
 	};
 	
 };

@@ -1,7 +1,5 @@
 // needs machineEntityTypes.js
 
-// needs powerNetwork.js
-
 var MachineEntityFactory = SVP2.staticClass(function(common) {
 
 // Exposed

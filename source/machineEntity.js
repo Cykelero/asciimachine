@@ -38,20 +38,11 @@ common.constructor = function(parent, char, cell) {
 		
 	};
 	
-	exposed.tick = function() {
-		
-	};
-	
 	exposed.userAction = function() {
 		
 	};
 	
-	// // // World
-	exposed.getPowerState = function() {
-		return new PowerState();
-	};
-	
-	// // Rendering
+	// // Display
 	exposed.getChar = function() {
 		return internal.displayChar;
 	};
@@ -73,7 +64,7 @@ common.constructor = function(parent, char, cell) {
 		var neighbors = [];
 		
 		directions.forEach(function(direction) {
-			var cell = internal.cell.getCellInDirection(direction);
+			var cell = internal.cell.getInDirection(direction);
 			if (!cell) return;
 			
 			cell.getObjects().forEach(function(entity) {

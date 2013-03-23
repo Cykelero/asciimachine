@@ -14,13 +14,24 @@ common.constructor = function(worldText) {
 	
 	// Exposed methods
 	exposed.tick = function() {
+		// New frame initialization
 		internal.entities.forEach(function(entity) {
 			entity.beginFrame();
 		});
-		
 		internal.entities.forEach(function(entity) {
-			entity.tick();
+			entity.initializePowerState && entity.initializePowerState();
 		});
+		
+		// Power network solving
+		var unstableCount = 0,
+			previousUnstableCount;
+		do {
+			previousUnstableCount = unstableCount;
+			unstableCount = internal.entities.reduce(function(count, entity) {
+				if (!entity.refreshOutputs) return count;
+				return count + entity.refreshOutputs();
+			}, 0);
+		} while (unstableCount != previousUnstableCount);
 	};
 	
 	exposed.renderTo = function(renderer) {
