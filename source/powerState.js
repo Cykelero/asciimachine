@@ -21,7 +21,13 @@ common.constructor = function(powerNode) {
 	
 	exposed.getPowerCount = function() {
 		return internal.inputs.reduce(function(count, input) {
-			return count + input;
+			return count + input.value;
+		}, 0);
+	};
+	
+	exposed.getUnstableCount = function() {
+		return internal.inputs.reduce(function(count, input) {
+			return count + (input.stable == false);
 		}, 0);
 	};
 	
@@ -33,6 +39,13 @@ common.constructor = function(powerNode) {
 	exposed.addOutput = function(connection) {
 		internal.outputs.push(connection);
 	};
+	
+	exposed.setAllOutputs = function(value) {
+		internal.outputs.forEach(function(output) {
+			output.value = value;
+		});
+	};
+
 };
 
 });
