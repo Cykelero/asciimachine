@@ -1,3 +1,4 @@
+// needs direction.js
 
 var MachineEntity = SVP2.class(function(common) {
 
@@ -65,7 +66,7 @@ common.constructor = function(parent, char, cell) {
 	
 	// Internal methods
 	internal.getCloseNeighbors = function() {
-		return internal.getNeighborsFrom([0, 1, 2, 3]);
+		return internal.getNeighborsFrom(Direction.all());
 	};
 	
 	internal.getNeighborsFrom = function(directions) {

@@ -1,5 +1,6 @@
 // needs machineEntity.js
 // needs powerState.js
+// needs direction.js
 
 var MachineEntityTypes = SVP2.staticClass(function(common) {
 
@@ -92,10 +93,9 @@ attr.powerNode = [function(common) {
 		internal.getPowerCountFrom = function(directions) {
 			var inputEntities = internal.getNeighborsFrom(directions);
 			return inputEntities.reduce(function(count, info) {
-				var flippedDirection = (info.direction+2)%4,
-					neighborPowerState = info.entity.getPowerState(internal.getNetwork());
+				var neighborPowerState = info.entity.getPowerState(internal.getNetwork());
 				
-				return count + neighborPowerState.get(flippedDirection);
+				return count + neighborPowerState.get(Direction.flip(info.direction));
 			}, 0);
 		};
 		
@@ -123,7 +123,7 @@ attr.conductor = [attr.powerNode, function(common) {
 			parent = this.parent,
 			self = exposed;
 		
-		internal.wiredDirections = [0, 1, 2, 3];
+		internal.wiredDirections = Direction.all()
 		
 		exposed.computePowerState = function() {
 			var powered = !!internal.getPowerCountFrom(internal.wiredDirections);
@@ -170,7 +170,7 @@ attr.crossedWire = [attr.wire, function(common) {
 				var neighbors = internal.getNeighborsFrom(internal.wiredDirections);
 				
 				internal.cachedShouldCross = neighbors.some(function(info) {
-					var expectedWireType = (info.direction%2 == 0) ? "|" : "-";
+					var expectedWireType = Direction.isVertical(info.direction) ? "|" : "-";
 					
 					return info.entity.getChar() == expectedWireType;
 				});
@@ -232,7 +232,7 @@ var types = exposed.types = {
 				parent = this.parent,
 				self = exposed;
 			
-			internal.wiredDirections = [1, 3];
+			internal.wiredDirections = [Direction.right, Direction.left];
 			
 			// Init
 			internal.parent.addEntity(new types.verticalCrossedWire(internal.parent, "", internal.cell));
@@ -245,7 +245,7 @@ var types = exposed.types = {
 				parent = this.parent,
 				self = exposed;
 			
-			internal.wiredDirections = [0, 2];
+			internal.wiredDirections = [Direction.up, Direction.down];
 			
 			// Init
 			internal.parent.addEntity(new types.horizontalCrossedWire(internal.parent, "", internal.cell));
