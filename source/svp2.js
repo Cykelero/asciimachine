@@ -34,41 +34,84 @@ common.exposed = function(defineList, isStatic) {
 	};
 	
 	exposed.getClass = function() {
-		var returned,
+		var returnedProduct,
+			implicitMethod,
+			internalConstructor,
+			
 			initializeInstance,
+			
 			constructors = [],
 			surfaceConstructor;
 		
 		// Base
-		var exposableConstructor = function() {
-			// SVP2 class
+		// // Main entry point
+		returnedProduct = function() {
+			// This is an SVP2 class
 			// Access the `naked` property to get the actual constructor
-			initializeInstance(this, arguments);
+			return executeClassBehavior(this, arguments, true);
 		};
 		
+		var executeClassBehavior = function(self, args, external) {
+			var constructable = external ? returnedProduct : internalConstructor;
+			
+			if (self instanceof constructable) {
+				// Used as constructor
+				if (external && internal.static) {
+					throw new Error("This class is static and therefore cannot be instantiated.");
+				} else {
+					if (surfaceConstructor) {
+						initializeInstance(self, args);
+					} else {
+						throw new Error("No constructor has been defined for this class.");
+					}
+				}
+			} else {
+				// Used as static method
+				if (implicitMethod) {
+					return implicitMethod.apply(self, args);
+				} else {
+					throw new Error("No implicit static method has been defined for this class.");
+				}
+			}
+		};
+		
+		// // Internal access to common.constructor
 		if (!internal.static) {
-			returned = exposableConstructor;
+			internalConstructor = returnedProduct;
 		} else {
-			returned = {};
+			internalConstructor = function() {
+				return executeClassBehavior(this, arguments, false);
+			};
 		}
 		
 		// Applying definition functions
-		var defineEnv = {}; // nothing (yet?)
+		// // Definition function environment
+		var defineEnv = {};
 		
-		var commonParameter = {internal: {}, exposed: returned};
+		var commonParameter = {internal: {}, exposed: returnedProduct};
 		
 		commonParameter.__defineGetter__("constructor", function() {
-			return exposableConstructor;
+			return internalConstructor;
 		});
 		
-		commonParameter.__defineSetter__("constructor", function(construct) {
+		commonParameter.__defineSetter__("constructor", function(value) {
 			if (constructors[currentDefinitionLevel]) throw new Error("A constructor has already been defined.");
 			
-			constructors.push(construct);
-			surfaceConstructor = construct;
+			constructors.push(value);
+			surfaceConstructor = value;
 		});
 		
+		commonParameter.__defineGetter__("implicit", function() {
+			return implicitMethod;
+		});
+		
+		commonParameter.__defineSetter__("implicit", function(value) {
+			implicitMethod = value;
+		});
+		
+		// // Definition function application
 		for (var currentDefinitionLevel = 0 ; currentDefinitionLevel < internal.defineList.length ; currentDefinitionLevel++) {
+			// Calling
 			var defineFunction = internal.defineList[currentDefinitionLevel];
 			defineFunction.call(defineEnv, commonParameter);
 			
@@ -79,6 +122,7 @@ common.exposed = function(defineList, isStatic) {
 				standIn.isPassthrough = true;
 				commonParameter.constructor = standIn;
 			} else if (defineFunction.withPassthroughConstructor) {
+				// Applying requested oass-through status
 				constructorFunction.isPassthrough = true;
 			}
 		}
@@ -88,6 +132,7 @@ common.exposed = function(defineList, isStatic) {
 			var constructorFunction = constructors[level],
 				parentCaller = null;
 			
+			// Preparing super constructors
 			if (level > 0) {
 				parentCaller = function() {
 					callConstructor(instance, instanceInternal, level-1, arguments);
@@ -110,6 +155,7 @@ common.exposed = function(defineList, isStatic) {
 				};
 			}
 			
+			// Preparing environment
 			var constructorEnv = {
 				exposed: instance,
 				internal: instanceInternal,
@@ -138,11 +184,13 @@ common.exposed = function(defineList, isStatic) {
 					}
 				}
 			};
-				
+			
+			// Passthrough constructor: automatic execution of parent constructors
 			if (constructorFunction.isPassthrough) {
 				parentCaller.apply(constructorEnv, args);
 			}
 			
+			// (finally) Executing constructor
 			constructorFunction.apply(constructorEnv, args);
 		};
 		
@@ -150,27 +198,19 @@ common.exposed = function(defineList, isStatic) {
 			callConstructor(instance, {}, constructors.length-1, args);
 		};
 		
-		// Finalizing returned object
-		returned._SVP2 = self;
-		returned.__defineGetter__("naked", function() {
+		// Finalizing returnedProduct object
+		returnedProduct._SVP2 = self;
+		returnedProduct.__defineGetter__("naked", function() {
 			return internal.defineList[internal.defineList.length-1];
 		});
 		
-		return returned;
+		return returnedProduct;
 	};
-	
-	// Internal methods
-	
-	// Init
-	
 };
 
 common.exposed.makeClass = function(define, isStatic) {
 	return new common.exposed([define], isStatic);
 };
-
-// Internal
-common.internal = {};
 
 return common.exposed;
 })();
