@@ -1,6 +1,6 @@
 <?php
 
-/* SVPbuild 0.6 */
+/* SVPbuild 0.7 */
 
 $shouldReturnCompiled = $_GET['returnSource'];
 
@@ -25,6 +25,7 @@ $tabs = str_repeat("\t", $tabCount);
 
 $libraryList = null;
 $fileList = null;
+$staticFileList = null;
 $productName = null;
 
 $fancyName = null;
@@ -42,6 +43,10 @@ $libraryList = $libraryListResults[1];
 preg_match('/"files"\s*:\s*\\[(([^a]|a)+?)\\]/', $makefileContents, $fileStringListResults);
 preg_match_all('/"([^"]+)"/', $fileStringListResults[1], $fileListResults);
 $fileList = $fileListResults[1];
+
+preg_match('/"staticFiles"\s*:\s*\\[(([^a]|a)+?)\\]/', $makefileContents, $stringStaticFileListResults);
+preg_match_all('/"([^"]+)"/', $stringStaticFileListResults[1], $staticFileListResults);
+$staticFileList = $staticFileListResults[1];
 
 preg_match('/"productName"\s*:\s*"(([^"]|\\\\")+)"/', $makefileContents, $productNameResults);
 $productName = $productNameResults[1];
@@ -208,8 +213,13 @@ foreach ($urlList as $filepath) {
 
 $compiled .= "})();\n";
 
-// Writing, returning
+// Writing
 file_put_contents($compiledDestination.$productName, $compiled);
+foreach ($staticFileList as $staticFile) {
+	file_put_contents($compiledDestination.$staticFile, file_get_contents($sourceFolderPath.$staticFile));
+}
+
+// Returning
 if (!$shouldReturnCompiled) {
 	echo $scriptTagsList;
 } else {
