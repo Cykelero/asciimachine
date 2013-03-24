@@ -158,8 +158,8 @@ attr.conductor = [attr.powerNode, function(common) {
 		
 		internal.vetoIncomingConnection = function(connection) {
 			var info = connection.info;
-			return info.kind == "contact"
-				&& internal.wiredDirections.indexOf(Direction.flip(info.direction)) > -1;
+			
+			return info.kind == "contact" && internal.wiredDirections.indexOf(Direction.flip(info.direction)) > -1;
 		};
 		
 		internal.refreshPowerState = function() {
