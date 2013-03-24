@@ -9,15 +9,18 @@ common.constructor = function(powerNode) {
 	internal.inputs = [];
 	internal.outputs = [];
 	
-	internal.stable = false;
-	
 	// Exposed methods
 	// // Get
 	this.expose({
 		inputs: false,
-		outputs: false,
-		stable: true
+		outputs: false
 	});
+	
+	exposed.isStable = function() {
+		return !internal.outputs.some(function(output) {
+			return output.value == null;
+		});
+	};
 	
 	exposed.getPowerCount = function() {
 		return internal.inputs.reduce(function(count, input) {

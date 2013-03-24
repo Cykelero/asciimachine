@@ -75,7 +75,7 @@ attr.powerNode = [function(common) {
 		exposed.refreshOutputs = function() {
 			internal.refreshPowerState();
 			
-			return internal.powerState.stable;
+			return internal.powerState.isStable();
 		};
 		
 		exposed.inputPower = function(connection) {
@@ -163,9 +163,8 @@ attr.conductor = [attr.powerNode, function(common) {
 			
 			if (powered) {
 				internal.powerState.setAllOutputs(true);
-				internal.powerState.stable = true;
 			} else if (internal.powerState.getUnstableCount() == 0) {
-				internal.powerState.stable = true;
+				internal.powerState.setAllOutputs(false);
 			}
 		};
 		
@@ -325,7 +324,6 @@ var types = exposed.types = {
 			
 			internal.refreshPowerState = function() {
 				internal.powerState.setAllOutputs(true);
-				internal.powerState.stable = true;
 			};
 			
 			internal.isPowered = function() {
@@ -409,7 +407,6 @@ var types = exposed.types = {
 				
 				var outputsPower = (powerCount == 1);
 				internal.powerState.setAllOutputs(outputsPower);
-				internal.powerState.stable = true;
 			};
 			
 			exposed.sharePowerState = function() {
