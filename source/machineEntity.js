@@ -38,10 +38,6 @@ common.constructor = function(parent, char, cell) {
 		
 	};
 	
-	exposed.cleanup = function() {
-		
-	};
-	
 	exposed.userAction = function() {
 		
 	};

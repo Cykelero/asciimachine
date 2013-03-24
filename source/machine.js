@@ -20,10 +20,6 @@ common.constructor = function(worldText) {
 		});
 		
 		internal.entities.forEach(function(entity) {
-			entity.initializeRelationships();
-		});
-		
-		internal.entities.forEach(function(entity) {
 			entity.initializePowerState && entity.initializePowerState();
 		});
 		
@@ -37,11 +33,6 @@ common.constructor = function(worldText) {
 				return count + entity.refreshOutputs();
 			}, 0);
 		} while (unstableCount != previousUnstableCount);
-		
-		// Cleanup
-		internal.entities.forEach(function(entity) {
-			entity.cleanup();
-		});
 	};
 	
 	exposed.renderTo = function(renderer) {
@@ -119,6 +110,11 @@ common.constructor = function(worldText) {
 			exposed.addEntity(MachineEntityFactory.makeEntity(getOtherChar, self, char, cell));
 		}
 	}
+	
+	// // Initializing entity relationships
+	internal.entities.forEach(function(entity) {
+		entity.initializeRelationships();
+	});
 };
 
 });

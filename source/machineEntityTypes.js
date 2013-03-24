@@ -250,9 +250,7 @@ var types = exposed.types = {
 			internal.wiredDirections = [Direction.right, Direction.left];
 			
 			// Init
-			var generatedEntity = internal.parent.addEntity(new types.verticalCrossedWire(internal.parent, "", internal.cell));
-			generatedEntity.beginFrame();
-			generatedEntity.initializeRelationships();
+			internal.parent.addEntity(new types.verticalCrossedWire(internal.parent, "", internal.cell));
 		};
 	}],
 	"|": [attr.wire, function(common) {
@@ -265,9 +263,7 @@ var types = exposed.types = {
 			internal.wiredDirections = [Direction.up, Direction.down];
 			
 			// Init
-			var generatedEntity = internal.parent.addEntity(new types.horizontalCrossedWire(internal.parent, "", internal.cell));
-			generatedEntity.beginFrame();
-			generatedEntity.initializeRelationships();
+			internal.parent.addEntity(new types.horizontalCrossedWire(internal.parent, "", internal.cell));
 		};
 	}],
 	"+": [attr.wire, function(common) {
@@ -338,15 +334,7 @@ var types = exposed.types = {
 			
 			internal.backgroundColor = [100, 0, 170];
 			
-			internal.generatedEntities = null;
-			
 			// Behavior
-			exposed.beginFrame = function() {
-				parent.exposed.beginFrame();
-				
-				internal.generatedEntities = [];
-			};
-			
 			exposed.initializeRelationships = function() {
 				parent.exposed.initializeRelationships();
 				
@@ -355,23 +343,11 @@ var types = exposed.types = {
 				internal.arrows.forEach(function(info) {
 					var wireType = Direction.isVertical(info.direction) ? types["|"] : types["-"];
 					
-					var generatedEntity = internal.parent.addEntity(new wireType(internal.parent, "", info.entity.cell));
-					generatedEntity.beginFrame();
-					generatedEntity.initializeRelationships();
-					internal.generatedEntities.push(generatedEntity);
+					internal.parent.addEntity(new wireType(internal.parent, "", info.entity.cell));
 					
 					var directionIndex = internal.wiredDirections.indexOf(info.direction);
 					if (directionIndex > -1) internal.wiredDirections.splice(directionIndex, 1);
 				});
-			};
-			
-			exposed.cleanup = function() {
-				parent.exposed.cleanup();
-				
-				internal.generatedEntities.forEach(function(entity) {
-					internal.parent.removeEntity(entity);
-				});
-				internal.generatedEntities = null;
 			};
 			
 			// Power node
