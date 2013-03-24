@@ -84,6 +84,10 @@ attr.powerNode = [function(common) {
 			return accept;
 		};
 		
+		exposed.comparePowerStateTo = function(powerState) {
+			return internal.powerState == powerState;
+		};
+		
 		internal.initializeOutputs;
 		
 		internal.vetoIncomingConnection;
@@ -91,6 +95,10 @@ attr.powerNode = [function(common) {
 		internal.refreshPowerState;
 		
 		internal.proposeConnection = function(target, info) {
+			if (target.comparePowerStateTo && target.comparePowerStateTo(internal.powerState)) {
+				return false;
+			};
+			
 			var connection = new PowerConnection({
 				from: self,
 				to: target,
