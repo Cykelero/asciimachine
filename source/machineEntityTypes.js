@@ -134,7 +134,13 @@ attr.conductor = [attr.powerNode, function(common) {
 			self = exposed;
 		
 		internal.wiredDirections = Direction.all();
-		internal.powerStateIsShared = false;
+		internal.powerStateIsShared = null;
+		
+		exposed.beginFrame = function() {
+			parent.exposed.beginFrame();
+			
+			internal.powerStateIsShared = false;
+		};
 		
 		exposed.initializePowerState = function() {
 			internal.spreadPowerState();
