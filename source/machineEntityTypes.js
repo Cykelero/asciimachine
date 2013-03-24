@@ -192,6 +192,13 @@ attr.conductor = [attr.powerNode, function(common) {
 			internal.powerState = powerState;
 			internal.spreadPowerState();
 		};
+		
+		// Display
+		internal.isPowered = function() {
+			return internal.powerState.inputs.some(function(input) {
+				return input.value;
+			});
+		};
 	};
 }];
 
