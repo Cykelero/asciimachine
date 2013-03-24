@@ -18,6 +18,10 @@ common.constructor = function(worldText) {
 		internal.entities.forEach(function(entity) {
 			entity.beginFrame();
 		});
+
+		internal.entities.forEach(function(entity) {
+			entity.spreadPowerState && entity.spreadPowerState();
+		});
 		
 		internal.entities.forEach(function(entity) {
 			entity.initializePowerState && entity.initializePowerState();

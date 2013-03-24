@@ -142,10 +142,8 @@ attr.conductor = [attr.powerNode, function(common) {
 			internal.powerStateIsShared = false;
 		};
 		
-		exposed.initializePowerState = function() {
+		exposed.spreadPowerState = function() {
 			internal.spreadPowerState();
-			
-			parent.exposed.initializePowerState();
 		};
 		
 		internal.initializeOutputs = function() {
@@ -174,7 +172,7 @@ attr.conductor = [attr.powerNode, function(common) {
 			}
 		};
 		
-		// Power state sharing
+		// Power state spreading
 		internal.spreadPowerState = function() {
 			if (internal.powerStateIsShared) return;
 			
