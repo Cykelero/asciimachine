@@ -114,14 +114,14 @@ attr.powerNode = [function(common) {
 		};
 		
 		// Display
-		internal.isPowered = function() {
+		exposed.isPowered = function() {
 			return internal.powerState.outputs.some(function(input) {
 				return input.value;
 			});
 		};
 		
 		exposed.getColor = function() {
-			return internal.isPowered() ? internal.poweredColor : parent.exposed.getColor();
+			return exposed.isPowered() ? internal.poweredColor : parent.exposed.getColor();
 		};
 	};
 }];
@@ -194,7 +194,7 @@ attr.conductor = [attr.powerNode, function(common) {
 		};
 		
 		// Display
-		internal.isPowered = function() {
+		exposed.isPowered = function() {
 			return internal.powerState.inputs.some(function(input) {
 				return input.value;
 			});
@@ -337,7 +337,7 @@ var types = exposed.types = {
 				internal.powerState.setAllOutputs(true);
 			};
 			
-			internal.isPowered = function() {
+			exposed.isPowered = function() {
 				return true;
 			};
 			
