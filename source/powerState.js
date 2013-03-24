@@ -27,7 +27,7 @@ common.constructor = function(powerNode) {
 	
 	exposed.getUnstableCount = function() {
 		return internal.inputs.reduce(function(count, input) {
-			return count + (input.stable == false);
+			return count + (input.value == null);
 		}, 0);
 	};
 	
