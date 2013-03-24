@@ -126,6 +126,13 @@ attr.conductor = [attr.powerNode, function(common) {
 			self = exposed;
 		
 		internal.wiredDirections = Direction.all();
+		internal.powerStateIsShared = false;
+		
+		exposed.initializePowerState = function() {
+			internal.spreadPowerState();
+			
+			parent.exposed.initializePowerState();
+		};
 		
 		internal.initializeOutputs = function() {
 			internal.wiredDirections.forEach(function(direction) {
@@ -152,6 +159,27 @@ attr.conductor = [attr.powerNode, function(common) {
 			} else if (internal.powerState.getUnstableCount() == 0) {
 				internal.powerState.stable = true;
 			}
+		};
+		
+		// Power state sharing
+		internal.spreadPowerState = function() {
+			if (internal.powerStateIsShared) return;
+			
+			internal.powerStateIsShared = true;
+			
+			internal.getNeighborsFrom(internal.wiredDirections).forEach(function(info) {
+				var entity = info.entity;
+				entity.sharePowerState && entity.sharePowerState({direction: info.direction}, internal.powerState);
+			});
+		};
+		
+		exposed.sharePowerState = function(info, powerState) {
+			if (internal.powerStateIsShared) return;
+			
+			if (internal.wiredDirections.indexOf(Direction.flip(info.direction)) == -1) return;
+			
+			internal.powerState = powerState;
+			internal.spreadPowerState();
 		};
 	};
 }];
@@ -295,6 +323,11 @@ var types = exposed.types = {
 			internal.isPowered = function() {
 				return true;
 			};
+			
+			exposed.sharePowerState = function() {
+			};
+			internal.spreadPowerState = function() {
+			};
 		};
 	}],
 	"@": [attr.solid, attr.conductor, function(common) {
@@ -369,6 +402,11 @@ var types = exposed.types = {
 				var outputsPower = (powerCount == 1);
 				internal.powerState.setAllOutputs(outputsPower);
 				internal.powerState.stable = true;
+			};
+			
+			exposed.sharePowerState = function() {
+			};
+			internal.spreadPowerState = function() {
 			};
 		};
 	}],
