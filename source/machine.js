@@ -18,6 +18,11 @@ common.constructor = function(worldText) {
 		internal.entities.forEach(function(entity) {
 			entity.beginFrame();
 		});
+		
+		internal.entities.forEach(function(entity) {
+			entity.initializeRelationships();
+		});
+		
 		internal.entities.forEach(function(entity) {
 			entity.initializePowerState && entity.initializePowerState();
 		});
@@ -32,6 +37,11 @@ common.constructor = function(worldText) {
 				return count + entity.refreshOutputs();
 			}, 0);
 		} while (unstableCount != previousUnstableCount);
+		
+		// Cleanup
+		internal.entities.forEach(function(entity) {
+			entity.cleanup();
+		});
 	};
 	
 	exposed.renderTo = function(renderer) {
@@ -75,7 +85,7 @@ common.constructor = function(worldText) {
 	exposed.removeEntity = function(entity) {
 		entity.cell.removeObject(entity);
 		var entityIndex = internal.entities.indexOf(entity);
-		internal.entities.splice(entityIndex, 1);
+		if (entityIndex > -1) internal.entities.splice(entityIndex, 1);
 		return entity;
 	};
 	
@@ -109,11 +119,6 @@ common.constructor = function(worldText) {
 			exposed.addEntity(MachineEntityFactory.makeEntity(getOtherChar, self, char, cell));
 		}
 	}
-	
-	// // Initializing relationships
-	internal.entities.forEach(function(entity) {
-		entity.initializeRelationships();
-	});
 };
 
 });

@@ -147,9 +147,9 @@ attr.conductor = [attr.powerNode, function(common) {
 			});
 			
 			if (powered) {
-				internal.powerState.outputs.forEach(function(output) {
-					output.value = true;
-				});
+				internal.powerState.setAllOutputs(true);
+				internal.powerState.stable = true;
+			} else if (internal.powerState.getUnstableCount() == 0) {
 				internal.powerState.stable = true;
 			}
 		};
@@ -250,7 +250,9 @@ var types = exposed.types = {
 			internal.wiredDirections = [Direction.right, Direction.left];
 			
 			// Init
-			internal.parent.addEntity(new types.verticalCrossedWire(internal.parent, "", internal.cell));
+			var generatedEntity = internal.parent.addEntity(new types.verticalCrossedWire(internal.parent, "", internal.cell));
+			generatedEntity.beginFrame();
+			generatedEntity.initializeRelationships();
 		};
 	}],
 	"|": [attr.wire, function(common) {
@@ -263,7 +265,9 @@ var types = exposed.types = {
 			internal.wiredDirections = [Direction.up, Direction.down];
 			
 			// Init
-			internal.parent.addEntity(new types.horizontalCrossedWire(internal.parent, "", internal.cell));
+			var generatedEntity = internal.parent.addEntity(new types.horizontalCrossedWire(internal.parent, "", internal.cell));
+			generatedEntity.beginFrame();
+			generatedEntity.initializeRelationships();
 		};
 	}],
 	"+": [attr.wire, function(common) {
@@ -288,9 +292,7 @@ var types = exposed.types = {
 			internal.poweredColor = [100, 220, 255];
 			
 			internal.refreshPowerState = function() {
-				internal.powerState.outputs.forEach(function(output) {
-					output.value = true;
-				});
+				internal.powerState.setAllOutputs(true);
 				internal.powerState.stable = true;
 			};
 			
@@ -336,29 +338,61 @@ var types = exposed.types = {
 			
 			internal.backgroundColor = [100, 0, 170];
 			
+			internal.generatedEntities = null;
+			
+			// Behavior
+			exposed.beginFrame = function() {
+				parent.exposed.beginFrame();
+				
+				internal.generatedEntities = [];
+			};
+			
 			exposed.initializeRelationships = function() {
 				parent.exposed.initializeRelationships();
 				
+				internal.wiredDirections = Direction.all();
+				
 				internal.arrows.forEach(function(info) {
-					internal.parent.addEntity(new types.H(internal.parent, "•", info.entity.cell)); // testtest!
+					var wireType = Direction.isVertical(info.direction) ? types["|"] : types["-"];
+					
+					var generatedEntity = internal.parent.addEntity(new wireType(internal.parent, "", info.entity.cell));
+					generatedEntity.beginFrame();
+					generatedEntity.initializeRelationships();
+					internal.generatedEntities.push(generatedEntity);
 					
 					var directionIndex = internal.wiredDirections.indexOf(info.direction);
 					if (directionIndex > -1) internal.wiredDirections.splice(directionIndex, 1);
 				});
 			};
 			
-			exposed.computePowerState = function() {
-				var powerCount = internal.getPowerCountFrom(internal.wiredDirections),
-					outputsPower = (powerCount == 1);
+			exposed.cleanup = function() {
+				parent.exposed.cleanup();
 				
-				var state = new PowerState();
-				if (outputsPower) {
-					internal.arrows.forEach(function(info) {
-						state.set(info.direction, true);
+				internal.generatedEntities.forEach(function(entity) {
+					internal.parent.removeEntity(entity);
+				});
+				internal.generatedEntities = null;
+			};
+			
+			// Power node
+			internal.initializeOutputs = function() {
+				internal.arrows.forEach(function(info) {
+					var direction = info.direction;
+					internal.getNeighborsFrom([direction]).forEach(function(info) {
+						internal.proposeConnection(info.entity, {direction: info.direction, kind: "contact"});
 					});
-				}
+				});
+			};
+			
+			internal.refreshPowerState = function() {
+				var powerCount = internal.powerState.getPowerCount(),
+					unstableCount = internal.powerState.getUnstableCount();
 				
-				return state;
+				if (unstableCount > 0) return;
+				
+				var outputsPower = (powerCount == 1);
+				internal.powerState.setAllOutputs(outputsPower);
+				internal.powerState.stable = true;
 			};
 		};
 	}],
