@@ -17,11 +17,9 @@ exposed.makeEntity = function(getOtherChar, parent, char, cell) {
 	}
 	
 	// Creating entity
-	if (entityClass) {
-		entity = new entityClass(parent, char, cell);
-	} else {
-		throw(new Error("Unknown entity type: "+char));
-	}
+	if (!entityClass) entityClass = MachineEntityTypes.types["X"];
+	
+	entity = new entityClass(parent, char, cell);
 	
 	return entity;
 };
