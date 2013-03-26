@@ -12,5 +12,10 @@
 	
 	"files": [
 		"ASCIIMachine.js"
+	],
+	
+	"staticFiles": [
+		"editor.html",
+		"editor.js"
 	]
 }
