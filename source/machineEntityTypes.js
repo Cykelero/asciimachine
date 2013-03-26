@@ -25,6 +25,18 @@ attr.solid = [function(common) {
 	};
 }];
 
+attr.arrow = [attr.solid, function(common) {
+	common.constructor = function() {
+		var exposed = this.exposed,
+			internal = this.internal,
+			parent = this.parent,
+			self = exposed;
+		
+		internal.color = [255, 255, 255];
+		internal.backgroundColor = [100, 180, 100];
+	};
+}];
+
 attr.hasArrows = [function(common) {
 	common.constructor = function() {
 		var exposed = this.exposed,
@@ -259,17 +271,10 @@ var types = exposed.types = {
 			internal.backgroundColor = [130, 130, 130];
 		};
 	}],
-	">": [attr.solid, function(common) {
-		common.constructor = function() {
-			var exposed = this.exposed,
-				internal = this.internal,
-				parent = this.parent,
-				self = exposed;
-			
-			internal.color = [255, 255, 255];
-			internal.backgroundColor = [100, 180, 100];
-		};
-	}],
+	"A": [attr.arrow, function() {}],
+	">": [attr.arrow, function() {}],
+	"V": [attr.arrow, function() {}],
+	"<": [attr.arrow, function() {}],
 	" ": [],
 	
 	// Power blocks
