@@ -102,7 +102,7 @@ common.constructor = function(worldText) {
 	// // Generating entities
 	var getOtherChar = function(x, y) {
 		if (x < 0 || y < 0 || x >= internal.grid.width || y >= internal.grid.height) return null;
-		return lines[y][x];
+		return lines[y][x] || " ";
 	};
 	
 	for (var y = 0 ; y < lines.length ; y++) {
