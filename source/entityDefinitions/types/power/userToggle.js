@@ -1,7 +1,7 @@
 // needs machineEntityTypesAggregator.js
 
 MachineEntityTypesAggregator.defineType("@", function(attr, types) {
-	return [attr.solid, attr.conductor, function(common) {
+	return [attr.fixed, attr.conductor, function(common) {
 		common.constructor = function() {
 			var exposed = this.exposed,
 				internal = this.internal,

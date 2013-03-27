@@ -1,7 +1,7 @@
 // needs machineEntityTypesAggregator.js
 
 MachineEntityTypesAggregator.defineType("X", function(attr, types) {
-	return [attr.solid, function(common) {
+	return [attr.fixed, function(common) {
 		common.constructor = function() {
 			var exposed = this.exposed,
 				internal = this.internal,

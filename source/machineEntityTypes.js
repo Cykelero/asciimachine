@@ -2,12 +2,13 @@
 
 
 // needs entityDefinitions/attributes/solid.js
-// needs entityDefinitions/attributes/arrow.js
+// needs entityDefinitions/attributes/fixed.js
 // needs entityDefinitions/attributes/hasArrows.js
 // needs entityDefinitions/attributes/powerNode.js
 // needs entityDefinitions/attributes/conductor.js
 // needs entityDefinitions/attributes/wire.js
 // needs entityDefinitions/attributes/crossedWire.js
+// needs entityDefinitions/attributes/arrow.js
 
 
 // needs entityDefinitions/types/basic/X.js
