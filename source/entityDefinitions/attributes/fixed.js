@@ -11,7 +11,7 @@ MachineEntityTypesAggregator.defineAttribute("fixed", function(attr, types) {
 			internal.color = [0, 0, 0];
 			internal.backgroundColor = [255, 255, 255];
 		};
-			
-		common.internal.inertiaType = common.internal.forceTypes.static;
+		
+		common.internal.weight = "static";
 	}];
 });

@@ -9,6 +9,8 @@
 // needs entityDefinitions/attributes/wire.js
 // needs entityDefinitions/attributes/crossedWire.js
 // needs entityDefinitions/attributes/arrow.js
+// needs entityDefinitions/attributes/gravity.js
+// needs entityDefinitions/attributes/antiGravity.js
 
 
 // needs entityDefinitions/types/basic/X.js
@@ -19,6 +21,8 @@
 // needs entityDefinitions/types/power/userToggle.js
 // needs entityDefinitions/types/power/XOR.js
 // needs entityDefinitions/types/power/H.js
+
+// needs entityDefinitions/types/mobile/O.js
 
 // needs entityDefinitions/types/misc/arrows.js
 

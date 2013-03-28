@@ -14,7 +14,7 @@ common.constructor = function(worldText) {
 	
 	// Exposed methods
 	exposed.tick = function() {
-		// New frame initialization
+		// Generic entity behavior
 		internal.entities.forEach(function(entity) {
 			entity.$beginFrame();
 		});
@@ -27,7 +27,7 @@ common.constructor = function(worldText) {
 			entity.$initializePowerState && entity.$initializePowerState();
 		});
 		
-		// Power network solving
+		// Power network
 		var unstableCount = 0,
 			previousUnstableCount;
 		do {
@@ -37,6 +37,15 @@ common.constructor = function(worldText) {
 				return count + entity.$refreshOutputs();
 			}, 0);
 		} while (unstableCount != previousUnstableCount);
+		
+		// Physics
+		internal.entities.forEach(function(entity) {
+			entity.$generateForces && entity.$generateForces();
+		});
+		
+		internal.entities.forEach(function(entity) {
+			entity.$applyComputedForces && entity.$applyComputedForces();
+		});
 	};
 	
 	exposed.renderTo = function(renderer) {
