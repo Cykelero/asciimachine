@@ -11,13 +11,13 @@ MachineEntityTypesAggregator.defineAttribute("conductor", function(attr, types) 
 			internal.wiredDirections = Direction.all();
 			internal.powerStateIsShared = null;
 			
-			exposed.beginFrame = function() {
-				parent.exposed.beginFrame();
+			exposed.$beginFrame = function() {
+				parent.exposed.$beginFrame();
 				
 				internal.powerStateIsShared = false;
 			};
 			
-			exposed.spreadPowerState = function() {
+			exposed.$spreadPowerState = function() {
 				internal.spreadPowerState();
 			};
 			

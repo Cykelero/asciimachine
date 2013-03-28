@@ -13,8 +13,8 @@ MachineEntityTypesAggregator.defineType("@", function(attr, types) {
 			internal.poweredColor = [100, 255, 220];
 			
 			// Behavior
-			exposed.beginFrame = function() {
-				parent.exposed.beginFrame();
+			exposed.$beginFrame = function() {
+				parent.exposed.$beginFrame();
 				
 				internal.wiredDirections = internal.enabled ? Direction.all() : [];
 			};

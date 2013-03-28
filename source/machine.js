@@ -16,15 +16,15 @@ common.constructor = function(worldText) {
 	exposed.tick = function() {
 		// New frame initialization
 		internal.entities.forEach(function(entity) {
-			entity.beginFrame();
+			entity.$beginFrame();
 		});
 
 		internal.entities.forEach(function(entity) {
-			entity.spreadPowerState && entity.spreadPowerState();
+			entity.$spreadPowerState && entity.$spreadPowerState();
 		});
 		
 		internal.entities.forEach(function(entity) {
-			entity.initializePowerState && entity.initializePowerState();
+			entity.$initializePowerState && entity.$initializePowerState();
 		});
 		
 		// Power network solving
@@ -34,7 +34,7 @@ common.constructor = function(worldText) {
 			previousUnstableCount = unstableCount;
 			unstableCount = internal.entities.reduce(function(count, entity) {
 				if (!entity.refreshOutputs) return count;
-				return count + entity.refreshOutputs();
+				return count + entity.$refreshOutputs();
 			}, 0);
 		} while (unstableCount != previousUnstableCount);
 	};

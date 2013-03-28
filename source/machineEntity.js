@@ -34,7 +34,7 @@ common.constructor = function(parent, char, cell) {
 		
 	};
 	
-	exposed.beginFrame = function() {
+	exposed.$beginFrame = function() {
 		
 	};
 	

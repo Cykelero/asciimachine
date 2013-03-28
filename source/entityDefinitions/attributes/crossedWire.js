@@ -12,8 +12,8 @@ MachineEntityTypesAggregator.defineAttribute("crossedWire", function(attr, types
 			internal.crosswiredDirections;
 			
 			// Behavior
-			exposed.beginFrame = function() {
-				parent.exposed.beginFrame();
+			exposed.$beginFrame = function() {
+				parent.exposed.$beginFrame();
 				
 				var neighbors = internal.getNeighborsFrom(internal.crosswiredDirections);
 				

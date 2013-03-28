@@ -11,8 +11,8 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 			internal.velocities = [null, null];
 			
 			// Behavior
-			exposed.beginFrame = function() {
-				parent.exposed.beginFrame();
+			exposed.$beginFrame = function() {
+				parent.exposed.$beginFrame();
 				
 				internal.velocities = [null, null];
 			};

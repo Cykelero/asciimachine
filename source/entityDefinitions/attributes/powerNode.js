@@ -16,18 +16,18 @@ MachineEntityTypesAggregator.defineAttribute("powerNode", function(attr, types) 
 			internal.poweredColor = [70, 190, 255];
 			
 			// Behavior
-			exposed.beginFrame = function() {
-				parent.exposed.beginFrame();
+			exposed.$beginFrame = function() {
+				parent.exposed.$beginFrame();
 				
 				internal.powerState = new PowerState(self);
 			};
 			
-			exposed.initializePowerState = function() {
+			exposed.$initializePowerState = function() {
 				internal.initializeOutputs();
 			};
 			
 			// Power node
-			exposed.refreshOutputs = function() {
+			exposed.$refreshOutputs = function() {
 				internal.refreshPowerState();
 				
 				return internal.powerState.isStable();
