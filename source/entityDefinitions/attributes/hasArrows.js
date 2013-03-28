@@ -17,6 +17,7 @@ MachineEntityTypesAggregator.defineAttribute("hasArrows", function(attr, types) 
 					var entity = info.entity;
 					if (entity.getChar() == common.internal.arrows[info.direction]) {
 						internal.arrows.push(info);
+						internal.attachedEntities.push(info.entity);
 					}
 				});
 			};

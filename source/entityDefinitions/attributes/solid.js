@@ -40,7 +40,7 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 			//// conflict resolving
 			
 			exposed.applyForces = function() {
-				internal.moveBy(internal.velocities[0], internal.velocities[1]); // function doesn't exist; plus, there's no separation of dumb moving from personal moving
+				internal.moveBy(internal.velocities[0], internal.velocities[1]);
 			};
 		};
 		

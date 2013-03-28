@@ -10,6 +10,8 @@ common.constructor = function(parent, char, cell) {
 	internal.parent = parent;
 	internal.cell = cell;
 	
+	internal.attachedEntities = [];
+	
 	internal.displayChar = char;
 	internal.color = [255, 255, 255];
 	internal.backgroundColor = [255, 255, 255, 0];
@@ -78,10 +80,19 @@ common.constructor = function(parent, char, cell) {
 		return neighbors;
 	};
 	
-	internal.moveTo = function(newCell) {
+	internal.moveBy = function(x, y) {
+		internal.attachedEntities.forEach(function(entity) {
+			entity.moveBy(x, y);
+		});
+		
+		var targetCell = internal.cell.getWithOffset([x, y]);
 		internal.cell.removeObject(self);
-		internal.cell = newCell;
+		internal.cell = targetCell;
 		internal.cell.addObject(self);
+	};
+	
+	internal.moveTo = function(newCell) {
+		internal.moveBy(newCell.x-internal.cell.x, newCell.y-internal.cell.y);
 	};
 	
 };
