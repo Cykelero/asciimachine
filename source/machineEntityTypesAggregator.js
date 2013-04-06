@@ -7,7 +7,9 @@ var MachineEntityTypesAggregator = SVP2.staticClass(function(common) {
 var exposed = common.exposed;
 
 exposed.defineAttribute = function(name, definitionFunction) {
-	internal.attributes[name] = definitionFunction(internal.attributes, exposed.types);
+	var attributeMixin = definitionFunction(internal.attributes, exposed.types);
+	attributeMixin.attributeName = name;
+	internal.attributes[name] = attributeMixin;
 };
 
 exposed.defineType = function(name, definitionFunction) {
@@ -31,7 +33,9 @@ internal.attributes = {};
 internal.types = {};
 
 internal.buildType = function(mixin) {
-	var defines = [];
+	var defines = [],
+		attributes = [];
+	
 	var addToDefines = function(define) {
 		if (typeof(define) == "function") {
 			if (defines.indexOf(define) == -1) defines.push(define);
@@ -39,11 +43,18 @@ internal.buildType = function(mixin) {
 			define.forEach(function(subDefine) {
 				addToDefines(subDefine);
 			});
+			
+			var attributeName = define.attributeName;
+			if (attributeName && attributes.indexOf(attributeName) == -1)  attributes.push(attributeName);
 		}
 	};
 	addToDefines(mixin);
 	
-	return SVP2.mixin(MachineEntity, defines);
+	var builtClass = SVP2.mixin(MachineEntity, defines);
+	for (var i = 0 ; i < attributes.length ; i++) {
+		builtClass.setHasAttribute(attributes[i], true);
+	}
+	return builtClass;
 };
 
 });

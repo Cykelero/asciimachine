@@ -24,10 +24,9 @@ common.constructor = function(parent, char, cell) {
 		}
 	});
 	
-	this.expose({
-		isSolid: false,
-		isPowerNode: false
-	});
+	exposed.has = function(attributeName) {
+		return common.internal.attributes[attributeName];
+	};
 	
 	// // Behavior
 	exposed.initializeRelationships = function() {
@@ -95,6 +94,13 @@ common.constructor = function(parent, char, cell) {
 		internal.moveBy(newCell.x-internal.cell.x, newCell.y-internal.cell.y);
 	};
 	
+};
+
+// Internal
+common.internal.attributes = {};
+	
+common.exposed.setHasAttribute = function(attributeName, has) {
+	common.internal.attributes[attributeName] = has;
 };
 
 });

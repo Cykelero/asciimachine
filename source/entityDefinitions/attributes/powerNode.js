@@ -50,7 +50,7 @@ MachineEntityTypesAggregator.defineAttribute("powerNode", function(attr, types) 
 			internal.refreshPowerState;
 			
 			internal.proposeConnection = function(target, info) {
-				if (target.comparePowerStateTo && target.comparePowerStateTo(internal.powerState)) {
+				if (target.has("powerNode") && target.comparePowerStateTo(internal.powerState)) {
 					return false;
 				};
 				
@@ -60,7 +60,7 @@ MachineEntityTypesAggregator.defineAttribute("powerNode", function(attr, types) 
 					info: info
 				});
 				
-				var accepted = target.inputPower && target.inputPower(connection);
+				var accepted = target.has("powerNode") && target.inputPower(connection);
 				if (accepted) {
 					internal.powerState.addOutput(connection);
 				}

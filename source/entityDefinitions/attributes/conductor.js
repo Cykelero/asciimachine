@@ -55,7 +55,7 @@ MachineEntityTypesAggregator.defineAttribute("conductor", function(attr, types) 
 				
 				internal.getNeighborsFrom(internal.wiredDirections).forEach(function(info) {
 					var entity = info.entity;
-					entity.sharePowerState && entity.sharePowerState({direction: info.direction}, internal.powerState);
+					if (entity.has("conductor")) entity.sharePowerState({direction: info.direction}, internal.powerState);
 				});
 			};
 			

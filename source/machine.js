@@ -20,11 +20,11 @@ common.constructor = function(worldText) {
 		});
 
 		internal.entities.forEach(function(entity) {
-			entity.$spreadPowerState && entity.$spreadPowerState();
+			if (entity.has("conductor")) entity.$spreadPowerState();
 		});
 		
 		internal.entities.forEach(function(entity) {
-			entity.$initializePowerState && entity.$initializePowerState();
+			if (entity.has("powerNode")) entity.$initializePowerState();
 		});
 		
 		// Power network
@@ -33,18 +33,18 @@ common.constructor = function(worldText) {
 		do {
 			previousUnstableCount = unstableCount;
 			unstableCount = internal.entities.reduce(function(count, entity) {
-				if (!entity.$refreshOutputs) return count;
+				if (!entity.has("powerNode")) return count;
 				return count + entity.$refreshOutputs();
 			}, 0);
 		} while (unstableCount != previousUnstableCount);
 		
 		// Physics
 		internal.entities.forEach(function(entity) {
-			entity.$generateForces && entity.$generateForces();
+			if (entity.has("solid")) entity.$generateForces();
 		});
 		
 		internal.entities.forEach(function(entity) {
-			entity.$applyComputedForces && entity.$applyComputedForces();
+			if (entity.has("solid")) entity.$applyComputedForces();
 		});
 	};
 	
