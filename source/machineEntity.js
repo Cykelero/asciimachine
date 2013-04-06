@@ -41,6 +41,22 @@ common.constructor = function(parent, char, cell) {
 		
 	};
 	
+	// // Other
+	exposed.moveBy = function(x, y) {
+		internal.attachedEntities.forEach(function(entity) {
+			entity.moveBy(x, y);
+		});
+		
+		var targetCell = internal.cell.getWithOffset([x, y]);
+		internal.cell.removeObject(self);
+		internal.cell = targetCell;
+		internal.cell.addObject(self);
+	};
+	
+	exposed.moveTo = function(newCell) {
+		exposed.moveBy(newCell.x-internal.cell.x, newCell.y-internal.cell.y);
+	};
+	
 	// // Display
 	exposed.getChar = function() {
 		return internal.displayChar;
@@ -77,21 +93,6 @@ common.constructor = function(parent, char, cell) {
 		});
 		
 		return neighbors;
-	};
-	
-	internal.moveBy = function(x, y) {
-		internal.attachedEntities.forEach(function(entity) {
-			entity.moveBy(x, y);
-		});
-		
-		var targetCell = internal.cell.getWithOffset([x, y]);
-		internal.cell.removeObject(self);
-		internal.cell = targetCell;
-		internal.cell.addObject(self);
-	};
-	
-	internal.moveTo = function(newCell) {
-		internal.moveBy(newCell.x-internal.cell.x, newCell.y-internal.cell.y);
 	};
 	
 };

@@ -46,7 +46,7 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 			exposed.$applyComputedForces = function() {
 				var xSpeed = internal.velocities[0] && internal.velocities[0].amount || 0,
 					ySpeed = internal.velocities[1] && internal.velocities[1].amount || 0;
-				internal.moveBy(xSpeed, ySpeed);
+				exposed.moveBy(xSpeed, ySpeed);
 			};
 		};
 		
