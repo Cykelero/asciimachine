@@ -43,6 +43,8 @@ common.constructor = function(parent, char, cell) {
 	
 	// // Other
 	exposed.moveBy = function(x, y) {
+		if (x == 0 && y == 0) return;
+		
 		internal.attachedEntities.forEach(function(entity) {
 			entity.moveBy(x, y);
 		});
