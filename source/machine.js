@@ -33,7 +33,7 @@ common.constructor = function(worldText) {
 		do {
 			previousUnstableCount = unstableCount;
 			unstableCount = internal.entities.reduce(function(count, entity) {
-				if (!entity.refreshOutputs) return count;
+				if (!entity.$refreshOutputs) return count;
 				return count + entity.$refreshOutputs();
 			}, 0);
 		} while (unstableCount != previousUnstableCount);
