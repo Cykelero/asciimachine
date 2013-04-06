@@ -23,6 +23,7 @@
 // needs entityDefinitions/types/power/H.js
 
 // needs entityDefinitions/types/mobile/O.js
+// needs entityDefinitions/types/mobile/balloon.js
 
 // needs entityDefinitions/types/misc/arrows.js
 
