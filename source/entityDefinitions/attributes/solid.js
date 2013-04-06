@@ -1,4 +1,5 @@
 // needs machineEntityTypesAggregator.js
+// needs physicsConflict.js
 
 MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 	return [function(common) {
@@ -8,16 +9,21 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 				parent = this.parent,
 				self = exposed;
 			
-			internal.velocities = [null, null];
+			exposed.velocities = [null, null];
 			
 			// Behavior
 			exposed.$beginFrame = function() {
 				parent.exposed.$beginFrame();
 				
-				internal.velocities = [null, null];
+				var inertiaType = common.internal.forceTypes["inertia_" + common.internal.weight];
+				exposed.velocities = [
+					{amount: 0, type: inertiaType},
+					{amount: 0, type: inertiaType}
+				];
 			};
 			
 			// Physics
+			// // Acting
 			exposed.$generateForces = function() {};
 			
 			exposed.applyForce = function(parameters) {
@@ -25,13 +31,13 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 					amount = parameters.amount,
 					type = parameters.type;
 				
-				var currentForce = internal.velocities[axis];
+				var currentForce = exposed.velocities[axis];
 				var prevails = (currentForce == null)
 					|| (type < currentForce.type);
 				
 				if (prevails) {
 					// New forces replaces current one
-					internal.velocities[axis] = {
+					exposed.velocities[axis] = {
 						amount: amount,
 						type: type
 					};
@@ -41,12 +47,63 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 				}
 			};
 			
-			//// conflict resolving
-			
 			exposed.$applyComputedForces = function() {
-				var xSpeed = internal.velocities[0] && internal.velocities[0].amount || 0,
-					ySpeed = internal.velocities[1] && internal.velocities[1].amount || 0;
+				var xSpeed = exposed.velocities[0].amount,
+					ySpeed = exposed.velocities[1].amount;
+				
 				exposed.moveBy(xSpeed, ySpeed);
+			};
+			
+			// // Providing info
+			
+			exposed.$findConflicts = function(step) {
+				var conflicts = [],
+					xSpeed = exposed.velocities[0].amount,
+					ySpeed = exposed.velocities[1].amount;
+				
+				internal.parent.getEntitiesWith("solid").forEach(function(other) {
+					if (other == self) return;
+					
+					var otherProjected = other.getProjectedPosition(),
+						selfProjected = exposed.getProjectedPosition();
+					
+					var strongestAxis = +(exposed.velocities[0].type >= exposed.velocities[1].type);
+					
+					// X movement
+					if (xSpeed) {
+						if (selfProjected.x == otherProjected.x && internal.cell.y == otherProjected.y) {
+							conflicts.push(new PhysicsConflict(self, other, 0));
+						}
+					}
+					
+					// Y movement
+					if (ySpeed) {
+						if (internal.cell.x == otherProjected.x && selfProjected.y == otherProjected.y) {
+							conflicts.push(new PhysicsConflict(self, other, 1));
+						}
+					}
+					
+					// Complete movement
+					if (selfProjected.x == otherProjected.x && selfProjected.y == otherProjected.y) {
+						conflicts.push(new PhysicsConflict(self, other, strongestAxis));
+					}
+					
+					// Position swap
+					var selfTargetIsOtherPosition = selfProjected.x == other.cell.x && selfProjected.y == other.cell.y,
+						otherTargetIsSelfPosition = otherProjected.x == self.cell.x && otherProjected.y == self.cell.y;
+					if (selfTargetIsOtherPosition && otherTargetIsSelfPosition) {
+						conflicts.push(new PhysicsConflict(self, other, strongestAxis));
+					}
+				});
+				
+				return conflicts;
+			};
+			
+			exposed.getProjectedPosition = function(step) {
+				return {
+					x: internal.cell.x + exposed.velocities[0].amount,
+					y: internal.cell.y + exposed.velocities[1].amount
+				};
 			};
 		};
 		

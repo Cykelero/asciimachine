@@ -39,10 +39,34 @@ common.constructor = function(worldText) {
 		} while (unstableCount != previousUnstableCount);
 		
 		// Physics
+		// // Generating forces
 		internal.entities.forEach(function(entity) {
 			if (entity.has("solid")) entity.$generateForces();
 		});
 		
+		// // Resolving conflicts
+		while (true) {
+			var conflicts = [];
+			
+			// Finding conflicts
+			for (var e = 0 ; e < internal.entities.length ; e++) {
+				var entity = internal.entities[e];
+				if (entity.has("solid")) {
+					conflicts = conflicts.concat(entity.$findConflicts(0));
+				}
+				
+				if (conflicts.length) break;
+			};
+			
+			// Resolving conflicts
+			if (conflicts.length) {
+				conflicts[0].resolve();
+			} else {
+				break;
+			}
+		}
+		
+		// // Applying forces
 		internal.entities.forEach(function(entity) {
 			if (entity.has("solid")) entity.$applyComputedForces();
 		});
@@ -91,6 +115,12 @@ common.constructor = function(worldText) {
 		var entityIndex = internal.entities.indexOf(entity);
 		if (entityIndex > -1) internal.entities.splice(entityIndex, 1);
 		return entity;
+	};
+	
+	exposed.getEntitiesWith = function(attributeName) {
+		return internal.entities.filter(function(entity) {
+			return entity.has(attributeName);
+		});
 	};
 	
 	// Internal methods
