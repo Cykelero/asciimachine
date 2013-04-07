@@ -15,14 +15,12 @@ MachineEntityTypesAggregator.defineAttribute("hasArrows", function(attr, types) 
 				
 				internal.getCloseNeighbors().forEach(function(info) {
 					var entity = info.entity;
-					if (entity.getChar() == common.internal.arrows[info.direction]) {
+					if (entity.has("arrow") && entity.getDirection() == info.direction) {
 						internal.arrows.push(info);
 						internal.attachedEntities.push(info.entity);
 					}
 				});
 			};
-			
-			common.internal.arrows = ["A", ">", "V", "<"];
 		};
 	}];
 });
