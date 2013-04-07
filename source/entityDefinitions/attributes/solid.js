@@ -42,7 +42,7 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 					};
 				} else if (type == currentForce.type) {
 					// New force adds to (or cancels) current one
-					currentForce.amount += amount;
+					//currentForce.amount += amount;
 				}
 			};
 			
@@ -55,7 +55,7 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 			
 			// // Providing info
 			
-			exposed.$findConflicts = function(step) {
+			exposed.$findConflicts = function() {
 				var conflicts = [],
 					xSpeed = exposed.velocities[0].amount,
 					ySpeed = exposed.velocities[1].amount;
@@ -102,7 +102,7 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 				return conflicts;
 			};
 			
-			exposed.getProjectedPosition = function(step) {
+			exposed.getProjectedPosition = function() {
 				return {
 					x: internal.cell.x + exposed.velocities[0].amount,
 					y: internal.cell.y + exposed.velocities[1].amount
