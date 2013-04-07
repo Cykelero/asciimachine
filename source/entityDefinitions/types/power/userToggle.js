@@ -31,5 +31,7 @@ MachineEntityTypesAggregator.defineType("@", function(attr, types) {
 				return internal.enabled ? [50, 170, 100] : [130, 10, 10];
 			};
 		};
+		
+		common.internal.name = "userSwitch";
 	}];
 });

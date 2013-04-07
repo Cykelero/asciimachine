@@ -24,6 +24,10 @@ common.constructor = function(parent, char, cell) {
 		}
 	});
 	
+	exposed.getName = function() {
+		return common.internal.name;
+	};
+	
 	exposed.has = function(attributeName) {
 		return common.internal.attributes[attributeName];
 	};
@@ -115,7 +119,9 @@ common.constructor = function(parent, char, cell) {
 	
 };
 
-// Internal
+// Internal		
+common.internal.name;
+
 common.internal.attributes = {};
 	
 common.exposed.setHasAttribute = function(attributeName, has) {

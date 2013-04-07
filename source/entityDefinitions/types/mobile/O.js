@@ -13,5 +13,7 @@ MachineEntityTypesAggregator.defineType("O", function(attr, types) {
 			
 			internal.color = [220, 140, 0];
 		};
+		
+		common.internal.name = "ball";
 	}];
 });

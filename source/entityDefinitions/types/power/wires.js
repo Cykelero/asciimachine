@@ -16,6 +16,8 @@ MachineEntityTypesAggregator.defineType("-", function(attr, types) {
 			internal.parent.addEntity(new types.verticalCrossedWire(internal.parent, "", internal.cell));
 		};
 		
+		common.internal.name = "wire-horizontal";
+		
 		common.internal.depth = common.internal.depths.background;
 	}];
 });
@@ -34,6 +36,8 @@ MachineEntityTypesAggregator.defineType("|", function(attr, types) {
 			internal.parent.addEntity(new types.horizontalCrossedWire(internal.parent, "", internal.cell));
 		};
 		
+		common.internal.name = "wire-vertical";
+		
 		common.internal.depth = common.internal.depths.background;
 	}];
 });
@@ -47,6 +51,8 @@ MachineEntityTypesAggregator.defineType("+", function(attr, types) {
 				self = exposed;
 			
 		};
+		
+		common.internal.name = "wire-both";
 		
 		common.internal.depth = common.internal.depths.background;
 	}];

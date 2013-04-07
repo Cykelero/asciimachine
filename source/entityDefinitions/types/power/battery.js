@@ -27,5 +27,7 @@ MachineEntityTypesAggregator.defineType("#", function(attr, types) {
 			internal.spreadPowerState = function() {
 			};
 		};
+		
+		common.internal.name = "battery";
 	}];
 });

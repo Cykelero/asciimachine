@@ -129,5 +129,7 @@ MachineEntityTypesAggregator.defineType("H", function(attr, types) {
 				
 			};
 		};
+		
+		common.internal.name = "piston";
 	}];
 });

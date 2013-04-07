@@ -14,6 +14,8 @@ MachineEntityTypesAggregator.defineType("0", function(attr, types) {
 			internal.color = [200, 0, 200];
 		};
 		
+		common.internal.name = "balloon";
+		
 		common.internal.weight = "light";
 	}];
 });

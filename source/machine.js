@@ -92,6 +92,7 @@ common.constructor = function(worldText) {
 			renderer.drawObject({
 				x: entity.cell.x,
 				y: entity.cell.y,
+				name: entity.getName(),
 				char: entity.getChar(),
 				color: entityColor,
 				backgroundColor: entityBGColor,

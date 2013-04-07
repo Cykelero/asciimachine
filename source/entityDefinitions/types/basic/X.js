@@ -12,5 +12,7 @@ MachineEntityTypesAggregator.defineType("X", function(attr, types) {
 			
 			internal.backgroundColor = [130, 130, 130];
 		};
+		
+		common.internal.name = "wall";
 	}];
 });
