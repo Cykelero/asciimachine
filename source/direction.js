@@ -27,7 +27,7 @@ exposed.getAxisAmplitude = function(direction) {
 	if (exposed.isHorizontal(direction)) {
 		switch (direction) {
 			case 1: return 1;
-			case 2: return -1;
+			case 3: return -1;
 		};
 	} else {
 		switch (direction) {
