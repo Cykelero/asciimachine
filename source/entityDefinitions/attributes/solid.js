@@ -73,6 +73,7 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 					if (xSpeed) {
 						if (selfProjected.x == otherProjected.x && internal.cell.y == otherProjected.y) {
 							conflicts.push(new PhysicsConflict(self, other, 0));
+							return;
 						}
 					}
 					
@@ -80,12 +81,14 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 					if (ySpeed) {
 						if (internal.cell.x == otherProjected.x && selfProjected.y == otherProjected.y) {
 							conflicts.push(new PhysicsConflict(self, other, 1));
+							return;
 						}
 					}
 					
 					// Complete movement
 					if (selfProjected.x == otherProjected.x && selfProjected.y == otherProjected.y) {
 						conflicts.push(new PhysicsConflict(self, other, strongestAxis));
+						return;
 					}
 					
 					// Position swap
@@ -93,6 +96,7 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 						otherTargetIsSelfPosition = otherProjected.x == self.cell.x && otherProjected.y == self.cell.y;
 					if (selfTargetIsOtherPosition && otherTargetIsSelfPosition) {
 						conflicts.push(new PhysicsConflict(self, other, strongestAxis));
+						return;
 					}
 				});
 				
