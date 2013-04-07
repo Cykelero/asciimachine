@@ -1,5 +1,7 @@
 // needs machineEntityTypesAggregator.js
 
+// needs entityDefinitions/attributes/wire.js
+
 MachineEntityTypesAggregator.defineType("-", function(attr, types) {
 	return [attr.wire, function(common) {
 		common.constructor = function() {

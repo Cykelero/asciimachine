@@ -1,5 +1,8 @@
 // needs machineEntityTypesAggregator.js
 
+// needs entityDefinitions/attributes/fixed.js
+// needs entityDefinitions/attributes/conductor.js
+
 MachineEntityTypesAggregator.defineType("H", function(attr, types) {
 	return [attr.fixed, attr.conductor, function(common) {
 		common.constructor = function() {

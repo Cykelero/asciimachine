@@ -1,5 +1,7 @@
 // needs machineEntityTypesAggregator.js
 
+// needs entityDefinitions/attributes/gravity.js
+
 MachineEntityTypesAggregator.defineAttribute("antiGravity", function(attr, types) {
 	return [attr.gravity, function(common) {
 		common.constructor = function() {

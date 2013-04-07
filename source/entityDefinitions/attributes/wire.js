@@ -1,5 +1,7 @@
 // needs machineEntityTypesAggregator.js
 
+// needs entityDefinitions/attributes/conductor.js
+
 MachineEntityTypesAggregator.defineAttribute("wire", function(attr, types) {
 	return [attr.conductor, function(common) {
 		common.constructor = function() {

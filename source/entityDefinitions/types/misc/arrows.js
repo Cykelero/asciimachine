@@ -1,5 +1,7 @@
 // needs machineEntityTypesAggregator.js
 
+// needs entityDefinitions/attributes/arrow.js
+
 MachineEntityTypesAggregator.defineType("A", function(attr, types) {
 	return [attr.arrow, function(common) {
 		common.internal.direction = 0;

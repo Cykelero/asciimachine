@@ -1,5 +1,8 @@
 // needs machineEntityTypesAggregator.js
 
+// needs entityDefinitions/attributes/solid.js
+// needs entityDefinitions/attributes/gravity.js
+
 MachineEntityTypesAggregator.defineType("O", function(attr, types) {
 	return [attr.solid, attr.gravity, function(common) {
 		common.constructor = function() {

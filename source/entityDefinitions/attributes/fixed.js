@@ -1,5 +1,7 @@
 // needs machineEntityTypesAggregator.js
 
+// needs entityDefinitions/attributes/solid.js
+
 MachineEntityTypesAggregator.defineAttribute("fixed", function(attr, types) {
 	return [attr.solid, function(common) {
 		common.constructor = function() {

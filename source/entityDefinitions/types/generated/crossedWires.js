@@ -1,5 +1,7 @@
 // needs machineEntityTypesAggregator.js
 
+// needs entityDefinitions/attributes/crossedWire.js
+
 MachineEntityTypesAggregator.defineType("horizontalCrossedWire", function(attr, types) {
 	return [attr.crossedWire, function(common) {
 		common.constructor = function() {

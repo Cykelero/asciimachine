@@ -1,5 +1,7 @@
 // needs machineEntityTypesAggregator.js
 
+// needs entityDefinitions/attributes/powerNode.js
+
 MachineEntityTypesAggregator.defineAttribute("conductor", function(attr, types) {
 	return [attr.powerNode, function(common) {
 		common.constructor = function() {

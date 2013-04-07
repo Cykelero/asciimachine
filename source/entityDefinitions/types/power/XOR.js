@@ -1,5 +1,9 @@
 // needs machineEntityTypesAggregator.js
 
+// needs entityDefinitions/attributes/fixed.js
+// needs entityDefinitions/attributes/conductor.js
+// needs entityDefinitions/attributes/hasArrows.js
+
 MachineEntityTypesAggregator.defineType("%", function(attr, types) {
 	return [attr.fixed, attr.conductor, attr.hasArrows, function(common) {
 		common.constructor = function() {
