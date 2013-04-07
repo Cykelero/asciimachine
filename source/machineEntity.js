@@ -59,6 +59,18 @@ common.constructor = function(parent, char, cell) {
 		exposed.moveBy(newCell.x-internal.cell.x, newCell.y-internal.cell.y);
 	};
 	
+	internal.attachEntity = function(entity) {
+		internal.attachedEntities.push(entity);
+	};
+	
+	internal.detachEntity = function(entity) {
+		var index = internal.attachedEntities.indexOf(entity);
+		
+		if (index > -1) {
+			internal.attachedEntities.splice(index, 1);
+		}
+	};
+	
 	// // Display
 	exposed.getChar = function() {
 		return internal.displayChar;
