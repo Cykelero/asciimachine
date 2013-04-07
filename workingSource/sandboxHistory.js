@@ -82,3 +82,31 @@ H<%@#@%>H
   | V
   H-H
 
+
+      O
+    O O  AAA
+         III
+         III  #
+ #----%>-HHHO @
+  H---|--HXH<=H
+  | 0 @  XXHXXX
+  |   #  XXX  X
+  H=>    XXX  X
+    X    XXX  X
+
+
+      OX
+      
+      
+      0
+      
+   XXX 
+#--@H>
+HXXXXXX   XXX
+|     X <==HH
+|     X X XX@
+H--@HH>   XX|
+XXXXXXXXXAXX|
+         H  |
+         H@-#
+
