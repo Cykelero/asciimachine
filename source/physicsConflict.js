@@ -30,10 +30,13 @@ common.constructor = function(entityA, entityB, axis) {
 			loserForce = aWins ? forceB : forceA;
 		
 		// Clamping loser force amount
-		var winnerDirection = winnerForce.amount > 0 ? 1 : -1;
+		var direction = (winnerForce.amount != 0) ?
+			(winnerForce.amount > 0 ? 1 : -1)
+			: (loserForce.amount > 0 ? -1 : 1);
+		
 		var winnerProjection = winnerEntity.cell[internal.getAxisLetter()] + winnerForce.amount;
 		
-		loserForce.amount = winnerProjection - loserEntity.cell[internal.getAxisLetter()] + winnerDirection;
+		loserForce.amount = winnerProjection - loserEntity.cell[internal.getAxisLetter()] + direction;
 		
 		// Changing loser force type
 		loserForce.type = winnerForce.type;
