@@ -70,7 +70,6 @@ MachineEntityTypesAggregator.defineAttribute("conductor", function(attr, types) 
 				internal.spreadPowerState();
 			};
 			
-			// Display
 			exposed.isPowered = function() {
 				return internal.powerState.inputs.some(function(input) {
 					return input.value;

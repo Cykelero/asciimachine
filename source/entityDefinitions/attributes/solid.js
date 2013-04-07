@@ -113,6 +113,7 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 		
 		common.internal.forceTypes = [
 			"inertia_static",
+			"actuation_static",
 			"magnetic_normal",
 			"gravity_normal",
 			"gravity_light",
