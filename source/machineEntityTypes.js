@@ -14,6 +14,7 @@
 // needs entityDefinitions/types/mobile/balloon.js
 
 // needs entityDefinitions/types/misc/arrows.js
+// needs entityDefinitions/types/misc/pipes.js
 
 // needs entityDefinitions/types/generated/crossedWires.js
 
