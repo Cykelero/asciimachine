@@ -46,6 +46,13 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 				}
 			};
 			
+			exposed.imposeForce = function(forceParameters) {
+				var currentForce = exposed.velocities[forceParameters.axis];
+				currentForce.type = Number.POSITIVE_INFINITY;
+				
+				exposed.applyForce(forceParameters);
+			};
+			
 			exposed.$applyComputedForces = function() {
 				var xSpeed = exposed.velocities[0].amount,
 					ySpeed = exposed.velocities[1].amount;
