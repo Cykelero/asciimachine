@@ -19,12 +19,12 @@ common.constructor = function(worldText) {
 			entity.$beginFrame();
 		});
 
-		internal.entities.forEach(function(entity) {
-			if (entity.has("conductor")) entity.$spreadPowerState();
+		exposed.getEntitiesWith("conductor").forEach(function(entity) {
+			entity.$spreadPowerState();
 		});
-		
-		internal.entities.forEach(function(entity) {
-			if (entity.has("powerNode")) entity.$initializePowerState();
+
+		exposed.getEntitiesWith("powerNode").forEach(function(entity) {
+			entity.$initializePowerState();
 		});
 		
 		// Power network
@@ -32,16 +32,15 @@ common.constructor = function(worldText) {
 			previousUnstableCount;
 		do {
 			previousUnstableCount = unstableCount;
-			unstableCount = internal.entities.reduce(function(count, entity) {
-				if (!entity.has("powerNode")) return count;
+			unstableCount = exposed.getEntitiesWith("powerNode").reduce(function(count, entity) {
 				return count + entity.$refreshOutputs();
 			}, 0);
 		} while (unstableCount != previousUnstableCount);
 		
 		// Physics
 		// // Generating forces
-		internal.entities.forEach(function(entity) {
-			if (entity.has("solid")) entity.$generateForces();
+		exposed.getEntitiesWith("solid").forEach(function(entity) {
+			entity.$generateForces();
 		});
 		
 		// // Resolving conflicts
@@ -49,11 +48,9 @@ common.constructor = function(worldText) {
 			var conflicts = [];
 			
 			// Finding conflicts
-			for (var e = 0 ; e < internal.entities.length ; e++) {
-				var entity = internal.entities[e];
-				if (entity.has("solid")) {
-					conflicts = conflicts.concat(entity.$findConflicts(0));
-				}
+			var entitiesWithSolid = exposed.getEntitiesWith("solid");
+			for (var e = 0 ; e < entitiesWithSolid.length ; e++) {
+				conflicts = conflicts.concat(entitiesWithSolid[e].$findConflicts(0));
 				
 				if (conflicts.length) break;
 			};
@@ -67,8 +64,8 @@ common.constructor = function(worldText) {
 		}
 		
 		// // Applying forces
-		internal.entities.forEach(function(entity) {
-			if (entity.has("solid")) entity.$applyComputedForces();
+		exposed.getEntitiesWith("solid").forEach(function(entity) {
+			entity.$applyComputedForces();
 		});
 	};
 	
