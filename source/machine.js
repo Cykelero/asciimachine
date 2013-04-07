@@ -84,7 +84,8 @@ common.constructor = function(worldText) {
 				y: entity.cell.y,
 				char: entity.getChar(),
 				color: entityColor,
-				backgroundColor: entityBGColor
+				backgroundColor: entityBGColor,
+				depth: entity.getDepth()
 			});
 		});
 		

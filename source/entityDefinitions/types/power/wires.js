@@ -15,6 +15,8 @@ MachineEntityTypesAggregator.defineType("-", function(attr, types) {
 			// Init
 			internal.parent.addEntity(new types.verticalCrossedWire(internal.parent, "", internal.cell));
 		};
+		
+		common.internal.depth = common.internal.depths.background;
 	}];
 });
 
@@ -31,6 +33,8 @@ MachineEntityTypesAggregator.defineType("|", function(attr, types) {
 			// Init
 			internal.parent.addEntity(new types.horizontalCrossedWire(internal.parent, "", internal.cell));
 		};
+		
+		common.internal.depth = common.internal.depths.background;
 	}];
 });
 
@@ -43,5 +47,7 @@ MachineEntityTypesAggregator.defineType("+", function(attr, types) {
 				self = exposed;
 			
 		};
+		
+		common.internal.depth = common.internal.depths.background;
 	}];
 });

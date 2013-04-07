@@ -64,6 +64,10 @@ common.constructor = function(parent, char, cell) {
 		return internal.displayChar;
 	};
 	
+	exposed.getDepth = function() {
+		return common.internal.depth;
+	};
+	
 	exposed.getColor = function() {
 		return internal.color;
 	};
@@ -105,5 +109,16 @@ common.internal.attributes = {};
 common.exposed.setHasAttribute = function(attributeName, has) {
 	common.internal.attributes[attributeName] = has;
 };
+
+common.internal.depths = [
+	"overlay",
+	"normal",
+	"background"
+].reduce(function(map, item, index) {
+	map[item] = index;
+	return map;
+}, {});
+
+common.internal.depth = common.internal.depths.normal;
 
 });
