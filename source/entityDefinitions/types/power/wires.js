@@ -13,7 +13,9 @@ MachineEntityTypesAggregator.defineType("-", function(attr, types) {
 			internal.wiredDirections = [Direction.right, Direction.left];
 			
 			// Init
-			internal.parent.addEntity(new types.verticalCrossedWire(internal.parent, "", internal.cell));
+			var crossedWire = new types.verticalCrossedWire(internal.parent, "", internal.cell);
+			internal.attachEntity(crossedWire);
+			internal.parent.addEntity(crossedWire);
 		};
 		
 		common.internal.name = "wire-horizontal";
@@ -33,7 +35,9 @@ MachineEntityTypesAggregator.defineType("|", function(attr, types) {
 			internal.wiredDirections = [Direction.up, Direction.down];
 			
 			// Init
-			internal.parent.addEntity(new types.horizontalCrossedWire(internal.parent, "", internal.cell));
+			var crossedWire = new types.horizontalCrossedWire(internal.parent, "", internal.cell);
+			internal.attachEntity(crossedWire);
+			internal.parent.addEntity(crossedWire);
 		};
 		
 		common.internal.name = "wire-vertical";
