@@ -37,15 +37,14 @@ common.constructor = function(worldText) {
 			}, 0);
 		} while (unstableCount != previousUnstableCount);
 		
-		// Actuators (pre-physics)
-		exposed.getEntitiesWith("actuator").forEach(function(entity) {
-			entity.$beginActuation();
-		});
-		
 		// Physics
 		// // Generating forces
 		exposed.getEntitiesWith("solid").forEach(function(entity) {
 			entity.$generateForces();
+		});
+		
+		exposed.getEntitiesWith("actuator").forEach(function(entity) {
+			entity.$beginActuation();
 		});
 		
 		// // Resolving conflicts
@@ -73,9 +72,9 @@ common.constructor = function(worldText) {
 			entity.$applyComputedForces();
 		});
 		
-		// Actuators (post-physics)
+		// Actuators (post-physics cleanup)
 		exposed.getEntitiesWith("actuator").forEach(function(entity) {
-			entity.$beginActuation();
+			entity.$endActuation();
 		});
 	};
 	

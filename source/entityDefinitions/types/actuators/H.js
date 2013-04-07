@@ -28,7 +28,7 @@ MachineEntityTypesAggregator.defineType("H", function(attr, types) {
 					
 					while (cell = cell.getInDirection(direction)) {
 						var containsPistonBody = cell.getObjects().some(function(entity) {
-							return entity.has("H");
+							return entity.getName() == exposed.getName();
 						});
 						
 						if (containsPistonBody) {
@@ -75,7 +75,7 @@ MachineEntityTypesAggregator.defineType("H", function(attr, types) {
 							break;
 						}
 					};
-					
+										
 					if (!pieces.length || !pieces[pieces.length-1].has("arrow")) {
 						pieces = null;
 					}
@@ -96,10 +96,11 @@ MachineEntityTypesAggregator.defineType("H", function(attr, types) {
 							
 							retractedWhenResting: (entities.length == 1),
 							minExposed: Math.max(1, entities.length - bodySize),
-							maxExposed: bodySize+1
+							maxExposed: bodySize+1,
+							
+							isRetracting: null,
+							isMoving: null
 						};
-						
-						console.log(bodySize);
 						
 						internal.arms.push(arm);
 					}
@@ -111,22 +112,52 @@ MachineEntityTypesAggregator.defineType("H", function(attr, types) {
 				var powered = exposed.isPowered();
 				
 				internal.arms.forEach(function(arm) {
-					var retracting = (arm.retractedWhenResting == !powered);
+					arm.isRetracting = (arm.retractedWhenResting == !powered);
 					
-					if (retracting) {
-						if (arm.entities.length > arm.minExposed) {
+					// Retracting?
+					if (arm.isRetracting) {
+						arm.isMoving = (arm.entities.length > arm.minExposed);
+						if (arm.isMoving) {
+							// Retracting: Removing the first entity
 							var armBase = arm.entities.shift();
 							internal.detachEntity(armBase);
 							internal.parent.removeEntity(armBase);
 						}
 					} else {
+						arm.isMoving = (arm.entities.length < arm.maxExposed);
+					}
+					
+					// Pushing entities
+					if (arm.isMoving) {
+						var amplitudeOnAxis = Direction.getAxisAmplitude(arm.direction);
+						if (arm.isRetracting) amplitudeOnAxis = -amplitudeOnAxis;
 						
+						arm.entities.forEach(function(entity) {
+							entity.imposeForce({
+								axis: arm.axis,
+								amount: amplitudeOnAxis,
+								type: common.internal.forceTypes["actuation_static"]
+							});
+						});
 					}
 				});
 			};
 			
 			exposed.$endActuation = function() {
-				
+				internal.arms.forEach(function(arm) {
+					if (!arm.isRetracting && arm.isMoving) {
+						if (arm.entities[0].velocities[arm.axis].amount != 0) {
+							// Arm successfully extending: adding new piece
+							var pieceType = arm.axis ? "I" : "=";
+							
+							var newPiece = new types[pieceType](internal.parent, pieceType, internal.cell.getInDirection(arm.direction));
+							
+							arm.entities.unshift(newPiece);
+							internal.attachEntity(newPiece);
+							internal.parent.addEntity(newPiece);
+						}
+					}
+				});
 			};
 		};
 		
