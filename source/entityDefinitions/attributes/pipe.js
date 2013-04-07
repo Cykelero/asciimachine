@@ -15,7 +15,7 @@ MachineEntityTypesAggregator.defineAttribute("pipe", function(attr, types) {
 			};
 			
 			internal.color = [255, 255, 255];
-			internal.backgroundColor = [200, 160, 30];
+			internal.backgroundColor = [150, 170, 65];
 		};
 		
 		common.internal.axis;
