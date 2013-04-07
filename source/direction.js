@@ -18,14 +18,30 @@ exposed.flip = function(direction) {
 };
 
 exposed.getAxis = function(direction) {
-	return !!(direction%2);
-}
+	return !!((direction+1)%2);
+};
 
-exposed.isVertical = function(direction) {
-	return exposed.getAxis(direction) == false;
+exposed.getAxisAmplitude = function(direction) {
+	direction = common.implicit(direction);
+	
+	if (exposed.isHorizontal(direction)) {
+		switch (direction) {
+			case 1: return 1;
+			case 2: return -1;
+		};
+	} else {
+		switch (direction) {
+			case 0: return -1;
+			case 2: return 1;
+		};
+	}
 };
 
 exposed.isHorizontal = function(direction) {
+	return exposed.getAxis(direction) == false;
+};
+
+exposed.isVertical = function(direction) {
 	return exposed.getAxis(direction) == true;
 };
 

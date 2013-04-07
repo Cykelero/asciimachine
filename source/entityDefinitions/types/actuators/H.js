@@ -41,11 +41,11 @@ MachineEntityTypesAggregator.defineType("H", function(attr, types) {
 					return count;
 				};
 				
-				internal.bodySize[0] += countInDirection(Direction.up);
-				internal.bodySize[0] += countInDirection(Direction.down);
+				internal.bodySize[0] += countInDirection(Direction.right);
+				internal.bodySize[0] += countInDirection(Direction.left);
 				
-				internal.bodySize[1] += countInDirection(Direction.right);
-				internal.bodySize[1] += countInDirection(Direction.left);
+				internal.bodySize[1] += countInDirection(Direction.up);
+				internal.bodySize[1] += countInDirection(Direction.down);
 				
 				// Finding arms
 				function findArmInDirection(direction) {
