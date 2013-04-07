@@ -92,18 +92,23 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 					}
 					
 					// Complete movement
-					if (selfProjected.x == otherProjected.x && selfProjected.y == otherProjected.y) {
-						conflicts.push(new PhysicsConflict(self, other, strongestAxis));
-						return;
+					if (xSpeed && ySpeed) {
+						if (selfProjected.x == otherProjected.x && selfProjected.y == otherProjected.y) {
+							conflicts.push(new PhysicsConflict(self, other, strongestAxis));
+							return;
+						}
 					}
 					
 					// Position swap
-					var selfTargetIsOtherPosition = selfProjected.x == other.cell.x && selfProjected.y == other.cell.y,
-						otherTargetIsSelfPosition = otherProjected.x == self.cell.x && otherProjected.y == self.cell.y;
-					if (selfTargetIsOtherPosition && otherTargetIsSelfPosition) {
-						conflicts.push(new PhysicsConflict(self, other, strongestAxis));
-						return;
+					if (xSpeed || ySpeed) {
+						var selfTargetIsOtherPosition = selfProjected.x == other.cell.x && selfProjected.y == other.cell.y,
+							otherTargetIsSelfPosition = otherProjected.x == self.cell.x && otherProjected.y == self.cell.y;
+						if (selfTargetIsOtherPosition && otherTargetIsSelfPosition) {
+							conflicts.push(new PhysicsConflict(self, other, strongestAxis));
+							return;
+						}
 					}
+					
 				});
 				
 				return conflicts;
