@@ -10,67 +10,25 @@ common.exposed = function(input) {
 	var self = this;
 	
 	internal.input = input;
-	internal.machineText = null;
 	internal.renderingSpans = null;
+	internal.machineText = null;
 	
 	// Exposed methods
 	exposed.refreshDisplay = function() {
 		var newText = internal.getInputText();
 		
 		if (newText != internal.machineText) {
-			// Finding selection position
-			var selection = null;
-			
-			var selectionObject = window.getSelection();
-			if (selectionObject.rangeCount > 0) {
-				var range = selectionObject.getRangeAt(0);
-				
-				// Is the selection in the output element?
-				var isInside = false;
-				
-				var element = range.startContainer;
-				while (element) {
-					if (element == internal.input) {
-						isInside = true;
-						break;
-					}
-					element = element.parentNode;
-				}
-				
-				if (isInside) {
-					// Absolutely.
-					selection = {
-						start: null,
-						length: range.toString().length
-					};
-					
-					var ridiculousMarker = "<<<TEXT-SELECTION-BEGIN-BLEEP-BLOOP>>>";
-					range.insertNode(document.createTextNode(ridiculousMarker));
-					var textWithRidiculousPositionMarker = internal.getInputText();
-					
-					selection.start = textWithRidiculousPositionMarker.indexOf(ridiculousMarker);
-				}
-			}
-			
 			// Rendering machine
 			internal.refreshDisplay(newText);
-			
-			// Applying selection back
-			if (selection) {
-				var newRange = document.createRange();
-				newRange.setStart(input, selection.start);
-				newRange.setEnd(input, selection.start+selection.length);
-				selectionObject.removeAllRanges();
-				selectionObject.addRange(newRange);
-			}
 			
 			// Re-reading text
 			internal.machineText = internal.getInputText();
 		}
 	};
 	
-	// // Render methods
+	// // Machine rendering methods
 	exposed.beginFrame = function(width, height) {
+		// Preparing span array
 		internal.renderingSpans = [];
 		
 		for (var x = 0 ; x < width ; x++) {
@@ -80,31 +38,82 @@ common.exposed = function(input) {
 				column[y] = span;
 			};
 		};
+		
+		// Finding letters, making them into spans
+		var currentX = 0,
+			currentY = 0;
+		
+		function findLetters(element) {
+			element.setAttribute("style", "");
+			
+			// Searching element for letters, subelements
+			for (var i = 0 ; i < element.childNodes.length ; i++) {
+				var node = element.childNodes[i];
+								
+				if (node.nodeType == 1) {
+					// Element
+					if (node.tagName == "BR" || node.tagName == "DIV") {
+						currentX = 0;
+						currentY++;
+					}
+					
+					findLetters(node);
+					
+				} else if (node.nodeType == 3) {
+					// Text node
+					var text = node.textContent,
+						newSpans = [];
+					
+					if (element.textContent.length != 1) {
+						// Splitting text content as spans
+						for (var c = 0 ; c < text.length ; c++) {
+							var char = text[c];
+							
+							var charSpan;
+							if (char != "\n") {
+								charSpan = internal.renderingSpans[currentX][currentY];
+								currentX++;
+							} else {
+								charSpan = document.createElement("span");
+							}
+							
+							charSpan.textContent = char;
+							
+							newSpans.push(charSpan);
+						}
+						
+						// Replacing the text node with the spans
+						newSpans.forEach(function(span) {
+							element.insertBefore(span, node);
+						});
+						
+						element.removeChild(node);
+						
+						i += (newSpans.length - 1);
+					} else {
+						// There is only a single character in this element: no need to create a new span
+						if (text.length == 1 && text != "\n") {
+							internal.renderingSpans[currentX][currentY] = element;
+							currentX++;
+						}
+					}
+				}
+			}
+		};
+		
+		findLetters(internal.input);
 	};
 	
 	exposed.drawObject = function(info) {
-		if (info.char == "") return;
+		if (info.char == "" || info.char == " ") return;
 		
 		var span = internal.renderingSpans[info.x][info.y];
-		span.innerText = span.textContent = info.char;
 		span.style.color = common.internal.color(info.color);
 		span.style.backgroundColor = common.internal.color(info.backgroundColor);
 	};
 	
 	exposed.flushFrame = function() {
-		var height = internal.renderingSpans[0] && internal.renderingSpans[0].length || 0,
-			width = internal.renderingSpans.length;
 		
-		console.log(height+", "+width);
-		
-		internal.input.innerHTML = "";
-		for (var y = 0 ; y < height ; y++) {
-			for (var x = 0 ; x < width ; x++) {
-				internal.input.appendChild(internal.renderingSpans[x][y]);
-			};
-			internal.input.appendChild(document.createElement("br"));
-			console.log("hm");
-		};
 	};
 	
 	// Internal methods
@@ -136,6 +145,65 @@ common.internal = {};
 common.internal.color = function(colorArray) {
 	return "rgba(" + colorArray.join() + ")";
 };
+
+return common.exposed;
+})();
+
+
+
+
+var StandardRenderer = (function() {
+
+var common = {};
+
+// Exposed
+common.exposed = function(outputElement) {
+	var exposed = this;
+	var internal = {};
+	var self = this;
+	
+	internal.outputElement = outputElement;
+	internal.renderingSpans = null;
+	
+	// Exposed methods
+	exposed.beginFrame = function(width, height) {
+		internal.renderingSpans = [];
+		
+		for (var x = 0 ; x < width ; x++) {
+			var column = internal.renderingSpans[x] = [];
+			for (var y = 0 ; y < height ; y++) {
+				var span = document.createElement("span");
+				column[y] = span;
+			};
+		};
+	};
+	
+	exposed.drawObject = function(info) {
+		if (info.char == "" || info.char == " ") return;
+		
+		var span = internal.renderingSpans[info.x][info.y];
+		span.innerText = span.textContent = info.char;
+		span.style.color = common.internal.color(info.color);
+		span.style.backgroundColor = common.internal.color(info.backgroundColor);
+	};
+	
+	exposed.flushFrame = function() {
+		var height = internal.renderingSpans[0] && internal.renderingSpans[0].length || 0,
+			width = internal.renderingSpans.length;
+		
+		internal.outputElement.innerHTML = "";
+		for (var y = 0 ; y < height ; y++) {
+			for (var x = 0 ; x < width ; x++) {
+				internal.outputElement.appendChild(internal.renderingSpans[x][y]);
+			};
+			internal.outputElement.appendChild(document.createElement("br"));
+		};
+	};
+	
+};
+
+// Internal
+common.internal = {};
 
 return common.exposed;
 })();
