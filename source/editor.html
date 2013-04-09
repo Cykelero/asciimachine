@@ -7,7 +7,7 @@
 	<script src="editor.js" type="text/javascript" language="Javascript"></script>
 	<script type="text/javascript" language="Javascript">
 		document.addEventListener("DOMContentLoaded", function() {
-			new Editor(document.querySelector("#inputField"));
+			editor = new Editor(document.querySelector("#inputField"));
 		});
 	</script>
 	<style type="text/css" media="all">
@@ -25,7 +25,7 @@
 </head>
 <body>
 
-<div id="inputField" contenteditable="true">
+<div id="inputField">
 #--@--%><br>
 XXXXXXXX
 </div>

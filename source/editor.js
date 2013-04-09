@@ -13,8 +13,12 @@ common.exposed = function(input) {
 	internal.renderingSpans = null;
 	internal.machineText = null;
 	
+	internal.isRunning = false;
+	
 	// Exposed methods
 	exposed.refreshDisplay = function() {
+		if (internal.isRunning) return;
+		
 		var newText = internal.getInputText();
 		
 		if (newText != internal.machineText) {
@@ -24,6 +28,54 @@ common.exposed = function(input) {
 			// Re-reading text
 			internal.machineText = internal.getInputText();
 		}
+	};
+	
+	exposed.setMode = function(run) {
+		run = !!run;
+		
+		if (internal.isRunning == run) return;
+		internal.isRunning = run;
+		
+		internal.input.contentEditable = !run;
+		
+		if (run) {
+			// Starting simulation
+			var machine = ASCIIMachine.newMachine(internal.getInputText());
+			
+			var tick = function() {
+				if (internal.isRunning) {
+					machine.tick();
+					machine.renderTo(self);
+					
+					setTimeout(tick, common.internal.simulationRate);
+				}
+			};
+			
+			tick();
+			
+		} else {
+			// Stopping simulation
+			// // Reinserting original text
+			var lines = internal.machineText.split("\n");
+			
+			internal.input.innerHTML = "";
+			lines.forEach(function(line) {
+				var span = document.createElement("span");
+				span.innerText = line;
+				internal.input.appendChild(span);
+				
+				var br = document.createElement("br");
+				internal.input.appendChild(br);
+			});
+			
+			// // Coloring text
+			internal.refreshDisplay(internal.machineText);
+			
+		}
+	};
+	
+	exposed.toggleMode = function() {
+		exposed.setMode(!internal.isRunning);
 	};
 	
 	// // Machine rendering methods
@@ -119,6 +171,8 @@ common.exposed = function(input) {
 		var span = renderTarget.element;
 		span.style.color = common.internal.color(info.color);
 		span.style.backgroundColor = common.internal.color(info.backgroundColor);
+		
+		if (internal.isRunning) span.textContent = info.char;
 	};
 	
 	exposed.flushFrame = function() {
@@ -139,6 +193,8 @@ common.exposed = function(input) {
 	}
 	
 	// Init
+	internal.input.contentEditable = true;
+	
 	internal.input.addEventListener("keyup", function(event) {
 		exposed.refreshDisplay();
 	});
@@ -153,6 +209,8 @@ common.internal = {};
 common.internal.color = function(colorArray) {
 	return "rgba(" + colorArray.join() + ")";
 };
+
+common.internal.simulationRate = 1000/4;
 
 return common.exposed;
 })();
