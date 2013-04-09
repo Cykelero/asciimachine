@@ -13,7 +13,7 @@ common.constructor = function(worldText) {
 	internal.entities = [];
 	
 	// Exposed methods
-	exposed.tick = function() {
+	exposed.init = function() {
 		// Generic entity behavior
 		internal.entities.forEach(function(entity) {
 			entity.$beginFrame();
@@ -36,6 +36,10 @@ common.constructor = function(worldText) {
 				return count + entity.$refreshOutputs();
 			}, 0);
 		} while (unstableCount != previousUnstableCount);
+	}
+	
+	exposed.tick = function() {
+		exposed.init();
 		
 		// Physics
 		// // Generating forces
