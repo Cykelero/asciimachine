@@ -10,7 +10,7 @@ common.exposed = function(input) {
 	var self = this;
 	
 	internal.input = input;
-	internal.renderingSpans = null;
+	internal.renderTargets = null;
 	internal.machineText = null;
 	
 	internal.isRunning = false;
@@ -81,18 +81,7 @@ common.exposed = function(input) {
 	// // Machine rendering methods
 	exposed.beginFrame = function(width, height) {
 		// Preparing span array
-		internal.renderingSpans = [];
-		
-		for (var x = 0 ; x < width ; x++) {
-			var column = internal.renderingSpans[x] = [];
-			for (var y = 0 ; y < height ; y++) {
-				var span = document.createElement("span");
-				column[y] = {
-					element: span,
-					depth: Number.POSITIVE_INFINITY
-				};
-			};
-		};
+		internal.initializeRenderTargets(width, height);
 		
 		// Finding letters, making them into spans
 		var currentX = 0,
@@ -127,7 +116,7 @@ common.exposed = function(input) {
 							
 							var charSpan;
 							if (char != "\n") {
-								charSpan = internal.renderingSpans[currentX][currentY].element;
+								charSpan = internal.getRenderTarget(currentX, currentY).element;
 								currentX++;
 							} else {
 								charSpan = document.createElement("span");
@@ -149,7 +138,7 @@ common.exposed = function(input) {
 					} else {
 						// There is only a single character in this element: no need to create a new span
 						if (text.length == 1 && text != "\n") {
-							internal.renderingSpans[currentX][currentY].element = element;
+							internal.getRenderTarget(currentX, currentY).element = element;
 							currentX++;
 						}
 					}
@@ -163,16 +152,21 @@ common.exposed = function(input) {
 	exposed.drawObject = function(info) {
 		if (info.char == "" || info.char == " ") return;
 		
-		var renderTarget = internal.renderingSpans[info.x][info.y];
+		var renderTarget = internal.getRenderTarget(info.x, info.y);
 		
-		if (renderTarget.depth < info.depth) return;
-		renderTarget.depth = info.depth;
-		
-		var span = renderTarget.element;
-		span.style.color = common.internal.color(info.color);
-		span.style.backgroundColor = common.internal.color(info.backgroundColor);
-		
-		if (internal.isRunning) span.textContent = info.char;
+		if (renderTarget) {
+			// Depth handling
+			if (renderTarget.depth < info.depth) return;
+			renderTarget.depth = info.depth;
+			
+			// Coloring
+			var span = renderTarget.element;
+			span.style.color = common.internal.color(info.color);
+			span.style.backgroundColor = common.internal.color(info.backgroundColor);
+			
+			// Char setting
+			if (internal.isRunning) span.textContent = info.char;
+		}
 	};
 	
 	exposed.flushFrame = function() {
@@ -180,6 +174,7 @@ common.exposed = function(input) {
 	};
 	
 	// Internal methods
+	// // Input element I/O
 	internal.refreshDisplay = function(text) {
 		var machine = ASCIIMachine.newMachine(text);
 		machine.init();
@@ -191,6 +186,28 @@ common.exposed = function(input) {
 		text = text.replace(/ /g, " ");
 		return text;
 	}
+	
+	// // Rendering targets
+	internal.initializeRenderTargets = function(width, height) {
+		internal.renderTargets = [];
+		
+		for (var x = 0 ; x < width ; x++) {
+			var column = internal.renderTargets[x] = [];
+			for (var y = 0 ; y < height ; y++) {
+				var span = document.createElement("span");
+				column[y] = {
+					element: span,
+					depth: Number.POSITIVE_INFINITY
+				};
+			};
+		};
+	};
+	
+	internal.getRenderTarget = function(x, y) {
+		var column = internal.renderTargets[x];
+		if (!column) return null;
+		return column[y] || null;
+	};
 	
 	// Init
 	internal.input.contentEditable = true;
