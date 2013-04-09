@@ -35,7 +35,10 @@ common.exposed = function(input) {
 			var column = internal.renderingSpans[x] = [];
 			for (var y = 0 ; y < height ; y++) {
 				var span = document.createElement("span");
-				column[y] = span;
+				column[y] = {
+					element: span,
+					depth: Number.POSITIVE_INFINITY
+				};
 			};
 		};
 		
@@ -43,6 +46,7 @@ common.exposed = function(input) {
 		var currentX = 0,
 			currentY = 0;
 		
+		console.log("SEARCHING");
 		function findLetters(element) {
 			element.setAttribute("style", "");
 			
@@ -71,7 +75,7 @@ common.exposed = function(input) {
 							
 							var charSpan;
 							if (char != "\n") {
-								charSpan = internal.renderingSpans[currentX][currentY];
+								charSpan = internal.renderingSpans[currentX][currentY].element;
 								currentX++;
 							} else {
 								charSpan = document.createElement("span");
@@ -93,7 +97,7 @@ common.exposed = function(input) {
 					} else {
 						// There is only a single character in this element: no need to create a new span
 						if (text.length == 1 && text != "\n") {
-							internal.renderingSpans[currentX][currentY] = element;
+							internal.renderingSpans[currentX][currentY].element = element;
 							currentX++;
 						}
 					}
@@ -107,7 +111,12 @@ common.exposed = function(input) {
 	exposed.drawObject = function(info) {
 		if (info.char == "" || info.char == " ") return;
 		
-		var span = internal.renderingSpans[info.x][info.y];
+		var renderTarget = internal.renderingSpans[info.x][info.y];
+		
+		if (renderTarget.depth < info.depth) return;
+		renderTarget.depth = info.depth;
+		
+		var span = renderTarget.element;
 		span.style.color = common.internal.color(info.color);
 		span.style.backgroundColor = common.internal.color(info.backgroundColor);
 	};
