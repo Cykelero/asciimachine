@@ -145,10 +145,20 @@ common.exposed = function(input) {
 		};
 		
 		findLetters(internal.input);
+		
+		// If simulation running: resetting characters and background colors
+		if (internal.isRunning) {
+			internal.renderTargets.forEach(function(column) {
+				column.forEach(function(target) {
+					target.element.textContent = " ";
+					target.element.style.backgroundColor = "black";
+				});
+			});
+		}
 	};
 	
 	exposed.drawObject = function(info) {
-		if (info.char == "" || info.char == " ") return;
+		if (info.char == "") return;
 		
 		var renderTarget = internal.getRenderTarget(info.x, info.y);
 		
@@ -160,7 +170,10 @@ common.exposed = function(input) {
 			// Coloring
 			var span = renderTarget.element;
 			span.style.color = common.internal.color(info.color);
-			span.style.backgroundColor = common.internal.color(info.backgroundColor);
+			
+			var backgroundColor = info.backgroundColor;
+			if (backgroundColor[3] == 0) backgroundColor = [0, 0, 0, 1];
+			span.style.backgroundColor = common.internal.color(backgroundColor);
 			
 			// Char setting
 			if (internal.isRunning) span.textContent = info.char;
@@ -210,7 +223,6 @@ common.exposed = function(input) {
 	// Init
 	// // Preparing input
 	internal.input.contentEditable = true;
-	console.log(internal.input.innerHTML);
 	internal.input.innerHTML = internal.input.innerHTML.replace(/\n/g, "").replace(/(.*?)(<\s*br\s*\/?\s*>|$)/gi, "<div>$1</div>");
 	
 	// // Events and coloration
