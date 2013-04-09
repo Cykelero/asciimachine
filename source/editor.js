@@ -108,19 +108,19 @@ common.exposed = function(input) {
 								
 				if (node.nodeType == 1) {
 					// Element
+					findLetters(node);
+					
 					if (node.tagName == "BR" || node.tagName == "DIV") {
 						currentX = 0;
 						currentY++;
 					}
-					
-					findLetters(node);
 					
 				} else if (node.nodeType == 3) {
 					// Text node
 					var text = node.textContent,
 						newSpans = [];
 					
-					if (element.textContent.length != 1) {
+					if (text.length != 1 || element.tagName != "span") {
 						// Splitting text content as spans
 						for (var c = 0 ; c < text.length ; c++) {
 							var char = text[c];
