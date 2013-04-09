@@ -11,5 +11,7 @@ MachineEntityTypesAggregator.defineType(" ", function(attr, types) {
 		};
 		
 		common.internal.name = "air";
+		
+		common.internal.depth = common.internal.depths.background;
 	}];
 });
