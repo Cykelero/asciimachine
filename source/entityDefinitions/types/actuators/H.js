@@ -96,7 +96,7 @@ MachineEntityTypesAggregator.defineType("H", function(attr, types) {
 							
 							retractedWhenResting: (entities.length == 1),
 							minExposed: Math.max(1, entities.length - bodySize),
-							maxExposed: bodySize+1,
+							maxExposed: Math.max(bodySize+1, entities.length),
 							
 							isRetracting: null,
 							isMoving: null
