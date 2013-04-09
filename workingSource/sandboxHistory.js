@@ -98,10 +98,10 @@ H<%@#@%>H
       OX
       
       
-      0
+       
       
    XXX 
-#--@H>
+#--@H>0
 HXXXXXX   XXX
 |     X <==HH
 |     X X XX@
@@ -110,3 +110,10 @@ XXXXXXXXXAXX|
          H  |
          H@-#
 
+HHHHH>
+  HHH>
+ HHHH=>
+    H==>   
+  HHH=>
+    @  0
+    #
