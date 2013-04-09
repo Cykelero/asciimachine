@@ -48,7 +48,8 @@ common.exposed = function(input) {
 		
 		console.log("SEARCHING");
 		function findLetters(element) {
-			element.setAttribute("style", "");
+			element.removeAttribute("style");
+			element.removeAttribute("color"); // font elements…
 			
 			// Searching element for letters, subelements
 			for (var i = 0 ; i < element.childNodes.length ; i++) {
