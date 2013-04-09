@@ -61,12 +61,9 @@ common.exposed = function(input) {
 			
 			internal.input.innerHTML = "";
 			lines.forEach(function(line) {
-				var span = document.createElement("span");
-				span.innerText = line;
-				internal.input.appendChild(span);
-				
-				var br = document.createElement("br");
-				internal.input.appendChild(br);
+				var div = document.createElement("div");
+				div.innerText = line;
+				internal.input.appendChild(div);
 			});
 			
 			// // Coloring text
@@ -100,7 +97,7 @@ common.exposed = function(input) {
 					// Element
 					findLetters(node);
 					
-					if (node.tagName == "BR" || node.tagName == "DIV") {
+					if (node.tagName == "DIV") {
 						currentX = 0;
 						currentY++;
 					}
@@ -211,8 +208,12 @@ common.exposed = function(input) {
 	};
 	
 	// Init
+	// // Preparing input
 	internal.input.contentEditable = true;
+	console.log(internal.input.innerHTML);
+	internal.input.innerHTML = internal.input.innerHTML.replace(/\n/g, "").replace(/(.*?)(<\s*br\s*\/?\s*>|$)/gi, "<div>$1</div>");
 	
+	// // Events and coloration
 	internal.input.addEventListener("keyup", function(event) {
 		exposed.refreshDisplay();
 	});
