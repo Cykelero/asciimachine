@@ -40,7 +40,8 @@ common.exposed = function(input) {
 		
 		if (run) {
 			// Starting simulation
-			var machine = ASCIIMachine.newMachine(internal.getInputText());
+			internal.machineText = internal.getInputText();
+			var machine = ASCIIMachine.newMachine(internal.machineText);
 			
 			var tick = function() {
 				if (internal.isRunning) {
