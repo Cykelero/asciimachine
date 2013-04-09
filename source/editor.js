@@ -143,9 +143,8 @@ common.exposed = function(input) {
 		exposed.refreshDisplay();
 	});
 	
-	//setInterval(exposed.refreshDisplay, 1000/4);
-	
 	exposed.refreshDisplay();
+	setInterval(exposed.refreshDisplay, 1000/4);
 };
 
 // Internal
