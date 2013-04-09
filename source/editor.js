@@ -128,7 +128,7 @@ common.exposed = function(input) {
 	// Internal methods
 	internal.refreshDisplay = function(text) {
 		var machine = ASCIIMachine.newMachine(text);
-		machine.tick();
+		machine.init();
 		machine.renderTo(self);
 	};
 	
