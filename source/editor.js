@@ -15,6 +15,8 @@ common.exposed = function(input) {
 	
 	internal.isRunning = false;
 	
+	internal.shiftKeyDown = false;
+	
 	// Exposed methods
 	exposed.refreshDisplay = function() {
 		if (internal.isRunning) return;
@@ -225,13 +227,48 @@ common.exposed = function(input) {
 	internal.input.contentEditable = true;
 	internal.input.innerHTML = internal.input.innerHTML.replace(/\n/g, "").replace(/(.*?)(<\s*br\s*\/?\s*>|$)/gi, "<div>$1</div>");
 	
-	// // Events and coloration
+	// // Auto highlighting
 	internal.input.addEventListener("keyup", function(event) {
 		exposed.refreshDisplay();
 	});
 	
 	exposed.refreshDisplay();
 	setInterval(exposed.refreshDisplay, 1000/4);
+	
+	// // Shift+enter to run, esc to stop
+	// // // Shift
+	document.addEventListener("keydown", function(event) {
+		if (event.keyCode == 16) {
+			internal.shiftKeyDown = true;
+		}
+	});
+	
+	document.addEventListener("keyup", function(event) {
+		if (event.keyCode == 16) {
+			internal.shiftKeyDown = false;
+		}
+	});
+	
+	// // // Enter
+	document.addEventListener("keydown", function(event) {
+		if (event.keyCode == 13) {
+			if (internal.shiftKeyDown) {
+				exposed.setMode(true);
+				return false;
+			}
+		}
+	});
+	
+	// // // Esc
+	document.addEventListener("keydown", function(event) {
+		if (event.keyCode == 27) {
+			if (internal.isRunning) {
+				exposed.setMode(false);
+				event.preventDefault();
+				return false;
+			}
+		}
+	});
 };
 
 // Internal
