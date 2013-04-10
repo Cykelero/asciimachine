@@ -78,7 +78,12 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 					// X movement
 					if (xSpeed) {
 						if (selfProjected.x == otherProjected.x && internal.cell.y == otherProjected.y) {
-							conflicts.push(new PhysicsConflict(self, other, 0));
+							var selfYVelocityDirection = (exposed.velocities[1].amount/Math.abs(exposed.velocities[1].amount)),
+								otherYVelocityDirection = (other.velocities[1].amount/Math.abs(other.velocities[1].amount));
+							
+							if (selfProjected == otherProjected || selfYVelocityDirection != otherYVelocityDirection) {
+								conflicts.push(new PhysicsConflict(self, other, 0));
+							}
 							return;
 						}
 					}
@@ -86,7 +91,12 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 					// Y movement
 					if (ySpeed) {
 						if (internal.cell.x == otherProjected.x && selfProjected.y == otherProjected.y) {
-							conflicts.push(new PhysicsConflict(self, other, 1));
+							var selfXVelocityDirection = (exposed.velocities[0].amount/Math.abs(exposed.velocities[0].amount)),
+								otherXVelocityDirection = (other.velocities[0].amount/Math.abs(other.velocities[0].amount));
+							
+							if (selfProjected == otherProjected || selfXVelocityDirection != otherXVelocityDirection) {
+								conflicts.push(new PhysicsConflict(self, other, 1));
+							}
 							return;
 						}
 					}
