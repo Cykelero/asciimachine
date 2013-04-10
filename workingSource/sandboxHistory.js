@@ -33,10 +33,14 @@ XXXXXXXXXXX
  HH     H
  H------H
 
+
+
   #
   %>H%>HH#
   H     H
   H-----H
+  
+  
   
    #
  %>H%>HH#
@@ -44,10 +48,14 @@ XXXXXXXXXXX
  HHHHHHH
   
          
+         
+         
     #%>%>H
      H   H
      H   H
 #HH@HHHHHHHH
+
+
 
 
 #--H--H-----%>--H
@@ -57,9 +65,13 @@ XXXXXXXXXXX
       |
 
 
+
+
 @---H
 #---%>--
 @---H
+
+
 
 
     H-H
@@ -72,6 +84,9 @@ H<%@#@%>H
   | V
   H H
 
+
+
+
     H-H
     A |
 H---% |
@@ -81,6 +96,8 @@ H<%@#@%>H
   | %---H
   | V
   H-H
+
+
 
 
       O
@@ -93,6 +110,9 @@ H<%@#@%>H
   |   #  XXX  X
   H=>    XXX  X
     X    XXX  X
+
+
+
 
 
       OX
@@ -109,6 +129,9 @@ H--@HH>   XX|
 XXXXXXXXXAXX|
          H  |
          H@-#
+
+
+
 
 HHHHH>
   HHH>
