@@ -93,7 +93,7 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 					
 					// Complete movement
 					if (xSpeed && ySpeed) {
-						if (selfProjected.x == otherProjected.x && selfProjected.y == otherProjected.y) {
+						if (selfProjected == otherProjected) {
 							conflicts.push(new PhysicsConflict(self, other, strongestAxis));
 							return;
 						}
@@ -115,10 +115,7 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 			};
 			
 			exposed.getProjectedPosition = function() {
-				return {
-					x: internal.cell.x + exposed.velocities[0].amount,
-					y: internal.cell.y + exposed.velocities[1].amount
-				};
+				return internal.cell.getWithOffset(exposed.velocities[0].amount, exposed.velocities[1].amount);
 			};
 		};
 		
