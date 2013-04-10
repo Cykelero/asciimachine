@@ -32,7 +32,7 @@ common.constructor = function(entityA, entityB, axis) {
 		// Delegate resolution?
 		if (!preventDelegation) {
 			// Winner first
-			if (winnerEntity == internal.entityA) {
+			if (winnerEntity == internal.entityB) {
 				var conflict = winnerEntity.findConflictWith(loserEntity);
 				if (conflict) {
 					conflict.resolve(true);
