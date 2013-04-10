@@ -39,6 +39,15 @@ common.constructor = function(entityA, entityB, axis) {
 					return;
 				};
 			}
+			
+			// If no loser speed: alternate resolution
+			if (loserEntity == entityB && loserForce.amount == 0 && loserEntity.velocities[1-internal.axis] != 0) {
+				var conflict = loserEntity.findConflictWith(winnerEntity);
+				if (conflict) {
+					conflict.resolve(true);
+					return;
+				};
+			}
 		}
 		
 		// Didn't delegate: Clamping loser force amount
