@@ -86,6 +86,8 @@ common.constructor = function(worldText) {
 		renderer.beginFrame(internal.grid.width, internal.grid.height);
 		
 		internal.entities.forEach(function(entity) {
+			if (!entity.cell.isInsideGrid()) return;
+			
 			var entityColor = entity.getColor();
 			if (entityColor.length < 4) entityColor = entityColor.concat([1]);
 			
@@ -148,7 +150,7 @@ common.constructor = function(worldText) {
 	worldHeight = lines.length;
 	
 	// // Creating grid
-	internal.grid = new Grid(worldWidth, worldHeight);
+	internal.grid = new Grid(worldWidth, worldHeight, true);
 	
 	// // Generating entities
 	var getOtherChar = function(x, y) {
