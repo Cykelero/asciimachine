@@ -2,7 +2,7 @@
 
 var Grid = SVP2.class(function(common) {
 
-common.constructor = function(width, height) {
+common.constructor = function(width, height, infinite) {
 	var exposed = this.exposed,
 		internal = this.internal,
 		self = exposed;
@@ -19,8 +19,18 @@ common.constructor = function(width, height) {
 	});
 	
 	exposed.getCell = function(x, y) {
-		if (!exposed.contains(x, y)) return null;
-		return internal.columns[x][y];
+		if (exposed.contains(x, y)) {
+			return internal.columns[x][y];
+		} else {
+			if (infinite) {
+				var newCell = new GridCell(self, x, y);
+				if (!internal.columns[x]) internal.columns[x] = [];
+				internal.columns[x][y] = newCell;
+				return newCell;
+			} else {
+				return null;
+			}
+		}
 	};
 	
 	exposed.contains = function(x, y) {

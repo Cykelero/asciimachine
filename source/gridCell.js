@@ -13,11 +13,15 @@ common.constructor = function(parentGrid, x, y) {
 	internal.objects = [];
 		
 	// Exposed methods
-	// // Coordinates
+	// // Position
 	this.expose({
 		x: false,
 		y: false
 	});
+	
+	exposed.isInsideGrid = function() {
+		return internal.parentGrid.contains(internal.x, internal.y);
+	};
 	
 	// // Linked objects
 	exposed.getObjects = function() {
