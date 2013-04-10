@@ -53,7 +53,7 @@ common.constructor = function(parent, char, cell) {
 			entity.moveBy(x, y);
 		});
 		
-		var targetCell = internal.cell.getWithOffset([x, y]);
+		var targetCell = internal.cell.getWithOffset(x, y);
 		internal.cell.removeObject(self);
 		internal.cell = targetCell;
 		internal.cell.addObject(self);

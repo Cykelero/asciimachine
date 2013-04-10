@@ -51,11 +51,11 @@ common.constructor = function(parentGrid, x, y) {
 			3: [-count, 0]
 		}[direction];
 		
-		return exposed.getWithOffset(offset);
+		return exposed.getWithOffset(offset[0], offset[1]);
 	};
 	
-	exposed.getWithOffset = function(offset) {
-		return internal.parentGrid.getCell(internal.x+offset[0], internal.y+offset[1]);
+	exposed.getWithOffset = function(x, y) {
+		return internal.parentGrid.getCell(internal.x + x, internal.y + y);
 	};
 	
 	exposed.getTop = function(count) {
