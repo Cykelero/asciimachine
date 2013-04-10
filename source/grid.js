@@ -19,8 +19,12 @@ common.constructor = function(width, height) {
 	});
 	
 	exposed.getCell = function(x, y) {
-		if (x < 0 || y < 0 || x >= internal.width || y >= internal.height) return null;
+		if (!exposed.contains(x, y)) return null;
 		return internal.columns[x][y];
+	};
+	
+	exposed.contains = function(x, y) {
+		return (x >= 0 && y >= 0 && x < internal.width && y < internal.height);
 	};
 	
 	// Init
