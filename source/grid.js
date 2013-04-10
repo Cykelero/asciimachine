@@ -19,12 +19,13 @@ common.constructor = function(width, height, infinite) {
 	});
 	
 	exposed.getCell = function(x, y) {
-		if (exposed.contains(x, y)) {
-			return internal.columns[x][y];
+		var column = internal.columns[x];
+		if (column && column[y]) {
+			return column[y];
 		} else {
 			if (infinite) {
+				if (!column) internal.columns[x] = [];
 				var newCell = new GridCell(self, x, y);
-				if (!internal.columns[x]) internal.columns[x] = [];
 				internal.columns[x][y] = newCell;
 				return newCell;
 			} else {
