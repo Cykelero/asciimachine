@@ -190,7 +190,6 @@ common.exposed = function(input) {
 	// // Input element I/O
 	internal.refreshDisplay = function(text) {
 		var machine = ASCIIMachine.newMachine(text);
-		machine.init();
 		machine.renderTo(self);
 	};
 	
