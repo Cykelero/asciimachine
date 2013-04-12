@@ -13,74 +13,10 @@ common.constructor = function(worldText) {
 	internal.entities = [];
 	
 	// Exposed methods
-	exposed.init = function() {
-		// Generic entity behavior
-		internal.entities.forEach(function(entity) {
-			entity.$beginFrame();
-		});
-
-		exposed.getEntitiesWith("conductor").forEach(function(entity) {
-			entity.$spreadPowerState();
-		});
-
-		exposed.getEntitiesWith("powerNode").forEach(function(entity) {
-			entity.$initializePowerState();
-		});
-		
-		// Power network
-		var unstableCount = 0,
-			previousUnstableCount;
-		do {
-			previousUnstableCount = unstableCount;
-			unstableCount = exposed.getEntitiesWith("powerNode").reduce(function(count, entity) {
-				return count + entity.$refreshOutputs();
-			}, 0);
-		} while (unstableCount != previousUnstableCount);
-	}
-	
 	exposed.tick = function() {
-		exposed.init();
-		
-		// Physics
-		// // Generating forces
-		exposed.getEntitiesWith("solid").forEach(function(entity) {
-			entity.$generateForces();
-		});
-		
-		exposed.getEntitiesWith("actuator").forEach(function(entity) {
-			entity.$beginActuation();
-		});
-		
-		// // Resolving conflicts
-		while (true) {
-			var conflicts = [];
-			
-			// Finding conflicts
-			var entitiesWithSolid = exposed.getEntitiesWith("solid");
-			for (var e = 0 ; e < entitiesWithSolid.length ; e++) {
-				conflicts = conflicts.concat(entitiesWithSolid[e].$findConflicts(0));
-				
-				if (conflicts.length) break;
-			};
-			
-			// Resolving conflicts
-			if (conflicts.length) {
-				conflicts[0].resolve();
-			} else {
-				break;
-			}
-		}
-		
-		// // Applying forces
-		exposed.getEntitiesWith("solid").forEach(function(entity) {
-			entity.$applyComputedForces();
-		});
-		
-		// Actuators (post-physics cleanup)
-		exposed.getEntitiesWith("actuator").forEach(function(entity) {
-			entity.$endActuation();
-		});
-	};
+		internal.updatePhysics();
+		internal.updateInstant();
+	}
 	
 	exposed.renderTo = function(renderer) {
 		renderer.beginFrame(internal.grid.width, internal.grid.height);
@@ -138,6 +74,71 @@ common.constructor = function(worldText) {
 	};
 	
 	// Internal methods
+	internal.updateInstant = function() {
+		// Generic entity behavior
+		internal.entities.forEach(function(entity) {
+			entity.$beginFrame();
+		});
+
+		exposed.getEntitiesWith("conductor").forEach(function(entity) {
+			entity.$spreadPowerState();
+		});
+
+		exposed.getEntitiesWith("powerNode").forEach(function(entity) {
+			entity.$initializePowerState();
+		});
+		
+		// Power network
+		var unstableCount = 0,
+			previousUnstableCount;
+		do {
+			previousUnstableCount = unstableCount;
+			unstableCount = exposed.getEntitiesWith("powerNode").reduce(function(count, entity) {
+				return count + entity.$refreshOutputs();
+			}, 0);
+		} while (unstableCount != previousUnstableCount);
+	}
+	
+	internal.updatePhysics = function() {
+		// Generating forces
+		exposed.getEntitiesWith("solid").forEach(function(entity) {
+			entity.$generateForces();
+		});
+		
+		exposed.getEntitiesWith("actuator").forEach(function(entity) {
+			entity.$beginActuation();
+		});
+		
+		// Resolving conflicts
+		while (true) {
+			var conflicts = [];
+			
+			// Finding conflicts
+			var entitiesWithSolid = exposed.getEntitiesWith("solid");
+			for (var e = 0 ; e < entitiesWithSolid.length ; e++) {
+				conflicts = conflicts.concat(entitiesWithSolid[e].$findConflicts(0));
+				
+				if (conflicts.length) break;
+			};
+			
+			// Resolving conflicts
+			if (conflicts.length) {
+				conflicts[0].resolve();
+			} else {
+				break;
+			}
+		}
+		
+		// Applying forces
+		exposed.getEntitiesWith("solid").forEach(function(entity) {
+			entity.$applyComputedForces();
+		});
+		
+		// Actuators (post-physics cleanup)
+		exposed.getEntitiesWith("actuator").forEach(function(entity) {
+			entity.$endActuation();
+		});
+	};
 	
 	// Init
 	var lines = worldText.split("\n");
@@ -172,6 +173,9 @@ common.constructor = function(worldText) {
 	internal.entities.forEach(function(entity) {
 		entity.initializeRelationships();
 	});
+	
+	// // First frame
+	internal.updateInstant();
 };
 
 });
