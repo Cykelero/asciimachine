@@ -117,6 +117,16 @@ common.constructor = function(parent, char, cell) {
 		return neighbors;
 	};
 	
+	internal.getAffectingBroadcasts = function() {
+		return internal.parent.getBroadcastsForCell(internal.cell);
+	};
+	
+	internal.getAffectingBroadcastsOfType(type) {
+		return internal.getAffectingBroadcasts().filter(function(broadcast) {
+			return (broadcast.type == type);
+		});
+	};
+	
 };
 
 // Internal		
