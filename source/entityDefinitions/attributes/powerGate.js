@@ -45,6 +45,13 @@ MachineEntityTypesAggregator.defineAttribute("powerGate", function(attr, types) 
 			
 			internal.spreadPowerState = function() {
 			};
+			
+			// Display
+			exposed.isPowered = function() {
+				return internal.powerState.outputs.some(function(output) {
+					return output.value;
+				});
+			};
 		};
 	}];
 });
