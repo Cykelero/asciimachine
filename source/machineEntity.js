@@ -121,10 +121,14 @@ common.constructor = function(parent, char, cell) {
 		return internal.parent.getBroadcastsForCell(internal.cell);
 	};
 	
-	internal.getAffectingBroadcastsOfType(type) {
+	internal.getAffectingBroadcastsOfType = function(type) {
 		return internal.getAffectingBroadcasts().filter(function(broadcast) {
 			return (broadcast.type == type);
 		});
+	};
+	
+	internal.isAffectedBy = function(type) {
+		return (internal.getAffectingBroadcastsOfType(type).length > 0);
 	};
 	
 };

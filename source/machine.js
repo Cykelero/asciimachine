@@ -76,7 +76,7 @@ common.constructor = function(worldText) {
 	
 	// // State data access
 	exposed.getBroadcastsForCell = function(cell) {
-		return internal.broadcasts[cell] || null;
+		return internal.broadcasts[cell] || [];
 	};
 	
 	// Internal methods
@@ -90,13 +90,16 @@ common.constructor = function(worldText) {
 
 		exposed.getEntitiesWith("broadcaster").forEach(function(entity) {
 			var broadcasts = entity.$getBroadcasts();
-			broadcasts.forEach(function(broadcast) {
-				var cell = broadcast.cell.toString();
-				
-				if (!(cell in internal.broadcasts)) internal.broadcast[cell] = [];
-				
-				internal.broadcast[cell].push(broadcast);
-			});
+			
+			if (broadcasts) {
+				broadcasts.forEach(function(broadcast) {
+					var cell = broadcast.cell.toString();
+					
+					if (!(cell in internal.broadcasts)) internal.broadcasts[cell] = [];
+					
+					internal.broadcasts[cell].push(broadcast);
+				});
+			}
 		});
 
 		exposed.getEntitiesWith("conductor").forEach(function(entity) {
