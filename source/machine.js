@@ -9,8 +9,9 @@ common.constructor = function(worldText) {
 		self = exposed;
 	
 	internal.grid = null;
-	
 	internal.entities = [];
+	
+	internal.broadcasts = null;
 	
 	// Exposed methods
 	exposed.tick = function() {
@@ -73,11 +74,29 @@ common.constructor = function(worldText) {
 		});
 	};
 	
+	// // State data access
+	exposed.getBroadcastsForCell = function(cell) {
+		return internal.broadcasts[cell] || null;
+	};
+	
 	// Internal methods
 	internal.updateInstant = function() {
 		// Generic entity behavior
+		internal.broadcasts = {};
+		
 		internal.entities.forEach(function(entity) {
 			entity.$beginFrame();
+		});
+
+		exposed.getEntitiesWith("broadcaster").forEach(function(entity) {
+			var broadcasts = entity.$getBroadcasts();
+			broadcasts.forEach(function(broadcast) {
+				var cell = broadcast.cell.toString();
+				
+				if (!(cell in internal.broadcasts)) internal.broadcast[cell] = [];
+				
+				internal.broadcast[cell].push(broadcast);
+			});
 		});
 
 		exposed.getEntitiesWith("conductor").forEach(function(entity) {
