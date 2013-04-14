@@ -23,17 +23,21 @@ MachineEntityTypesAggregator.defineAttribute("powerNode", function(attr, types) 
 			};
 			
 			exposed.$initializePowerState = function() {
-				internal.initializeOutputs();
+				if (!internal.isAffectedBy("inhibitPower")) internal.initializeOutputs();
 			};
 			
 			// Power node
 			exposed.$refreshOutputs = function() {
+				if (internal.isAffectedBy("inhibitPower")) return true;
+				
 				internal.refreshPowerState();
 				
 				return internal.powerState.isStable();
 			};
 			
 			exposed.inputPower = function(connection) {
+				if (internal.isAffectedBy("inhibitPower")) return false;
+				
 				var accept = internal.vetoIncomingConnection(connection);
 				if (accept) internal.powerState.addInput(connection);
 				return accept;
@@ -70,6 +74,8 @@ MachineEntityTypesAggregator.defineAttribute("powerNode", function(attr, types) 
 			
 			// Display
 			exposed.isPowered = function() {
+				if (internal.isAffectedBy("inhibitPower")) return false;
+				
 				return internal.powerState.outputs.some(function(input) {
 					return input.value;
 				});

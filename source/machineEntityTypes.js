@@ -8,6 +8,7 @@
 // needs entityDefinitions/types/power/wires.js
 // needs entityDefinitions/types/power/userToggle.js
 // needs entityDefinitions/types/power/XOR.js
+// needs entityDefinitions/types/power/buttons.js
 
 // needs entityDefinitions/types/actuators/H.js
 

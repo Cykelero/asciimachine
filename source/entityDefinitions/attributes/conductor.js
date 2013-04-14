@@ -20,6 +20,8 @@ MachineEntityTypesAggregator.defineAttribute("conductor", function(attr, types) 
 			};
 			
 			exposed.$spreadPowerState = function() {
+				if (internal.isAffectedBy("inhibitPower")) return;
+				
 				internal.spreadPowerState();
 			};
 			
