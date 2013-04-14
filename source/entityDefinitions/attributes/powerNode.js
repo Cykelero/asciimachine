@@ -76,8 +76,8 @@ MachineEntityTypesAggregator.defineAttribute("powerNode", function(attr, types) 
 			exposed.isPowered = function() {
 				if (internal.isAffectedBy("inhibitPower")) return false;
 				
-				return internal.powerState.outputs.some(function(input) {
-					return input.value;
+				return internal.powerState.outputs.some(function(output) {
+					return output.value;
 				});
 			};
 			
