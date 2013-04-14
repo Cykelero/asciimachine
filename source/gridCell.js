@@ -13,6 +13,10 @@ common.constructor = function(parentGrid, x, y) {
 	internal.objects = [];
 		
 	// Exposed methods
+	exposed.toString = function() {
+		return internal.x + ", " + internal.y;
+	};
+	
 	// // Position
 	this.expose({
 		x: false,
