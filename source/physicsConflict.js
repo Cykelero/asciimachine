@@ -29,6 +29,11 @@ common.constructor = function(entityA, entityB, axis) {
 			loserEntity = aWins ? entityB : entityA,
 			loserForce = aWins ? forceB : forceA;
 		
+		var loserForceCopy = {};
+		for (var p in loserForce) {
+			if (loserForce.hasOwnProperty(p)) loserForceCopy[p] = loserForce[p];
+		}
+		
 		// Delegate resolution?
 		if (!preventDelegation) {
 			// Loser first
@@ -61,6 +66,9 @@ common.constructor = function(entityA, entityB, axis) {
 		
 		// Changing loser force type
 		loserForce.type = winnerForce.type;
+		
+		// Calling onWin callback
+		winnerEntity.$onWinConflict(loserEntity, loserForceCopy);
 	};
 	
 	// Internal methods
