@@ -8,6 +8,17 @@ MachineEntityTypesAggregator.defineAttribute("gravity", function(attr, types) {
 				parent = this.parent,
 				self = exposed;
 			
+			exposed.$beginFrame = function() {
+				parent.exposed.$beginFrame();
+				
+				if (!internal.cell.isInsideGrid()) {
+					if ((common.internal.gravityAmount > 0) == (internal.cell.y > 0)) {
+						// Exiting grid: removing
+						internal.parent.removeEntity(self);
+					}
+				}
+			};
+			
 			exposed.$generateForces = function() {
 				parent.exposed.$generateForces();
 				
