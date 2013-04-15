@@ -142,17 +142,17 @@ HHHHH>
     #
 
 
-+H
+eH
 |V
 A_
-%+
-+#
+%e
+e#
 
     O <HH
     XAX @#
 HH>_ IX
-+<&#XIX
-  |+-H
+e<&#XIX
+  |e-H
   |H H
   |H 
   |H  

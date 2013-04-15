@@ -46,7 +46,7 @@ MachineEntityTypesAggregator.defineType("|", function(attr, types) {
 	}];
 });
 
-MachineEntityTypesAggregator.defineType("+", function(attr, types) {
+MachineEntityTypesAggregator.defineType("e", function(attr, types) {
 	return [attr.wire, function(common) {
 		common.constructor = function() {
 			var exposed = this.exposed,
