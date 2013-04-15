@@ -64,6 +64,8 @@ MachineEntityTypesAggregator.defineAttribute("conductor", function(attr, types) 
 			};
 			
 			exposed.sharePowerState = function(info, powerState) {
+				if (internal.isAffectedBy("inhibitPower")) return;
+				
 				if (internal.powerStateIsShared) return;
 				
 				if (internal.wiredDirections.indexOf(Direction.flip(info.direction)) == -1) return;
