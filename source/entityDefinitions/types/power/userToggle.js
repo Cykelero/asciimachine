@@ -22,7 +22,7 @@ MachineEntityTypesAggregator.defineType("@", function(attr, types) {
 				internal.wiredDirections = internal.enabled ? Direction.all() : [];
 			};
 			
-			exposed.userAction = function() {
+			exposed.$userAction = function() {
 				internal.enabled = !internal.enabled;
 			};
 			

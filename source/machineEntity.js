@@ -41,7 +41,7 @@ common.constructor = function(parent, char, cell) {
 		
 	};
 	
-	exposed.userAction = function() {
+	exposed.$userAction = function() {
 		
 	};
 	
