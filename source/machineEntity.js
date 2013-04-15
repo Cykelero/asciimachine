@@ -33,7 +33,7 @@ common.constructor = function(parent, char, cell) {
 	};
 	
 	// // Behavior
-	exposed.initializeRelationships = function() {
+	exposed.$initializeRelationships = function() {
 		
 	};
 	

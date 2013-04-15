@@ -15,8 +15,8 @@ MachineEntityTypesAggregator.defineAttribute("powerGate", function(attr, types) 
 			internal.backgroundColor = [100, 0, 170];
 			
 			// Behavior
-			exposed.initializeRelationships = function() {
-				parent.exposed.initializeRelationships();
+			exposed.$initializeRelationships = function() {
+				parent.exposed.$initializeRelationships();
 				
 				internal.wiredDirections = Direction.all();
 				

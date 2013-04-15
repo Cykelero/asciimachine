@@ -18,8 +18,8 @@ MachineEntityTypesAggregator.defineType("H", function(attr, types) {
 			internal.backgroundColor = [140, 110, 100];
 			
 			// Behavior
-			exposed.initializeRelationships = function() {
-				parent.exposed.initializeRelationships();
+			exposed.$initializeRelationships = function() {
+				parent.exposed.$initializeRelationships();
 				
 				// Finding body width and height
 				function countInDirection(direction) {

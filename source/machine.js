@@ -45,11 +45,11 @@ common.constructor = function(worldText) {
 		renderer.flushFrame();
 	}
 	
-	exposed.userAction = function(x, y) {
+	exposed.$userAction = function(x, y) {
 		var cell = internal.grid.getCell(x, y);
 		if (cell) {
 			cell.getObjects().forEach(function(entity) {
-				entity.userAction();
+				entity.$userAction();
 			});
 		}
 	};
@@ -193,7 +193,7 @@ common.constructor = function(worldText) {
 	
 	// // Initializing entity relationships
 	internal.entities.forEach(function(entity) {
-		entity.initializeRelationships();
+		entity.$initializeRelationships();
 	});
 	
 	// // First frame

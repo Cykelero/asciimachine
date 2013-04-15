@@ -10,8 +10,8 @@ MachineEntityTypesAggregator.defineAttribute("hasArrows", function(attr, types) 
 			
 			internal.arrows = [];
 			
-			exposed.initializeRelationships = function() {
-				parent.exposed.initializeRelationships();
+			exposed.$initializeRelationships = function() {
+				parent.exposed.$initializeRelationships();
 				
 				internal.getCloseNeighbors().forEach(function(info) {
 					var entity = info.entity;
