@@ -7,6 +7,7 @@
 
 // needs entityDefinitions/types/power/battery.js
 // needs entityDefinitions/types/power/wires.js
+// needs entityDefinitions/types/power/E.js
 // needs entityDefinitions/types/power/userToggle.js
 // needs entityDefinitions/types/power/XOR.js
 // needs entityDefinitions/types/power/AND.js

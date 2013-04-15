@@ -147,3 +147,16 @@ HHHHH>
 A_
 %+
 +#
+
+    O <HH
+    XAX @#
+HH>_ IX
++<&#XIX
+  |+-H
+  |H H
+  |H 
+  |H  
+  |I 
+  |V
+  #]
+
