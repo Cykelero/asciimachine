@@ -21,6 +21,14 @@ exposed.getAxis = function(direction) {
 	return !!((direction+1)%2);
 };
 
+exposed.getDirection = function(axis, amount) {
+	if (axis == 0) {
+		return amount >= 0 ? 1 : 3;
+	} else {
+		return amount >= 0 ? 2 : 0;
+	}
+};
+
 exposed.getAxisAmplitude = function(direction) {
 	direction = common.implicit(direction);
 	
