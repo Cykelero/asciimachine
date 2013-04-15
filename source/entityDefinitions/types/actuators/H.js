@@ -15,7 +15,7 @@ MachineEntityTypesAggregator.defineType("H", function(attr, types) {
 			internal.arms = [];
 			internal.bodySize = [1, 1];
 			
-			internal.backgroundColor = [140, 110, 100];
+			internal.backgroundColor = [120, 100, 60];
 			
 			// Behavior
 			exposed.$initializeRelationships = function() {
