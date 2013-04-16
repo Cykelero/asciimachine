@@ -14,6 +14,7 @@
 // needs entityDefinitions/types/power/buttons.js
 
 // needs entityDefinitions/types/actuators/H.js
+// needs entityDefinitions/types/actuators/conveyorWheels.js
 
 // needs entityDefinitions/types/mobile/O.js
 // needs entityDefinitions/types/mobile/balloon.js
@@ -22,6 +23,7 @@
 // needs entityDefinitions/types/misc/pipes.js
 
 // needs entityDefinitions/types/generated/crossedWires.js
+// needs entityDefinitions/types/generated/conveyorBelt.js
 
 
 var MachineEntityTypes = SVP2.staticClass(function(common) {
