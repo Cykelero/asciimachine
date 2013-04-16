@@ -85,7 +85,6 @@ MachineEntityTypesAggregator.defineAttribute("conveyorWheel", function(attr, typ
 			exposed.$beginActuation = function() {
 				if (exposed.isPowered()) {
 					internal.conveyorGroup.drive(common.internal.drivingPolarity == internal.polarity);
-					console.log("hm");
 				};
 			};
 			
