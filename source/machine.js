@@ -10,6 +10,7 @@ common.constructor = function(worldText) {
 	
 	internal.grid = null;
 	internal.entities = [];
+	internal.managedAbstractions = [];
 	
 	internal.broadcasts = null;
 	
@@ -79,8 +80,24 @@ common.constructor = function(worldText) {
 		return internal.broadcasts[cell] || [];
 	};
 	
+	// // Other entity calls
+	exposed.addManagedAbstraction = function(abstraction) {
+		internal.managedAbstractions.push(abstraction);
+	};
+	
+	exposed.removeManagedAbstraction = function(abstraction) {
+		var abstractionIndex = internal.managedAbstractions.indexOf(abstraction);
+		if (abstractionIndex > -1) internal.managedAbstractions.splice(abstractionIndex, 1);
+		return abstraction;
+	};
+	
 	// Internal methods
 	internal.updateInstant = function() {
+		// Managed abstractions
+		internal.managedAbstractions.forEach(function(abstraction) {
+			abstraction.$beginFrame();
+		});
+		
 		// Generic entity behavior
 		internal.broadcasts = {};
 		
