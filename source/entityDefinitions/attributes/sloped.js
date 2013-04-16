@@ -14,7 +14,7 @@ MachineEntityTypesAggregator.defineAttribute("sloped", function(attr, types) {
 				var direction = Direction.getDirection(losingForce.axis, losingForce.amount);
 				direction = Direction.flip(direction);
 				
-				var slopeDirection = common.internal.slopeDirections[direction];
+				var slopeDirection = internal.getSlopeDirection(direction);
 				
 				if (slopeDirection != direction) {
 					loser.applyForce({
@@ -23,6 +23,10 @@ MachineEntityTypesAggregator.defineAttribute("sloped", function(attr, types) {
 						type: losingForce.type
 					});
 				}
+			};
+			
+			internal.getSlopeDirection = function(direction) {
+				return common.internal.slopeDirections[direction];
 			};
 		};
 		
