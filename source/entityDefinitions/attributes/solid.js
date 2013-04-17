@@ -124,7 +124,16 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 						otherTargetIsSelfPosition = otherProjected == self.cell;
 					
 					if (selfTargetIsOtherPosition && otherTargetIsSelfPosition) {
-						return new PhysicsConflict(self, other, strongestAxis);
+						var conflictAxis;
+						if (xSpeed && ySpeed) {
+							conflictAxis = strongestAxis;
+						} else if (xSpeed) {
+							conflictAxis = 0;
+						} else {
+							conflictAxis = 1;
+						}
+						
+						return new PhysicsConflict(self, other, conflictAxis);
 					}
 				}
 				
