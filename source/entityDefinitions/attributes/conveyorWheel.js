@@ -68,8 +68,8 @@ MachineEntityTypesAggregator.defineAttribute("conveyorWheel", function(attr, typ
 							// Belt found: transmitting group and generating belt pieces
 							// // Wheel: simply transmitting
 							var endWheel = pieces.pop();
-							endWheel.conveyorGroup = internal.conveyorGroup;
-							endWheel.polarity = internal.polarity;
+							endWheel.conveyorGroup = conveyorGroup;
+							endWheel.polarity = polarity;
 							
 							// // Pipes: replacing
 							pieces.forEach(function(pipe) {
@@ -78,8 +78,8 @@ MachineEntityTypesAggregator.defineAttribute("conveyorWheel", function(attr, typ
 								internal.attachEntity(beltPart);
 								internal.parent.removeEntity(pipe);
 								
-								beltPart.conveyorGroup = internal.conveyorGroup;
-								beltPart.polarity = internal.polarity;
+								beltPart.conveyorGroup = conveyorGroup;
+								beltPart.polarity = polarity;
 							});
 							
 							// // Then, transmitting further from the wheel
