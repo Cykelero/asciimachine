@@ -69,7 +69,7 @@ MachineEntityTypesAggregator.defineAttribute("conveyorWheel", function(attr, typ
 							// // Wheel: simply transmitting
 							var endWheel = pieces.pop();
 							endWheel.conveyorGroup = conveyorGroup;
-							endWheel.polarity = polarity;
+							endWheel.polarity = pieces.length ? polarity : !polarity;
 							
 							// // Pipes: replacing
 							pieces.forEach(function(pipe) {
