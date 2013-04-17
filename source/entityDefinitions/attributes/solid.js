@@ -120,8 +120,8 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 				
 				// Position swap
 				if (xSpeed || ySpeed) {
-					var selfTargetIsOtherPosition = selfProjected.x == other.cell.x && selfProjected.y == other.cell.y,
-						otherTargetIsSelfPosition = otherProjected.x == self.cell.x && otherProjected.y == self.cell.y;
+					var selfTargetIsOtherPosition = selfProjected == other.cell,
+						otherTargetIsSelfPosition = otherProjected == self.cell;
 					
 					if (selfTargetIsOtherPosition && otherTargetIsSelfPosition) {
 						return new PhysicsConflict(self, other, strongestAxis);
