@@ -29,57 +29,66 @@ MachineEntityTypesAggregator.defineAttribute("conveyorWheel", function(attr, typ
 				}
 				
 				// Finding belts
-				Direction.all().forEach(function(direction) {
-					var cell = internal.cell,
-						pieces = [],
-						isValidBelt = false;
-					
-					// Finding pieces
-					while (cell = cell.getInDirection(direction)) {
-						var piece = null;
-						cell.getObjects().some(function(entity) {
-							if (entity.has("conveyorWheel")) {
-								piece = entity;
-								return true;
-							}
-							
-							if (entity.has("pipe") && entity.getAxis() == Direction.getAxis(direction)) {
-								piece = entity;
-								return true;
-							}
-						});
+				var searchForBelts = function(originCell, conveyorGroup, polarity) {
+					Direction.all().forEach(function(direction) {
+						var cell = originCell,
+							pieces = [],
+							isValidBelt = false;
 						
-						if (piece) {
-							pieces.push(piece);
-							if (piece.has("conveyorWheel")) {
-								// Wheels end belts
-								isValidBelt = true;
+						// Finding pieces
+						while (cell = cell.getInDirection(direction)) {
+							var piece = null;
+							cell.getObjects().some(function(entity) {
+								if (entity.conveyorGroup != null) return;
+								
+								if (entity.has("conveyorWheel")) {
+									piece = entity;
+									return true;
+								}
+								
+								if (entity.has("pipe") && entity.getAxis() == Direction.getAxis(direction)) {
+									piece = entity;
+									return true;
+								}
+							});
+							
+							if (piece) {
+								pieces.push(piece);
+								if (piece.has("conveyorWheel")) {
+									// Wheels end belts
+									isValidBelt = true;
+									break;
+								}
+							} else {
 								break;
 							}
-						} else {
-							break;
-						}
-					};
-										
-					if (isValidBelt) {
-						// Belt found: transmitting group and generating belt pieces
-						// // Wheel: simply transmitting
-						var endWheel = pieces.pop();
-						endWheel.conveyorGroup = internal.conveyorGroup;
-						endWheel.polarity = internal.polarity;
-						
-						// // Pipes: replacing
-						pieces.forEach(function(pipe) {
-							var beltPart = new types.conveyorBelt(internal.parent, pipe.getChar(), pipe.cell);
-							internal.parent.addEntity(beltPart);
-							internal.attachEntity(beltPart);
-							internal.parent.removeEntity(pipe);
+						};
+											
+						if (isValidBelt) {
+							// Belt found: transmitting group and generating belt pieces
+							// // Wheel: simply transmitting
+							var endWheel = pieces.pop();
+							endWheel.conveyorGroup = internal.conveyorGroup;
+							endWheel.polarity = internal.polarity;
 							
-							beltPart.conveyorGroup = internal.conveyorGroup;
-							beltPart.polarity = internal.polarity;
-						});
-					}
-				});
+							// // Pipes: replacing
+							pieces.forEach(function(pipe) {
+								var beltPart = new types.conveyorBelt(internal.parent, pipe.getChar(), pipe.cell);
+								internal.parent.addEntity(beltPart);
+								internal.attachEntity(beltPart);
+								internal.parent.removeEntity(pipe);
+								
+								beltPart.conveyorGroup = internal.conveyorGroup;
+								beltPart.polarity = internal.polarity;
+							});
+							
+							// // Then, transmitting further from the wheel
+							searchForBelts(endWheel.cell, conveyorGroup, endWheel.polarity);
+						}
+					});
+				};
+				
+				searchForBelts(internal.cell, internal.conveyorGroup, internal.polarity);
 			};
 			
 			exposed.$beginActuation = function() {
