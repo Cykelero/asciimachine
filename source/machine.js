@@ -153,23 +153,25 @@ common.constructor = function(worldText) {
 	internal.updatePhysics = function() {
 		// Applying fluid pressure
 		// // Filtering out obsolete pressure points
-		var pressureCells = internal.fluidPressurePoints.map(function(pressurePoint) {
+		var pressureOriginCells = [];
+		
+		internal.fluidPressurePoints = internal.fluidPressurePoints.filter(function(pressurePoint) {
 			var pressuringEntityPresent = pressurePoint.from.getObjects().some(function(entity) {
-				return entity.has("solid") && !entity.has("fluid");
+				return entity.has("solid");
 			});
 			
 			var pressuredFluid = internal.getEntityIn("fluid", pressurePoint.to);
 			
 			if (pressuringEntityPresent && pressuredFluid) {
-				return pressurePoint.to;
+				pressureOriginCells.push(pressurePoint.from);
+				return true;
 			}
-			
-			return undefined;
 		});
 		
 		// // Moving fluid around
-		pressureCells.forEach(function(pressureCell) {
-			var pressuredFluid = internal.getEntityIn("fluid", pressureCell);
+		internal.fluidPressurePoints.forEach(function(pressurePoint) {
+			var pressureCell = pressurePoint.to,
+				pressuredFluid = internal.getEntityIn("fluid", pressureCell);
 			
 			var wave = [pressureCell],
 				traversedCells = [pressureCell];
@@ -187,12 +189,10 @@ common.constructor = function(worldText) {
 				
 				for (var d = 0 ; d < neighborDirections.length ; d++) {
 					var neighborCell = cell.getInDirection(neighborDirections[d]);
+					var isPressurePoint = (pressureOriginCells.indexOf(neighborCell) > -1);
 					
 					// Has cell been traversed already?
 					if (traversedCells.indexOf(neighborCell) > -1) continue;
-					
-					// Is cell a pressure point?
-					if (pressureCells.indexOf(neighborCell) > -1) continue;
 					
 					// No and no: continuing
 					var hasFluid = (internal.getEntityIn("fluid", neighborCell) != null),
@@ -202,9 +202,12 @@ common.constructor = function(worldText) {
 						// Propagating
 						wave.push(neighborCell);
 						traversedCells.push(neighborCell);
-					} else if (!hasSolid) {
+					} else if (!hasSolid && !isPressurePoint) {
+						// Free cell found
+						if (pressurePoint.solid.has("fluid") && neighborCell.y <= pressurePoint.solid.cell.y) continue;
+						
 						// Exit point found! Moving.
-						pressuredFluid.moveTo(neighborCell)
+						pressuredFluid.moveTo(neighborCell);
 						
 						wave.length = 0;
 						break;
