@@ -11,7 +11,8 @@ MachineEntityTypesAggregator.defineType("/", function(attr, types) {
 				parent = this.parent,
 				self = exposed;
 			
-			internal.backgroundColor = [130, 130, 130];
+			internal.color = [130, 130, 130];
+			internal.backgroundColor = [130, 130, 130, .6];
 		};
 		
 		common.internal.name = "slope-up";
@@ -33,7 +34,8 @@ MachineEntityTypesAggregator.defineType("\\", function(attr, types) {
 				parent = this.parent,
 				self = exposed;
 			
-			internal.backgroundColor = [130, 130, 130];
+			internal.color = [130, 130, 130];
+			internal.backgroundColor = [130, 130, 130, .6];
 		};
 		
 		common.internal.name = "slope-down";
