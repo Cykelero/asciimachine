@@ -163,7 +163,7 @@ common.constructor = function(worldText) {
 			// Finding conflicts
 			var entitiesWithSolid = exposed.getEntitiesWith("solid");
 			for (var e = 0 ; e < entitiesWithSolid.length ; e++) {
-				conflicts = conflicts.concat(entitiesWithSolid[e].$findConflicts(0));
+				conflicts = conflicts.concat(entitiesWithSolid[e].$findConflicts());
 				
 				if (conflicts.length) break;
 			};
