@@ -51,7 +51,11 @@ MachineEntityTypesAggregator.defineAttribute("fluid", function(attr, types) {
 						return entity.has("solid");
 					});
 					
-					if (!neighborHasSolid && !lowerHasSolid) {
+					var lowerHasFluid = lowerCell.getObjects().some(function(entity) {
+						return entity.has("fluid");
+					});
+					
+					if (!neighborHasSolid && (!lowerHasSolid || lowerHasFluid)) {
 						exposed.applyForce({
 							axis: 0,
 							amount: xOffset,
