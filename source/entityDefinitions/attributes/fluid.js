@@ -25,9 +25,13 @@ MachineEntityTypesAggregator.defineAttribute("fluid", function(attr, types) {
 					return entity.has("solid");
 				});
 				
+				if (internal.parent.getCurrentFrame() == 0) return;
+				
 				if (!bottomHasSolid) return;
 				
 				if (internal.cellBeforePressureApplication != internal.cell) return;
+				
+				if (exposed.velocities[0].amount || exposed.velocities[1].amount) return;
 				
 				var xOffsets = Math.round(Math.random()) ?
 					[-1, 1]
