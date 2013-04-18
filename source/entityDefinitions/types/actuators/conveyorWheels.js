@@ -15,6 +15,8 @@ MachineEntityTypesAggregator.defineType("+", function(attr, types) {
 		common.internal.name = "conveyorWheel-positive";
 		
 		common.internal.drivingPolarity = true;
+		
+		common.internal.startingAnimationFrame = 1;
 	}];
 });
 
@@ -32,5 +34,7 @@ MachineEntityTypesAggregator.defineType("x", function(attr, types) {
 		common.internal.name = "conveyorWheel-negative";
 		
 		common.internal.drivingPolarity = false;
+		
+		common.internal.startingAnimationFrame = 0;
 	}];
 });

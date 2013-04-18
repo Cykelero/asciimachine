@@ -99,8 +99,19 @@ MachineEntityTypesAggregator.defineAttribute("conveyorWheel", function(attr, typ
 			
 			exposed.$endActuation = function() {
 			}
+			
+			// Display
+			exposed.getChar = function() {
+				var frameCount = common.internal.animationFrames.length,
+					animationFrame = ((internal.conveyorGroup.getAnimationFrame() + common.internal.startingAnimationFrame) % frameCount + frameCount) % frameCount;
+				
+				return common.internal.animationFrames[animationFrame];
+			};
 		};
 		
 		common.internal.drivingPolarity;
+		
+		common.internal.animationFrames = ["x", "+"];
+		common.internal.startingAnimationFrame;
 	}];
 });
