@@ -29,11 +29,6 @@ common.constructor = function(entityA, entityB, axis) {
 			loserEntity = aWins ? entityB : entityA,
 			loserForce = aWins ? forceB : forceA;
 		
-		var loserForceCopy = {};
-		for (var p in loserForce) {
-			if (loserForce.hasOwnProperty(p)) loserForceCopy[p] = loserForce[p];
-		}
-		
 		// Delegate resolution?
 		if (!preventDelegation) {
 			// Loser first
@@ -55,20 +50,23 @@ common.constructor = function(entityA, entityB, axis) {
 			}
 		}
 		
-		// Didn't delegate: Clamping loser force amount
+		// Didn't delegate: Computing loser force amount clamping
 		var direction = (winnerForce.amount != 0) ?
 			(winnerForce.amount > 0 ? 1 : -1)
 			: (loserForce.amount > 0 ? -1 : 1);
 		
-		var winnerProjection = winnerEntity.cell[internal.getAxisLetter()] + winnerForce.amount;
-		
-		loserForce.amount = winnerProjection - loserEntity.cell[internal.getAxisLetter()] + direction;
-		
-		// Changing loser force type
-		loserForce.type = winnerForce.type;
+		var winnerProjection = winnerEntity.cell[internal.getAxisLetter()] + winnerForce.amount,
+			newLoserForceAmount = winnerProjection - loserEntity.cell[internal.getAxisLetter()] + direction;
 		
 		// Calling onWin callback
-		winnerEntity.$onWinConflict(loserEntity, loserForceCopy);
+		var vetoValue = winnerEntity.$onWinConflict(loserEntity, loserForce, newLoserForceAmount);
+		
+		if (vetoValue != undefined && !vetoValue) return; // $onWinConflict can prevent resolution
+		
+		// Applying changes to loser force
+		loserForce.type = winnerForce.type;
+		loserForce.amount = newLoserForceAmount;
+		
 	};
 	
 	// Internal methods

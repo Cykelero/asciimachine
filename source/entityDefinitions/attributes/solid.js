@@ -60,7 +60,7 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 				exposed.moveBy(xSpeed, ySpeed);
 			};
 			
-			exposed.$onWinConflict = function(loser, losingForce) {
+			exposed.$onWinConflict = function(loser, losingForce, newLoserForceAmount) {
 				
 			};
 			
