@@ -13,6 +13,7 @@ common.constructor = function(worldText) {
 	internal.managedAbstractions = [];
 	
 	internal.broadcasts = null;
+	internal.fluidPressurePoints = null;
 	
 	internal.simulationFrame = 0;
 	
@@ -83,12 +84,11 @@ common.constructor = function(worldText) {
 		});
 	};
 	
-	// // State data access
+	// // Other entity calls
 	exposed.getBroadcastsForCell = function(cell) {
 		return internal.broadcasts[cell] || [];
 	};
 	
-	// // Other entity calls
 	exposed.addManagedAbstraction = function(abstraction) {
 		internal.managedAbstractions.push(abstraction);
 	};
@@ -97,6 +97,10 @@ common.constructor = function(worldText) {
 		var abstractionIndex = internal.managedAbstractions.indexOf(abstraction);
 		if (abstractionIndex > -1) internal.managedAbstractions.splice(abstractionIndex, 1);
 		return abstraction;
+	};
+	
+	exposed.addFluidPressurePoint = function(pressurePoint) {
+		internal.fluidPressurePoints.push(pressurePoint);
 	};
 	
 	// Internal methods
@@ -147,6 +151,71 @@ common.constructor = function(worldText) {
 	}
 	
 	internal.updatePhysics = function() {
+		// Applying fluid pressure
+		// // Filtering out obsolete pressure points
+		var pressureCells = internal.fluidPressurePoints.map(function(pressurePoint) {
+			var pressuringEntityPresent = pressurePoint.from.getObjects().some(function(entity) {
+				return entity.has("solid") && !entity.has("fluid");
+			});
+			
+			var pressuredFluid = internal.getEntityIn("fluid", pressurePoint.to);
+			
+			if (pressuringEntityPresent && pressuredFluid) {
+				return pressurePoint.to;
+			}
+			
+			return undefined;
+		});
+		
+		// // Moving fluid around
+		pressureCells.forEach(function(pressureCell) {
+			var pressuredFluid = internal.getEntityIn("fluid", pressureCell);
+			
+			var wave = [pressureCell],
+				traversedCells = [pressureCell];
+			
+			while (wave.length) {
+				var cell = wave.shift();
+				
+				var leftFirst = Math.round(Math.random());
+				var neighborDirections = [
+					Direction.down,
+					leftFirst ? Direction.left : Direction.right,
+					leftFirst ? Direction.right : Direction.left,
+					Direction.up
+				];
+				
+				for (var d = 0 ; d < neighborDirections.length ; d++) {
+					var neighborCell = cell.getInDirection(neighborDirections[d]);
+					
+					// Has cell been traversed already?
+					if (traversedCells.indexOf(neighborCell) > -1) continue;
+					
+					// Is cell a pressure point?
+					if (pressureCells.indexOf(neighborCell) > -1) continue;
+					
+					// No and no: continuing
+					var hasFluid = (internal.getEntityIn("fluid", neighborCell) != null),
+						hasSolid = (internal.getEntityIn("solid", neighborCell) != null);
+					
+					if (hasFluid) {
+						// Propagating
+						wave.push(neighborCell);
+						traversedCells.push(neighborCell);
+					} else if (!hasSolid) {
+						// Exit point found! Moving.
+						pressuredFluid.moveTo(neighborCell)
+						
+						wave.length = 0;
+						break;
+					}
+				};
+			};
+		});
+		
+		// Resetting pressure points
+		internal.fluidPressurePoints = [];
+		
 		// Generating forces
 		exposed.getEntitiesWith("solid").forEach(function(entity) {
 			entity.$generateForces();
@@ -187,6 +256,15 @@ common.constructor = function(worldText) {
 		});
 	};
 	
+	internal.getEntityIn = function(type, cell) {
+		var entities = cell.getObjects();
+		for (var i = 0 ; i < entities.length ; i++) {
+			var entity = entities[i];
+			if (entity.has(type)) return entity;
+		}
+		return null;
+	};
+	
 	// Init
 	var lines = worldText.split("\n");
 	
@@ -222,6 +300,7 @@ common.constructor = function(worldText) {
 	});
 	
 	// // First frame
+	internal.fluidPressurePoints = [];
 	internal.updateInstant();
 };
 
