@@ -15,6 +15,11 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 			exposed.$beginFrame = function() {
 				parent.exposed.$beginFrame();
 				
+				internal.resetVelocities();
+			};
+			
+			// Physics
+			internal.resetVelocities = function() {
 				var inertiaType = common.internal.forceTypes["inertia_" + common.internal.weight];
 				exposed.velocities = [
 					{amount: 0, type: inertiaType},
@@ -22,7 +27,6 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 				];
 			};
 			
-			// Physics
 			// // Acting
 			exposed.$generateForces = function() {};
 			
@@ -143,6 +147,9 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 			exposed.getProjectedPosition = function() {
 				return internal.cell.getWithOffset(exposed.velocities[0].amount, exposed.velocities[1].amount);
 			};
+			
+			// Init
+			internal.resetVelocities();
 		};
 		
 		common.internal.forceTypes = [
@@ -155,7 +162,9 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 			"inertia_normal",
 			"wind_light",
 			"friction_light",
-			"inertia_light"
+			"inertia_light",
+			"gravity_extralight",
+			"inertia_extralight"
 		].reduce(function(map, item, index) {
 			map[item] = index;
 			return map;
