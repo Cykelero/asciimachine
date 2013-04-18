@@ -22,7 +22,7 @@ MachineEntityTypesAggregator.defineAttribute("fluid", function(attr, types) {
 				parent.exposed.$generateForces();
 				
 				var bottomHasSolid = internal.cell.getBottom().getObjects().some(function(entity) {
-					return entity.has("solid");
+					return entity.has("solid") && !entity.has("fluid");
 				});
 				
 				if (internal.parent.getCurrentFrame() == 0) return;
