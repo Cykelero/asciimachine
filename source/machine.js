@@ -14,10 +14,14 @@ common.constructor = function(worldText) {
 	
 	internal.broadcasts = null;
 	
+	internal.simulationFrame = 0;
+	
 	// Exposed methods
 	exposed.tick = function() {
 		internal.updatePhysics();
 		internal.updateInstant();
+		
+		internal.simulationFrame++;
 	}
 	
 	exposed.renderTo = function(renderer) {
@@ -53,6 +57,10 @@ common.constructor = function(worldText) {
 				entity.$userAction();
 			});
 		}
+	};
+	
+	exposed.getCurrentFrame = function() {
+		return internal.simulationFrame;
 	};
 	
 	// // Entity management
