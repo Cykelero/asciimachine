@@ -160,7 +160,7 @@ common.constructor = function(worldText) {
 				return entity.has("solid");
 			});
 			
-			var pressuredFluid = internal.getEntityIn("fluid", pressurePoint.to);
+			var pressuredFluid = internal.cellHas(pressurePoint.to, "fluid");
 			
 			if (pressuringEntityPresent && pressuredFluid) {
 				pressureOriginCells.push(pressurePoint.from);
@@ -195,8 +195,8 @@ common.constructor = function(worldText) {
 					if (traversedCells.indexOf(neighborCell) > -1) continue;
 					
 					// No and no: continuing
-					var hasFluid = (internal.getEntityIn("fluid", neighborCell) != null),
-						hasSolid = (internal.getEntityIn("solid", neighborCell) != null);
+					var hasFluid = internal.cellHas(neighborCell, "fluid"),
+						hasSolid = internal.cellHas(neighborCell, "solid");
 					
 					if (hasFluid) {
 						// Propagating
@@ -266,6 +266,10 @@ common.constructor = function(worldText) {
 			if (entity.has(type)) return entity;
 		}
 		return null;
+	};
+	
+	internal.cellHas = function(cell, type) {
+		return (internal.getEntityIn(type, cell) != null);
 	};
 	
 	// Init
