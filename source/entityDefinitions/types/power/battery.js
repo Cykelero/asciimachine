@@ -26,6 +26,14 @@ MachineEntityTypesAggregator.defineType("#", function(attr, types) {
 			};
 			internal.spreadPowerState = function() {
 			};
+			
+			exposed.getColor = function() {
+				if (!internal.isAffectedBy("inhibitPower")) {
+					return internal.poweredColor;
+				} else {
+					return internal.color;
+				}
+			};
 		};
 		
 		common.internal.name = "battery";
