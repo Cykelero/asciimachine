@@ -15,7 +15,9 @@ MachineEntityTypesAggregator.defineType("Y", function(attr, types) {
 			internal.color = [220, 220, 220];
 			internal.backgroundColor = [130, 130, 130];
 			
-			internal.doesBeamTraverse = function(cell) {
+			internal.doesBeamTraverse = function(cell, distance) {
+				if (distance == 0) return true;
+				
 				return cell.getObjects().every(function(entity) {
 					return !entity.has("fixed");
 				});
