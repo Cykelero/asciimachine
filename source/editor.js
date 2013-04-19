@@ -129,10 +129,12 @@ common.exposed = function(input) {
 			internal.initializeRenderTargets();
 		}
 				
-		// If simulation running: resetting characters and background colors
+		// If simulation running: resetting renderTargets
 		if (internal.isRunning) {
 			internal.renderTargets.forEach(function(column) {
 				column.forEach(function(target) {
+					target.depth = Number.POSITIVE_INFINITY;
+					
 					target.element.textContent = " ";
 					target.element.style.backgroundColor = "black";
 				});
