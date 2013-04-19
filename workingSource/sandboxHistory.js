@@ -185,6 +185,7 @@ Xx=====+X
  H>¨     ¨<H
 
 
+
    O
    
  E#]     [#E
@@ -192,3 +193,17 @@ Xx=====+X
  E---+=x---E
    e#]0[#e
 
+
+
+
+  X#+=====+XX
+  EE]      XX
+  %#       XX
+  VXO      XX
+  EX      [#E
+  |#+=====+X|
+  |  AAAAAA |
+  &# YYYYYY-E
+  V¨        |
+  EA        |
+  EH--------E
