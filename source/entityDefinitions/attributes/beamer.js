@@ -33,20 +33,23 @@ MachineEntityTypesAggregator.defineAttribute("beamer", function(attr, types) {
 					var broadcasts = [];
 					
 					internal.beamDirections.forEach(function(direction) {
-						var cell = internal.cell;
+						var cell = internal.cell,
+							distance = 0;
 						
 						if (internal.usingArrowDirections) {
 							cell = cell.getInDirection(direction);
 						}
 						
 						while (cell = cell.getInDirection(direction)) {
-							if (!internal.doesBeamTraverse(cell)) break;
+							if (!internal.doesBeamTraverse(cell, distance)) break;
 							if (!cell.isInsideGrid()) break;
 							
 							broadcasts.push({
 								cell: cell,
 								type: internal.getBroadcastType(direction)
 							});
+							
+							distance++;
 						};
 					});
 					
