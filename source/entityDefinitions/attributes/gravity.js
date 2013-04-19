@@ -22,9 +22,12 @@ MachineEntityTypesAggregator.defineAttribute("gravity", function(attr, types) {
 			exposed.$generateForces = function() {
 				parent.exposed.$generateForces();
 				
+				var amount = common.internal.gravityAmount;
+				if (internal.isAffectedBy("reverseGravity")) amount = -amount;
+				
 				exposed.applyForce({
 					axis: 1,
-					amount: common.internal.gravityAmount,
+					amount: amount,
 					type: common.internal.forceTypes["gravity_"+common.internal.weight]
 				});
 			};
