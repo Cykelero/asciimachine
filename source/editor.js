@@ -42,6 +42,7 @@ common.exposed = function(input) {
 		
 		if (run) {
 			// Completing render targets
+			internal.initializeRenderTargets(true);
 			internal.generateMissingRenderTargets();
 			
 			// Starting simulation
@@ -145,7 +146,7 @@ common.exposed = function(input) {
 	}
 	
 	// // Rendering targets
-	internal.initializeRenderTargets = function() {
+	internal.initializeRenderTargets = function(prepareForRunMode) {
 		// Resetting targets
 		internal.renderTargets = [];
 		
@@ -177,6 +178,16 @@ common.exposed = function(input) {
 					findLetters(node);
 					
 					if (node.tagName == "DIV") {
+						// If preparing to run and div is empty, adding anchor renderTarget
+						if (prepareForRunMode) {
+							if (node.textContent.length == 0 || node.textContent == "\n") {
+								var newTarget = document.createElement("span");
+								node.insertBefore(newTarget, node.firstChild);
+								internal.getRenderTarget(currentX, currentY).element = newTarget;
+							}
+						}
+						
+						// Following characters are on a new line
 						currentX = 0;
 						currentY++;
 					}
