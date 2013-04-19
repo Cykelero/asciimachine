@@ -116,20 +116,8 @@ common.constructor = function(worldText) {
 		internal.entities.forEach(function(entity) {
 			entity.$beginFrame();
 		});
-
-		exposed.getEntitiesWith("broadcaster").forEach(function(entity) {
-			var broadcasts = entity.$getBroadcasts();
-			
-			if (broadcasts) {
-				broadcasts.forEach(function(broadcast) {
-					var cell = broadcast.cell.toString();
-					
-					if (!(cell in internal.broadcasts)) internal.broadcasts[cell] = [];
-					
-					internal.broadcasts[cell].push(broadcast);
-				});
-			}
-		});
+		
+		internal.generateBroadcasts();
 
 		exposed.getEntitiesWith("conductor").forEach(function(entity) {
 			entity.$spreadPowerState();
@@ -148,6 +136,8 @@ common.constructor = function(worldText) {
 				return count + entity.$refreshOutputs();
 			}, 0);
 		} while (unstableCount != previousUnstableCount);
+		
+		internal.generateBroadcasts();
 	}
 	
 	internal.updatePhysics = function() {
@@ -256,6 +246,22 @@ common.constructor = function(worldText) {
 		// Actuators (post-physics cleanup)
 		exposed.getEntitiesWith("actuator").forEach(function(entity) {
 			entity.$endActuation();
+		});
+	};
+	
+	internal.generateBroadcasts = function() {
+		exposed.getEntitiesWith("broadcaster").forEach(function(entity) {
+			var broadcasts = entity.$getBroadcasts();
+			
+			if (broadcasts) {
+				broadcasts.forEach(function(broadcast) {
+					var cell = broadcast.cell.toString();
+					
+					if (!(cell in internal.broadcasts)) internal.broadcasts[cell] = [];
+					
+					internal.broadcasts[cell].push(broadcast);
+				});
+			}
 		});
 	};
 	
