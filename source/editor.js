@@ -216,9 +216,14 @@ common.exposed = function(input) {
 						// If preparing to run and div is empty, adding anchor renderTarget
 						if (prepareForRunMode) {
 							if (node.textContent.length == 0 || node.textContent == "\n") {
-								var newTarget = document.createElement("span");
-								node.insertBefore(newTarget, node.firstChild);
-								internal.getRenderTarget(currentX, currentY).element = newTarget;
+								var firstLineTarget = internal.getRenderTarget(currentX, currentY);
+								
+								if (firstLineTarget) {
+									var newTarget = document.createElement("span");
+									node.insertBefore(newTarget, node.firstChild);
+									firstLineTarget.element = newTarget;
+								}
+								
 							}
 						}
 						
