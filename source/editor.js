@@ -81,10 +81,80 @@ common.exposed = function(input) {
 	
 	// // Machine rendering methods
 	exposed.beginFrame = function(width, height) {
-		// Preparing span array
-		internal.initializeRenderTargets(width, height);
+		// If simulation not running: resetting render targets
+		if (!internal.isRunning) {
+			internal.initializeRenderTargets(width, height);
+		}
+				
+		// If simulation running: resetting characters and background colors
+		if (internal.isRunning) {
+			internal.renderTargets.forEach(function(column) {
+				column.forEach(function(target) {
+					target.element.textContent = " ";
+					target.element.style.backgroundColor = "black";
+				});
+			});
+		}
+	};
+	
+	exposed.drawObject = function(info) {
+		if (info.char == "") return;
 		
-		// Finding letters, making them into spans
+		var renderTarget = internal.getRenderTarget(info.x, info.y);
+		
+		if (renderTarget) {
+			// Depth handling
+			if (renderTarget.depth < info.depth) return;
+			renderTarget.depth = info.depth;
+			
+			// Coloring
+			var span = renderTarget.element;
+			span.style.color = common.internal.color(info.color);
+			
+			var backgroundColor = info.backgroundColor;
+			if (backgroundColor[3] == 0) backgroundColor = [0, 0, 0, 1];
+			span.style.backgroundColor = common.internal.color(backgroundColor);
+			
+			// Char setting
+			if (info.char == " ") info.char = " ";
+			if (internal.isRunning) span.textContent = info.char;
+		}
+	};
+	
+	exposed.flushFrame = function() {
+		
+	};
+	
+	// Internal methods
+	// // Input element I/O
+	internal.refreshDisplay = function(text) {
+		var machine = ASCIIMachine.newMachine(text);
+		machine.renderTo(self);
+	};
+	
+	internal.getInputText = function() {
+		var text = internal.input.innerText || internal.input.textContent;
+		text = text.replace(/ /g, " ");
+		return text;
+	}
+	
+	// // Rendering targets
+	internal.initializeRenderTargets = function(width, height) {
+		// Resetting targets
+		internal.renderTargets = [];
+		
+		for (var x = 0 ; x < width ; x++) {
+			var column = internal.renderTargets[x] = [];
+			for (var y = 0 ; y < height ; y++) {
+				var span = document.createElement("span");
+				column[y] = {
+					element: span,
+					depth: Number.POSITIVE_INFINITY
+				};
+			};
+		};
+		
+		// Finding letters, making them into indexed spans
 		var currentX = 0,
 			currentY = 0;
 		
@@ -148,73 +218,6 @@ common.exposed = function(input) {
 		};
 		
 		findLetters(internal.input);
-		
-		// If simulation running: resetting characters and background colors
-		if (internal.isRunning) {
-			internal.renderTargets.forEach(function(column) {
-				column.forEach(function(target) {
-					target.element.textContent = " ";
-					target.element.style.backgroundColor = "black";
-				});
-			});
-		}
-	};
-	
-	exposed.drawObject = function(info) {
-		if (info.char == "") return;
-		
-		var renderTarget = internal.getRenderTarget(info.x, info.y);
-		
-		if (renderTarget) {
-			// Depth handling
-			if (renderTarget.depth < info.depth) return;
-			renderTarget.depth = info.depth;
-			
-			// Coloring
-			var span = renderTarget.element;
-			span.style.color = common.internal.color(info.color);
-			
-			var backgroundColor = info.backgroundColor;
-			if (backgroundColor[3] == 0) backgroundColor = [0, 0, 0, 1];
-			span.style.backgroundColor = common.internal.color(backgroundColor);
-			
-			// Char setting
-			if (info.char == " ") info.char = " ";
-			if (internal.isRunning) span.textContent = info.char;
-		}
-	};
-	
-	exposed.flushFrame = function() {
-		
-	};
-	
-	// Internal methods
-	// // Input element I/O
-	internal.refreshDisplay = function(text) {
-		var machine = ASCIIMachine.newMachine(text);
-		machine.renderTo(self);
-	};
-	
-	internal.getInputText = function() {
-		var text = internal.input.innerText || internal.input.textContent;
-		text = text.replace(/ /g, " ");
-		return text;
-	}
-	
-	// // Rendering targets
-	internal.initializeRenderTargets = function(width, height) {
-		internal.renderTargets = [];
-		
-		for (var x = 0 ; x < width ; x++) {
-			var column = internal.renderTargets[x] = [];
-			for (var y = 0 ; y < height ; y++) {
-				var span = document.createElement("span");
-				column[y] = {
-					element: span,
-					depth: Number.POSITIVE_INFINITY
-				};
-			};
-		};
 	};
 	
 	internal.getRenderTarget = function(x, y) {
