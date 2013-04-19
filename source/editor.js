@@ -14,6 +14,7 @@ common.exposed = function(input) {
 	internal.machineText = null;
 	
 	internal.isRunning = false;
+	internal.tickTimeout = null;
 	
 	internal.shiftKeyDown = false;
 	
@@ -66,18 +67,20 @@ common.exposed = function(input) {
 			var machine = ASCIIMachine.newMachine(internal.machineText);
 			
 			var tick = function() {
-				if (internal.isRunning) {
-					machine.tick();
-					machine.renderTo(self);
-					
-					setTimeout(tick, common.internal.simulationRate);
-				}
+				machine.tick();
+				machine.renderTo(self);
+				
+				internal.tickTimeout = setTimeout(tick, common.internal.simulationRate);
 			};
 			
 			tick();
 			
 		} else {
 			// Stopping simulation
+			// // Stopping tick
+			clearTimeout(internal.tickTimeout);
+			internal.tickTimeout = null;
+			
 			// // Reinserting original text
 			var text = internal.machineText.replace(/ /g, " "),
 				lines = text.split("\n");
