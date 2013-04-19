@@ -21,9 +21,28 @@
 			font-family: Monaco, monospace;
 			color: white;
 		}
+		
+		#modeToggleButton {
+			position: fixed;
+			right: 5px;
+			top: 5px;
+			
+			font-size: 1.2em;
+		}
 	</style>
+	<script type="text/javascript">
+		document.addEventListener("DOMContentLoaded", function() {
+			var toggleButton = document.getElementById("modeToggleButton");
+			toggleButton.addEventListener("click", function() {
+				editor.toggleMode();
+				toggleButton.textContent = editor.getMode() ? "Stop" : "Run";
+			});
+		});
+	</script>
 </head>
 <body>
+
+<button id="modeToggleButton" title="Shift+Enter">Run</button>
 
 <div id="inputField">
 #--@--%><br>
