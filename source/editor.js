@@ -68,7 +68,7 @@ common.exposed = function(input) {
 			internal.input.innerHTML = "";
 			lines.forEach(function(line) {
 				var div = document.createElement("div");
-				div.innerText = line;
+				div.innerText = line + "\n";
 				internal.input.appendChild(div);
 			});
 			
