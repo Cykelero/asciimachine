@@ -41,11 +41,12 @@ common.exposed = function(input) {
 		internal.input.contentEditable = !run;
 		
 		if (run) {
-			// Completing render targets
+			// Starting simulation
+			// // Completing render targets
 			internal.initializeRenderTargets(true);
 			internal.generateMissingRenderTargets();
 			
-			// Saving caret position
+			// // Saving caret position
 			var selectedRenderTarget = internal.getSelectionPosition();
 			
 			if (selectedRenderTarget) {
@@ -60,7 +61,7 @@ common.exposed = function(input) {
 				};
 			}
 			
-			// Starting simulation
+			// // Creating machine, scheduling ticks
 			internal.machineText = internal.getInputText();
 			var machine = ASCIIMachine.newMachine(internal.machineText);
 			
