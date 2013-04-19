@@ -45,6 +45,21 @@ common.exposed = function(input) {
 			internal.initializeRenderTargets(true);
 			internal.generateMissingRenderTargets();
 			
+			// Saving caret position
+			var selectedRenderTarget = internal.getSelectionPosition();
+			
+			if (selectedRenderTarget) {
+				internal.savedCaretPosition = {
+					x: selectedRenderTarget.x,
+					y: selectedRenderTarget.y
+				};
+			} else {
+				internal.savedCaretPosition = {
+					x: 0,
+					y: 0
+				};
+			}
+			
 			// Starting simulation
 			internal.machineText = internal.getInputText();
 			var machine = ASCIIMachine.newMachine(internal.machineText);
@@ -75,6 +90,19 @@ common.exposed = function(input) {
 			
 			// // Coloring text
 			internal.refreshDisplay(internal.machineText);
+			
+			// // Restoring caret position
+			var selectedRenderTarget = internal.getRenderTarget(internal.savedCaretPosition.x, internal.savedCaretPosition.y);
+			
+			if (selectedRenderTarget && selectedRenderTarget.element.parentNode) {
+				var newRange = document.createRange();
+				newRange.setStart(selectedRenderTarget.element, 1);
+				newRange.setEnd(selectedRenderTarget.element, 1);
+				
+				var selectionObject = window.getSelection();
+				selectionObject.removeAllRanges();
+				selectionObject.addRange(newRange);
+			}
 			
 		}
 	};
@@ -155,6 +183,8 @@ common.exposed = function(input) {
 			for (var y = 0 ; y < internal.height ; y++) {
 				var span = document.createElement("span");
 				column[y] = {
+					x: x,
+					y: y,
 					element: span,
 					depth: Number.POSITIVE_INFINITY
 				};
