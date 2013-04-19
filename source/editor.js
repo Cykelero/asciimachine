@@ -178,6 +178,7 @@ common.exposed = function(input) {
 			span.style.backgroundColor = common.internal.color(backgroundColor);
 			
 			// Char setting
+			if (info.char == " ") info.char = " ";
 			if (internal.isRunning) span.textContent = info.char;
 		}
 	};
