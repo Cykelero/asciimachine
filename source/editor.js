@@ -258,6 +258,58 @@ common.exposed = function(input) {
 		};
 	};
 	
+	// // Other
+	internal.getSelectionPosition = function() {
+		function searchBackwards(element, searchDown, searchUp) {
+			// Is the element a renderTarget?
+			var renderTargetObject = null;
+			internal.renderTargets.some(function(colum) {
+				return colum.some(function(renderTarget) {
+					if (renderTarget.element == element) {
+						// Found!
+						renderTargetObject = renderTarget;
+						return true;
+					}
+				});
+			});
+			
+			if (renderTargetObject) return renderTargetObject;
+			
+			// No. Any of its children?
+			var lastChild = element.lastChild;
+			if (searchDown && lastChild) {
+				var result = searchBackwards(lastChild, true, false);
+				if (result) return result;
+			}
+			
+			// No. Its preceding sibling, or parent?
+			var preceding = element.previousSibling;
+			
+			if (preceding) {
+				var result = searchBackwards(preceding, true, searchUp);
+				if (result) return result;
+			} else {
+				if (searchUp && element.parentNode) {
+					var result = searchBackwards(element.parentNode, false, true);
+					if (result) return result;
+				}
+			}
+			
+			return null;
+		};
+		
+		var selectionObject = window.getSelection();
+		if (selectionObject.rangeCount > 0) {
+			var range = selectionObject.getRangeAt(0);
+			var container = range.startContainer;
+			var element = container.childNodes[range.startOffset] || container;
+			
+			return searchBackwards(element, true, true);
+		} else {
+			return null;
+		}
+	};
+	
 	// Init
 	// // Preparing input
 	internal.input.contentEditable = true;
@@ -338,4 +390,3 @@ common.internal.simulationRate = 1000/4;
 
 return common.exposed;
 })();
-
