@@ -41,6 +41,9 @@ common.exposed = function(input) {
 		internal.input.contentEditable = !run;
 		
 		if (run) {
+			// Completing render targets
+			internal.generateMissingRenderTargets();
+			
 			// Starting simulation
 			internal.machineText = internal.getInputText();
 			var machine = ASCIIMachine.newMachine(internal.machineText);
@@ -227,6 +230,21 @@ common.exposed = function(input) {
 		var column = internal.renderTargets[x];
 		if (!column) return null;
 		return column[y] || null;
+	};
+	
+	internal.generateMissingRenderTargets = function() {
+		for (var y = 0 ; y < internal.height ; y++) {
+			if (!internal.renderTargets[0][y].element.parentNode) continue; // passing empty lines for now
+			
+			for (var x = 0 ; x < internal.width ; x++) {;
+				var renderSpan = internal.renderTargets[x][y].element;
+				
+				if (!renderSpan.parentNode) {
+					var previousSpan = internal.renderTargets[x-1][y].element;
+					previousSpan.parentNode.insertBefore(renderSpan, previousSpan.nextSibling);
+				}
+			};
+		};
 	};
 	
 	// Init
