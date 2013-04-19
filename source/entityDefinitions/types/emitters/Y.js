@@ -12,8 +12,9 @@ MachineEntityTypesAggregator.defineType("Y", function(attr, types) {
 				parent = this.parent,
 				self = exposed;
 			
-			internal.color = [220, 220, 220];
-			internal.backgroundColor = [130, 130, 130];
+			internal.color = [255, 255, 255];
+			internal.backgroundColor = [50, 160, 200];
+			internal.poweredBackgroundColor = [60, 130, 170];
 			
 			internal.doesBeamTraverse = function(cell, distance) {
 				if (distance == 0) return true;
@@ -25,6 +26,10 @@ MachineEntityTypesAggregator.defineType("Y", function(attr, types) {
 			
 			internal.getBroadcastType = function(direction) {
 				return "reverseGravity";
+			};
+			
+			exposed.getBackgroundColor = function() {
+				return exposed.isPowered() ? internal.poweredBackgroundColor : internal.backgroundColor;
 			};
 		};
 		
