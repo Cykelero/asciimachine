@@ -409,7 +409,7 @@ common.exposed = function(input) {
 	
 	// // // Esc
 	document.addEventListener("keydown", function(event) {
-		if (event.keyCode == 27) {
+		if (event.keyCode == 27 || event.keyCode == 8) {
 			if (internal.isRunning) {
 				exposed.setMode(false);
 				event.preventDefault();
