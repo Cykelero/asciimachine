@@ -81,9 +81,12 @@ common.exposed = function(input) {
 	
 	// // Machine rendering methods
 	exposed.beginFrame = function(width, height) {
+		internal.width = width;
+		internal.height = height;
+		
 		// If simulation not running: resetting render targets
 		if (!internal.isRunning) {
-			internal.initializeRenderTargets(width, height);
+			internal.initializeRenderTargets();
 		}
 				
 		// If simulation running: resetting characters and background colors
@@ -139,13 +142,13 @@ common.exposed = function(input) {
 	}
 	
 	// // Rendering targets
-	internal.initializeRenderTargets = function(width, height) {
+	internal.initializeRenderTargets = function() {
 		// Resetting targets
 		internal.renderTargets = [];
 		
-		for (var x = 0 ; x < width ; x++) {
+		for (var x = 0 ; x < internal.width ; x++) {
 			var column = internal.renderTargets[x] = [];
-			for (var y = 0 ; y < height ; y++) {
+			for (var y = 0 ; y < internal.height ; y++) {
 				var span = document.createElement("span");
 				column[y] = {
 					element: span,
