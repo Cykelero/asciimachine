@@ -59,7 +59,8 @@ common.exposed = function(input) {
 		} else {
 			// Stopping simulation
 			// // Reinserting original text
-			var lines = internal.machineText.split("\n");
+			var text = internal.machineText.replace(/ /g, " "),
+				lines = text.split("\n");
 			
 			internal.input.innerHTML = "";
 			lines.forEach(function(line) {
