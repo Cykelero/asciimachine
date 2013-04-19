@@ -112,6 +112,10 @@ common.exposed = function(input) {
 		exposed.setMode(!internal.isRunning);
 	};
 	
+	exposed.getMode = function() {
+		return internal.isRunning;
+	};
+	
 	// // Machine rendering methods
 	exposed.beginFrame = function(width, height) {
 		internal.width = width;
