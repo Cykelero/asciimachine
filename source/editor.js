@@ -278,8 +278,28 @@ common.exposed = function(input) {
 	document.addEventListener("keydown", function(event) {
 		if (event.keyCode == 13) {
 			if (internal.shiftKeyDown) {
+				// Shift + enter: running
 				exposed.setMode(true);
 				return false;
+			} else {
+				// Enter: helping the browser add line breaks
+				var selectionObject = window.getSelection();
+				if (selectionObject.rangeCount > 0) {
+					var range = selectionObject.getRangeAt(0);
+					var element = range.startContainer;
+					
+					if (element.nodeType == 1) {
+						// Not a text node
+						var targetNode = document.createTextNode("");
+						range.insertNode(targetNode);
+						
+						var newRange = document.createRange();
+						newRange.setStart(targetNode, 0);
+						newRange.setEnd(targetNode, 0);
+						selectionObject.removeAllRanges();
+						selectionObject.addRange(newRange);
+					}
+				}
 			}
 		}
 	});
