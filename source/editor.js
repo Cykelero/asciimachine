@@ -254,8 +254,12 @@ common.exposed = function(input) {
 							
 							var charSpan;
 							if (char != "\n") {
-								charSpan = internal.getRenderTarget(currentX, currentY).element;
-								currentX++;
+								var renderTarget = internal.getRenderTarget(currentX, currentY);
+								
+								if (renderTarget) {
+									charSpan = renderTarget.element;
+									currentX++;
+								}
 							} else {
 								charSpan = document.createElement("span");
 							}
