@@ -264,6 +264,8 @@ common.exposed = function(input, backgroundColor) {
 								if (renderTarget) {
 									charSpan = renderTarget.element;
 									currentX++;
+								} else {
+									charSpan = document.createElement("span");
 								}
 							} else {
 								charSpan = document.createElement("span");
