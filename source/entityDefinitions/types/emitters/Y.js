@@ -24,8 +24,10 @@ MachineEntityTypesAggregator.defineType("Y", function(attr, types) {
 				});
 			};
 			
-			internal.getBroadcastType = function(direction) {
-				return "reverseGravity";
+			internal.getBroadcastInfo = function(direction) {
+				return {
+					type: "reverseGravity"
+				};
 			};
 			
 			exposed.getBackgroundColor = function() {

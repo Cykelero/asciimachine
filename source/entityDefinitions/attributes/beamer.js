@@ -44,9 +44,12 @@ MachineEntityTypesAggregator.defineAttribute("beamer", function(attr, types) {
 							if (!internal.doesBeamTraverse(cell, distance)) break;
 							if (!cell.isInsideGrid()) break;
 							
+							var info = internal.getBroadcastInfo(direction);
+							
 							broadcasts.push({
 								cell: cell,
-								type: internal.getBroadcastType(direction)
+								type: info.type,
+								data: info.data
 							});
 							
 							distance++;
@@ -58,7 +61,7 @@ MachineEntityTypesAggregator.defineAttribute("beamer", function(attr, types) {
 			};
 			
 			internal.doesBeamTraverse;
-			internal.getBroadcastType;
+			internal.getBroadcastInfo;
 		};
 		
 		common.internal.defaultBeamDirections = [];
