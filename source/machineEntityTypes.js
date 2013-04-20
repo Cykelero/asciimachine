@@ -17,6 +17,7 @@
 // needs entityDefinitions/types/actuators/conveyorWheels.js
 
 // needs entityDefinitions/types/emitters/Y.js
+// needs entityDefinitions/types/emitters/F.js
 
 // needs entityDefinitions/types/mobile/O.js
 // needs entityDefinitions/types/mobile/balloon.js
