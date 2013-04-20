@@ -28,7 +28,13 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 			};
 			
 			// // Acting
-			exposed.$generateForces = function() {};
+			exposed.$generateForces = function() {
+				var remoteForces = internal.getAffectingBroadcastsOfType("applyForce");
+				
+				remoteForces.forEach(function(info) {
+					exposed.applyForce(info.data.force);
+				});
+			};
 			
 			exposed.applyForce = function(parameters) {
 				var axis = +parameters.axis,
