@@ -21,31 +21,30 @@ XXXXXXXXXXX
     H
 
 
- #H%>H%>H
-   H    H
-   HHH@HH
-  
- 
- 
- 
-  #
-  %>H%>HH#
- HH     H
- H------H
+#H%>H%>H
+  H    H
+  HHH@HH
 
 
 
-  #
-  %>H%>HH#
-  H     H
-  H-----H
-  
-  
-  
-   #
+ #
  %>H%>HH#
- @     H
- HHHHHHH
+HH     H
+H------H
+
+
+
+ #
+ %>H%>HH#
+ H     H
+ H-----H
+  
+  
+  
+  #
+%>H%>HH#
+@     H
+HHHHHHH
   
          
          
@@ -100,16 +99,16 @@ H<%@#@%>H
 
 
 
-      O
-    O O  AAA
-         III
-         III  #
- #----%>-HHHO @
-  H---|--HXH<=H
-  | 0 @  XXHXXX
-  |   #  XXX  X
-  H=>    XXX  X
-    X    XXX  X
+     O
+   O O  AAA
+        III
+        III  #
+#----%>-HHHO @
+ H---|--HXH<=H
+ | 0 @  XXHXXX
+ |   #  XXX  X
+ H=>    XXX  X
+   X    XXX  X
 
 
 
@@ -172,37 +171,37 @@ Xx=====+X
     #
 
 
-   O
-   
- E#]     [#E
- EX+=====xXE
- E-|-%#%-|-E
- % | V V | %
- V |e|-e | V
- | ||e--e| E
- | ||   || |
- E-EE   EE-E
- H>¨     ¨<H
+  O
+  
+E#]     [#E
+EX+=====xXE
+E-|-%#%-|-E
+% | V V | %
+V |e|-e | V
+| ||e--e| E
+| ||   || |
+E-EE   EE-E
+H>¨     ¨<H
 
 
 
-   O
-   
- E#]     [#E
- EX+=====xXE
- E---+=x---E
-   e#]0[#e
+  O
+  
+E#]     [#E
+EX+=====xXE
+E---+=x---E
+  e#]0[#e
 
 
 
 
-   #+=====+X 
-  EE]      XX
-  %#       XX
-  VXO      XX
-  EX      [#E
-  |#+=====+X|
-  E] AAAAAA E
-  EA YYYYYY-E
-  EH--------E
+ #+=====+X 
+EE]      XX
+%#       XX
+VXO      XX
+EX      [#E
+|#+=====+X|
+E] AAAAAA E
+EA YYYYYY-E
+EH--------E
 
