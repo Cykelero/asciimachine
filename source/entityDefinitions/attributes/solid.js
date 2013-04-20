@@ -31,7 +31,7 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 			exposed.$generateForces = function() {};
 			
 			exposed.applyForce = function(parameters) {
-				var axis = parameters.axis,
+				var axis = +parameters.axis,
 					amount = parameters.amount,
 					type = common.internal.forceTypes[parameters.type];
 				
