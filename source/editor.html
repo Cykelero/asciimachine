@@ -7,31 +7,112 @@
 	<script src="editor.js" type="text/javascript" language="Javascript"></script>
 	<script type="text/javascript" language="Javascript">
 		document.addEventListener("DOMContentLoaded", function() {
-			editor = new Editor(document.querySelector("#inputField"));
+			editor = new Editor(document.querySelector("#inputField"), "#2a2a2a");
 		});
 	</script>
 	<style type="text/css" media="all">
 		body {
-			background-color: black;
-		}
-		
-		#inputField {
-			outline: none;
+			background: -webkit-linear-gradient(top, #ccc, white);
+			background: linear-gradient(top, #ccc, white);
+			background-size: 1px 350px;
+			background-repeat: repeat-x;
 			
-			font-family: Monaco, monospace;
-			color: white;
+			text-align: center;
 		}
 		
-		#inputField div {
-			margin-bottom: -1px;
+		#content {
+			display: inline-block;
+			
+			position: relative;
+			margin: 60px;
+			
+			padding-top: 65px;
 		}
 		
 		#modeToggleButton {
-			position: fixed;
-			right: 5px;
-			top: 5px;
+			position: absolute;
+			right: 0px;
+			top: 4px;
 			
-			font-size: 1.2em;
+			padding: 3px 10px;
+			
+			background: -webkit-linear-gradient(top, #eee, #eaeaea);
+			background: linear-gradient(top, #eee, #eaeaea);
+			
+			border: 1px solid #fafafa;
+			
+			color: #444;
+			font-size: 1.8em;
+			text-shadow: 0px 1px 1px white;
+			
+			box-shadow: 0px 2px 4px rgba(0, 0, 0, .3);
+			
+			border-radius: 2px;
+			
+			opacity: .9;
+			cursor: pointer;
+			-webkit-transition: opacity .3s;
+		}
+		
+		#modeToggleButton:active:after {
+			content: "";
+			
+			position: absolute;
+			top: -1px;
+			right: -1px;
+			bottom: -1px;
+			left: -1px;
+			
+			background-color: rgba(0, 0, 0, .2);
+			
+			border-radius: 2px;
+			
+			pointer-events: none;
+		}
+		
+		#inputField {
+			display: inline-block;
+			
+			position: relative;
+			
+			padding: 8px;
+			
+			background-color: #2a2a2a;
+			
+			border: 1px solid black;
+			outline: none;
+			
+			text-align: left;
+			font-size: 4em;
+			font-family: Monaco, monospace;
+			color: white;
+			
+			box-shadow: 0px 2px 5px rgba(0, 0, 0, .7);
+			
+			border-radius: 2px;
+		}
+		
+		#inputField:after {
+			content: "";
+			
+			position: absolute;
+			top: 0px;
+			right: 0px;
+			bottom: 0px;
+			left: 0px;
+			
+			background: -webkit-linear-gradient(top, rgba(255, 255, 255, .15), rgba(255, 255, 255, 0));
+			background: linear-gradient(top, rgba(255, 255, 255, .1), rgba(255, 255, 255, 0));
+			background-size: 100% 30%;
+			background-repeat: no-repeat;
+			
+			border-radius: 1px;
+			
+			pointer-events: none;
+		}
+		
+		#inputField div + div {
+			margin-top: -.1em;
 		}
 	</style>
 	<script type="text/javascript">
@@ -39,18 +120,29 @@
 			var toggleButton = document.getElementById("modeToggleButton");
 			toggleButton.addEventListener("click", function() {
 				editor.toggleMode();
-				toggleButton.textContent = editor.getMode() ? "Stop" : "Run";
+				
+				if (editor.getMode()) {
+					toggleButton.textContent = "Stop";
+					toggleButton.style.opacity = .5;
+				} else {
+					toggleButton.textContent = "Run";
+					toggleButton.style.opacity = 1;
+				}
 			});
 		});
 	</script>
 </head>
 <body>
 
+<div id="content">
+
 <button id="modeToggleButton" title="Shift+Enter">Run</button>
 
 <div id="inputField">
 #-@-H>O <br>
 XXXXXXXX
+</div>
+
 </div>
 
 </body>
