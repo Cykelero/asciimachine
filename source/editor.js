@@ -76,6 +76,10 @@ common.exposed = function(input) {
 			
 			tick();
 			
+			// // Enabling interactivity
+			internal.input.style.cursor = "pointer";
+			internal.input.addEventListener("mousedown", internal.onMouseDown, false);
+			
 		} else {
 			// Stopping simulation
 			// // Stopping tick
@@ -109,6 +113,10 @@ common.exposed = function(input) {
 				selectionObject.removeAllRanges();
 				selectionObject.addRange(newRange);
 			}
+			
+			// // Disabling interactivity
+			internal.input.style.cursor = "";
+			internal.input.removeEventListener("mousedown", internal.onMouseDown);
 			
 		}
 	};
@@ -355,6 +363,23 @@ common.exposed = function(input) {
 		} else {
 			return null;
 		}
+	};
+	
+	internal.onMouseDown = function(event) {
+		var renderElement = event.target;
+		
+		internal.renderTargets.forEach(function(column) {
+			column.forEach(function(renderTarget) {
+				var element = renderElement;
+				
+				do {
+					if (renderTarget.element == element) {
+						// This renderTarget has been clicked
+						internal.simulationMachine.userAction(renderTarget.x, renderTarget.y);
+					}
+				} while (element = element.parentNode);
+			});
+		});
 	};
 	
 	// Init
