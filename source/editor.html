@@ -106,18 +106,18 @@
 						&& document.width <= window.innerWidth;
 				};
 				
+				applySizing(testPosition / testResolution);
+				
 				while (sizeIsOk() && testPosition < testResolution) {
 					testPosition++;
 					
-					var testRatio = testPosition / testResolution;
-					applySizing(testRatio);
+					applySizing(testPosition / testResolution);
 				}
 				
 				while (!sizeIsOk() && testPosition > 0) {
 					testPosition--;
 					
-					var testRatio = testPosition / testResolution;
-					applySizing(testRatio);
+					applySizing(testPosition / testResolution);
 				}
 			};
 			
@@ -148,7 +148,13 @@
 					lastSizedHtml = newHtml;
 					adjustFontSize();
 				}
-			}, 1000/4);
+			}, 1000);
+			
+			var prevOMC = editor.onModeChange;
+			editor.onModeChange = function() {
+				prevOMC();
+				adjustFontSize();
+			};
 			
 			adjustFontSize();
 		});
