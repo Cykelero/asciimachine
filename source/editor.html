@@ -8,6 +8,19 @@
 	<script type="text/javascript" language="Javascript">
 		document.addEventListener("DOMContentLoaded", function() {
 			editor = new Editor(document.querySelector("#inputField"), [42, 42, 42, 0]);
+			
+			var toggleButton = document.getElementById("modeToggleButton");
+			toggleButton.addEventListener("click", function() {
+				editor.toggleMode();
+				
+				if (editor.getMode()) {
+					toggleButton.textContent = "Stop";
+					toggleButton.style.opacity = .5;
+				} else {
+					toggleButton.textContent = "Run";
+					toggleButton.style.opacity = 1;
+				}
+			});
 		});
 	</script>
 	<style type="text/css" media="all">
@@ -115,22 +128,6 @@
 			margin-top: -.1em;
 		}
 	</style>
-	<script type="text/javascript">
-		document.addEventListener("DOMContentLoaded", function() {
-			var toggleButton = document.getElementById("modeToggleButton");
-			toggleButton.addEventListener("click", function() {
-				editor.toggleMode();
-				
-				if (editor.getMode()) {
-					toggleButton.textContent = "Stop";
-					toggleButton.style.opacity = .5;
-				} else {
-					toggleButton.textContent = "Run";
-					toggleButton.style.opacity = 1;
-				}
-			});
-		});
-	</script>
 </head>
 <body>
 
