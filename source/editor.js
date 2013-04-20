@@ -39,6 +39,8 @@ common.exposed = function(input, backgroundColor) {
 	exposed.setMode = function(run) {
 		run = !!run;
 		
+		internal.autoSave();
+		
 		if (internal.isRunning == run) return;
 		internal.isRunning = run;
 		
@@ -195,6 +197,12 @@ common.exposed = function(input, backgroundColor) {
 		if (text[text.length-1] == "\n") text = text.slice(0, text.length-1);
 		
 		return text;
+	}
+	
+	internal.autoSave = function() {
+		if (!internal.isRunning) {
+			localStorage["asciiMachineEditor-autosavedMachineHtml"] = internal.input.innerHTML;
+		}
 	}
 	
 	// // Rendering targets
@@ -434,7 +442,7 @@ common.exposed = function(input, backgroundColor) {
 	
 	// // Autosave
 	setInterval(function() {
-		localStorage["asciiMachineEditor-autosavedMachineHtml"] = internal.input.innerHTML;
+		internal.autoSave();
 	}, 1000);
 	
 	// // Shift+enter to run, esc to stop
