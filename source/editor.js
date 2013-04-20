@@ -182,6 +182,9 @@ common.exposed = function(input) {
 	internal.getInputText = function() {
 		var text = internal.input.innerText || internal.input.textContent;
 		text = text.replace(/ /g, " ");
+		
+		if (text[text.length-1] == "\n") text = text.slice(0, text.length-1);
+		
 		return text;
 	}
 	
@@ -300,6 +303,7 @@ common.exposed = function(input) {
 				if (!renderSpan.parentNode) {
 					var previousSpan = internal.renderTargets[x-1][y].element;
 					previousSpan.parentNode.insertBefore(renderSpan, previousSpan.nextSibling);
+					renderSpan.textContent = " ";
 				}
 			};
 		};
