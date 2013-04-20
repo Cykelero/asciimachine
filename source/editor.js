@@ -88,15 +88,7 @@ common.exposed = function(input) {
 			internal.simulationMachine = null;
 			
 			// // Reinserting original text
-			var text = internal.machineText.replace(/ /g, " "),
-				lines = text.split("\n");
-			
-			internal.input.innerHTML = "";
-			lines.forEach(function(line) {
-				var div = document.createElement("div");
-				div.innerText = line + "\n";
-				internal.input.appendChild(div);
-			});
+			internal.rebuildDisplay();
 			
 			// // Coloring text
 			internal.refreshDisplay(internal.machineText);
@@ -311,6 +303,18 @@ common.exposed = function(input) {
 				}
 			};
 		};
+	};
+	
+	internal.rebuildDisplay = function() {
+		var text = internal.machineText.replace(/ /g, " "),
+			lines = text.split("\n");
+		
+		internal.input.innerHTML = "";
+		lines.forEach(function(line) {
+			var div = document.createElement("div");
+			div.innerText = line + "\n";
+			internal.input.appendChild(div);
+		});
 	};
 	
 	// // Other
