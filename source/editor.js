@@ -404,7 +404,10 @@ common.exposed = function(input, backgroundColor) {
 	// Init
 	// // Preparing input
 	internal.input.contentEditable = true;
-	internal.input.innerHTML = internal.input.innerHTML.replace(/\n/g, "").replace(/(.*?)(<\s*br\s*\/?\s*>|$)/gi, "<div>$1</div>");
+	var cleanedHTML = internal.input.innerHTML.replace(/\n/g, "");
+	cleanedHTML = cleanedHTML.replace(/(.*?)(<\s*br\s*\/?\s*>|$)/gi, "<div>$1</div>");
+	cleanedHTML = cleanedHTML.replace(/<div><\/div>/g, "");
+	internal.input.innerHTML = cleanedHTML;
 	
 	// // Auto highlighting
 	internal.input.addEventListener("keyup", function(event) {
