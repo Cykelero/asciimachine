@@ -28,7 +28,7 @@ MachineEntityTypesAggregator.defineAttribute("gravity", function(attr, types) {
 				exposed.applyForce({
 					axis: 1,
 					amount: amount,
-					type: common.internal.forceTypes["gravity_"+common.internal.weight]
+					type: "gravity_"+common.internal.weight
 				});
 			};
 		};

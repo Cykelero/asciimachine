@@ -33,7 +33,7 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 			exposed.applyForce = function(parameters) {
 				var axis = parameters.axis,
 					amount = parameters.amount,
-					type = parameters.type;
+					type = common.internal.forceTypes[parameters.type];
 				
 				var currentForce = exposed.velocities[axis];
 				var prevails = (type < currentForce.type);

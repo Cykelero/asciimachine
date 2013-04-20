@@ -136,7 +136,7 @@ MachineEntityTypesAggregator.defineType("H", function(attr, types) {
 							entity.imposeForce({
 								axis: arm.axis,
 								amount: amplitudeOnAxis,
-								type: common.internal.forceTypes["actuation_static"]
+								type: "actuation_static"
 							});
 						});
 					}
