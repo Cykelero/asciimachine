@@ -111,8 +111,9 @@ common.exposed = function(input, backgroundColor) {
 			// // Disabling interactivity
 			internal.input.style.cursor = "";
 			internal.input.removeEventListener("mousedown", internal.onMouseDown);
-			
 		}
+		
+		if (typeof(exposed.onModeChange) == "function") exposed.onModeChange(internal.isRunning);
 	};
 	
 	exposed.toggleMode = function() {
@@ -402,6 +403,10 @@ common.exposed = function(input, backgroundColor) {
 				} while (element = element.parentNode);
 			});
 		});
+	};
+	
+	exposed.onModeChange = function(newMode) {
+		
 	};
 	
 	// Init

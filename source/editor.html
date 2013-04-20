@@ -7,20 +7,24 @@
 	<script src="editor.js" type="text/javascript" language="Javascript"></script>
 	<script type="text/javascript" language="Javascript">
 		document.addEventListener("DOMContentLoaded", function() {
+			// Creating Editor
 			editor = new Editor(document.querySelector("#inputField"), [42, 42, 42, 0]);
 			
+			// Handling mode toggling
 			var toggleButton = document.getElementById("modeToggleButton");
 			toggleButton.addEventListener("click", function() {
 				editor.toggleMode();
-				
-				if (editor.getMode()) {
+			});
+			
+			editor.onModeChange = function(newMode) {
+				if (newMode) {
 					toggleButton.textContent = "Stop";
 					toggleButton.style.opacity = .5;
 				} else {
 					toggleButton.textContent = "Run";
 					toggleButton.style.opacity = 1;
 				}
-			});
+			}
 		});
 	</script>
 	<style type="text/css" media="all">
