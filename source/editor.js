@@ -160,12 +160,15 @@ common.exposed = function(input, backgroundColor) {
 			var span = renderTarget.element;
 			span.style.color = common.internal.color(info.color);
 			
-			var backgroundColor = info.backgroundColor;
-			if (info.backgroundColor[3] > 0) {
-				span.style.backgroundColor = common.internal.color(info.backgroundColor);
-			} else {
-				span.style.backgroundColor = common.internal.color(internal.backgroundColor);
-			}
+			var backgroundColor = info.backgroundColor,
+				seeThroughFactor = 1 - backgroundColor[3];
+			
+			backgroundColor[0] = Math.round(backgroundColor[0] * backgroundColor[3] + internal.backgroundColor[0] * seeThroughFactor);
+			backgroundColor[1] = Math.round(backgroundColor[1] * backgroundColor[3] + internal.backgroundColor[1] * seeThroughFactor);
+			backgroundColor[2] = Math.round(backgroundColor[2] * backgroundColor[3] + internal.backgroundColor[2] * seeThroughFactor);
+			backgroundColor[3] = 1;
+			
+			span.style.backgroundColor = common.internal.color(backgroundColor);
 			
 			// Char setting
 			if (info.char == " ") info.char = " ";
