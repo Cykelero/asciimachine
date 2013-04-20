@@ -28,10 +28,135 @@
 					toggleButton.style.opacity = 1;
 				}
 			}
+			
+			// Setting up dynamic page sizing
+			// // Sizable data
+			var sizableElements = [
+				{
+					element: document.getElementById("content"),
+					properties: [
+						{
+							name: "margin",
+							min: 6,
+							max: 60,
+							suffix: "px",
+							decimals: 0
+						}
+					]
+				},
+				{
+					element: document.getElementById("toolbar"),
+					properties: [
+						{
+							name: "margin-bottom",
+							min: 7,
+							max: 14,
+							suffix: "px",
+							decimals: 0
+						}
+					]
+				},
+				{
+					element: document.getElementById("modeToggleButton"),
+					properties: [
+						{
+							name: "fontSize",
+							min: .4,
+							max: 1.8,
+							suffix: "em",
+							decimals: 1
+						},
+						{
+							names: ["padding-top", "padding-bottom"],
+							min: 1,
+							max: 3,
+							suffix: "px",
+							decimals: 0
+						},
+						{
+							names: ["padding-left", "padding-right"],
+							min: 5,
+							max: 10,
+							suffix: "px",
+							decimals: 0
+						}
+					]
+				},
+				{
+					element: document.getElementById("inputField"),
+					properties: [
+						{
+							name: "fontSize",
+							min: .6,
+							max: 4,
+							suffix: "em",
+							decimals: 1
+						}
+					]
+				}
+			];
+			var testResolution = 30;
+			
+			// // Sizing code 
+			var testPosition = testResolution;
+			
+			function adjustFontSize() {
+				function sizeIsOk() {
+					return document.height <= window.innerHeight
+						&& document.width <= window.innerWidth;
+				};
+				
+				while (sizeIsOk() && testPosition < testResolution) {
+					testPosition++;
+					
+					var testRatio = testPosition / testResolution;
+					applySizing(testRatio);
+				}
+				
+				while (!sizeIsOk() && testPosition > 0) {
+					testPosition--;
+					
+					var testRatio = testPosition / testResolution;
+					applySizing(testRatio);
+				}
+			};
+			
+			function applySizing(ratio) {
+				sizableElements.forEach(function(elementInfo) {
+					elementInfo.properties.forEach(function(property) {
+						var propertyPrecision = Math.pow(10, property.decimals);
+						
+						var value = property.min + (property.max - property.min) * ratio;
+						value = Math.round(value * propertyPrecision) / propertyPrecision;
+						
+						var names = property.names || [property.name];
+						
+						names.forEach(function(name) {
+							elementInfo.element.style[name] = value + property.suffix;
+						});
+					});
+				});
+			}
+			
+			// // Sizing triggers
+			window.addEventListener("resize", adjustFontSize);
+			
+			var lastSizedHtml = "";
+			setInterval(function() {
+				var newHtml = document.getElementById("inputField").innerHTML;
+				if (lastSizedHtml != newHtml) {
+					lastSizedHtml = newHtml;
+					adjustFontSize();
+				}
+			}, 1000/4);
+			
+			adjustFontSize();
 		});
 	</script>
 	<style type="text/css" media="all">
 		body {
+			margin: 0;
+			
 			background: -webkit-linear-gradient(top, #ccc, white);
 			background: linear-gradient(top, #ccc, white);
 			background-size: 1px 350px;
@@ -46,13 +171,12 @@
 			position: relative;
 			margin: 60px;
 			
-			padding-top: 65px;
+			text-align: right;
 		}
 		
 		#modeToggleButton {
-			position: absolute;
-			right: 0px;
-			top: 4px;
+			position: relative;
+			margin: 1px;
 			
 			padding: 3px 10px;
 			
@@ -72,6 +196,10 @@
 			opacity: .9;
 			cursor: pointer;
 			-webkit-transition: opacity .3s;
+		}
+		
+		#toolbar {
+			margin-bottom: 14px;
 		}
 		
 		#modeToggleButton:active:after {
@@ -140,7 +268,9 @@
 
 <div id="content">
 
-<button id="modeToggleButton" title="Shift+Enter">Run</button>
+<div id="toolbar">
+	<button id="modeToggleButton" title="Shift+Enter">Run</button>
+</div>
 
 <div id="inputField">
 #-@-H>O <br>
