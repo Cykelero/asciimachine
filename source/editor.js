@@ -10,7 +10,7 @@ common.exposed = function(input, backgroundColor) {
 	var self = this;
 	
 	internal.input = input;
-	internal.backgroundColor = backgroundColor || "black";
+	internal.backgroundColor = backgroundColor || [0, 0, 0, 1];
 	
 	internal.renderTargets = null;
 	internal.machineText = null;
@@ -140,7 +140,7 @@ common.exposed = function(input, backgroundColor) {
 					target.depth = Number.POSITIVE_INFINITY;
 					
 					target.element.textContent = " ";
-					target.element.style.backgroundColor = internal.backgroundColor;
+					target.element.style.backgroundColor = common.internal.color(internal.backgroundColor);
 				});
 			});
 		}
@@ -164,7 +164,7 @@ common.exposed = function(input, backgroundColor) {
 			if (info.backgroundColor[3] > 0) {
 				span.style.backgroundColor = common.internal.color(info.backgroundColor);
 			} else {
-				span.style.backgroundColor = internal.backgroundColor;
+				span.style.backgroundColor = common.internal.color(internal.backgroundColor);
 			}
 			
 			// Char setting
