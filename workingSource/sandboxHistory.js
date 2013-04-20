@@ -196,14 +196,13 @@ Xx=====+X
 
 
 
-  X#+=====+XX
+   #+=====+X 
   EE]      XX
   %#       XX
   VXO      XX
   EX      [#E
   |#+=====+X|
-  |  AAAAAA |
-  &# YYYYYY-E
-  V¨        |
-  EA        |
+  E] AAAAAA E
+  EA YYYYYY-E
   EH--------E
+
