@@ -22,9 +22,11 @@
 			editor.onModeChange = function(newMode) {
 				if (newMode) {
 					toggleButton.textContent = "Stop";
+					toggleButton.title = "Escape or Backspace";
 					toggleButton.style.opacity = .5;
 				} else {
 					toggleButton.textContent = "Run";
+					toggleButton.title = "Shift+Enter";
 					toggleButton.style.opacity = 1;
 				}
 			}
@@ -151,8 +153,8 @@
 			}, 1000);
 			
 			var prevOMC = editor.onModeChange;
-			editor.onModeChange = function() {
-				prevOMC();
+			editor.onModeChange = function(newMode) {
+				prevOMC(newMode);
 				adjustFontSize();
 			};
 			
