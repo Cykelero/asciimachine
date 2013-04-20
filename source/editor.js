@@ -14,6 +14,7 @@ common.exposed = function(input) {
 	internal.machineText = null;
 	
 	internal.isRunning = false;
+	internal.simulationMachine = null;
 	internal.tickTimeout = null;
 	
 	internal.shiftKeyDown = false;
@@ -64,11 +65,11 @@ common.exposed = function(input) {
 			
 			// // Creating machine, scheduling ticks
 			internal.machineText = internal.getInputText();
-			var machine = ASCIIMachine.newMachine(internal.machineText);
+			internal.simulationMachine = ASCIIMachine.newMachine(internal.machineText);
 			
 			var tick = function() {
-				machine.tick();
-				machine.renderTo(self);
+				internal.simulationMachine.tick();
+				internal.simulationMachine.renderTo(self);
 				
 				internal.tickTimeout = setTimeout(tick, common.internal.simulationRate);
 			};
@@ -80,6 +81,7 @@ common.exposed = function(input) {
 			// // Stopping tick
 			clearTimeout(internal.tickTimeout);
 			internal.tickTimeout = null;
+			internal.simulationMachine = null;
 			
 			// // Reinserting original text
 			var text = internal.machineText.replace(/ /g, " "),
