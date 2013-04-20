@@ -410,12 +410,19 @@ common.exposed = function(input, backgroundColor) {
 	};
 	
 	// Init
-	// // Preparing input
+	// // Preparing input element
 	internal.input.contentEditable = true;
-	var cleanedHTML = internal.input.innerHTML.replace(/\n/g, "");
-	cleanedHTML = cleanedHTML.replace(/(.*?)(<\s*br\s*\/?\s*>|$)/gi, "<div>$1</div>");
-	cleanedHTML = cleanedHTML.replace(/<div><\/div>/g, "");
-	internal.input.innerHTML = cleanedHTML;
+	
+	// // Putting initial text
+	var machineHtml = localStorage["asciiMachineEditor-autosavedMachineHtml"];
+	if (!machineHtml) {
+		var cleanedHTML = internal.input.innerHTML.replace(/\n/g, "");
+		cleanedHTML = cleanedHTML.replace(/(.*?)(<\s*br\s*\/?\s*>|$)/gi, "<div>$1</div>");
+		cleanedHTML = cleanedHTML.replace(/<div><\/div>/g, "");
+		machineHtml = cleanedHTML;
+	}
+	
+	internal.input.innerHTML = machineHtml;
 	
 	// // Auto highlighting
 	internal.input.addEventListener("keyup", function(event) {
@@ -424,6 +431,11 @@ common.exposed = function(input, backgroundColor) {
 	
 	exposed.refreshDisplay();
 	setInterval(exposed.refreshDisplay, 1000/4);
+	
+	// // Autosave
+	setInterval(function() {
+		localStorage["asciiMachineEditor-autosavedMachineHtml"] = internal.input.innerHTML;
+	}, 1000);
 	
 	// // Shift+enter to run, esc to stop
 	// // // Shift
