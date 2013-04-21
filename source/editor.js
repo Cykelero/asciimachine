@@ -11,6 +11,7 @@ common.exposed = function(input, backgroundColor) {
 	
 	internal.input = input;
 	internal.backgroundColor = backgroundColor || [0, 0, 0, 1];
+	internal.scale = 1;
 	
 	internal.renderTargets = null;
 	internal.machineText = null;
@@ -134,6 +135,11 @@ common.exposed = function(input, backgroundColor) {
 	
 	exposed.getMode = function() {
 		return internal.isRunning;
+	};
+	
+	exposed.setScale = function(newScale) {
+		internal.scale = Math.abs(parseInt(newScale)) || 1;
+		internal.renderEffects();
 	};
 	
 	// // Machine rendering methods
@@ -472,7 +478,7 @@ common.exposed = function(input, backgroundColor) {
 					if (effect.color.length < 4) effect.color[3] = 1;
 					context.strokeStyle = common.internal.color(effect.color);
 					
-					context.lineWidth = effect.width;
+					context.lineWidth = effect.width * internal.scale;
 					
 					// Path
 					context.beginPath();

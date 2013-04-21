@@ -98,6 +98,8 @@
 				}
 			];
 			var testResolution = 30;
+			var minMachineScale = .7,
+				maxMachineScale = 4;
 			
 			// // Sizing code 
 			var testPosition = testResolution;
@@ -122,7 +124,7 @@
 					applySizing(testPosition / testResolution);
 				}
 				
-				editor.refreshDisplay();
+				editor.setScale(minMachineScale + (testPosition / testResolution) * (maxMachineScale + minMachineScale));
 			};
 			
 			function applySizing(ratio) {
