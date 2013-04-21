@@ -15,6 +15,14 @@ common.exposed = function(input, backgroundColor) {
 	internal.renderTargets = null;
 	internal.machineText = null;
 	
+	internal.width = null;
+	internal.height = null;
+	
+	internal.machineEffects = null;
+	internal.styleElement = null;
+	internal.effectCanvas = null;
+	internal.effectContext = null;
+	
 	internal.isRunning = false;
 	internal.simulationMachine = null;
 	internal.tickTimeout = null;
@@ -33,6 +41,8 @@ common.exposed = function(input, backgroundColor) {
 			
 			// Re-reading text
 			internal.machineText = internal.getInputText();
+		} else {
+			internal.renderEffects();
 		}
 	};
 	
@@ -131,6 +141,8 @@ common.exposed = function(input, backgroundColor) {
 		internal.width = width;
 		internal.height = height;
 		
+		internal.machineEffects = [];
+		
 		// If simulation not running: resetting render targets
 		if (!internal.isRunning) {
 			internal.initializeRenderTargets();
@@ -179,8 +191,12 @@ common.exposed = function(input, backgroundColor) {
 		}
 	};
 	
+	exposed.drawEffect = function(effect) {
+		internal.machineEffects.push(effect);
+	};
+	
 	exposed.flushFrame = function() {
-		
+		internal.renderEffects();
 	};
 	
 	// Internal methods
@@ -344,7 +360,7 @@ common.exposed = function(input, backgroundColor) {
 		});
 	};
 	
-	// // Other
+	// // User I/O
 	internal.getSelectionPosition = function() {
 		function searchBackwards(element, searchDown, searchUp) {
 			// Is the element a renderTarget?
@@ -417,6 +433,63 @@ common.exposed = function(input, backgroundColor) {
 		
 	};
 	
+	// // Other
+	internal.renderEffects = function() {
+		// Sizing
+		var modelChar = internal.renderTargets[0][0].element; // replace with a forEach to find a non-empty one
+		var charWidth = modelChar.offsetWidth,
+			charHeight = modelChar.offsetHeight;
+		
+		var width = charWidth * internal.width,
+			height = charHeight * internal.height;
+		
+		internal.effectCanvas.width = width;
+		internal.effectCanvas.height = height;
+		
+		// Rendering
+		var context = internal.effectContext;
+		context.clearRect(0, 0, width, height);
+		
+		internal.machineEffects.forEach(function(effect) {
+			switch (effect.type) {
+				case "line":
+					// Color and width
+					if (effect.color.length < 4) effect.color[3] = 1;
+					context.strokeStyle = common.internal.color(effect.color);
+					
+					context.lineWidth = effect.width;
+					
+					// Path
+					context.beginPath();
+					
+					effect.points.forEach(function(point, index) {
+						context[index == 0 ? "moveTo" : "lineTo"]
+							(point.x * charWidth, point.y * charHeight);
+					});
+					
+					context.stroke();
+				break;
+			};
+		});
+		
+		// Showing rendered effects
+		var renderDataUrl = internal.effectCanvas.toDataURL();
+		
+		internal.styleElement.innerHTML = "#" + internal.input.id + ":before {"
+			+ "content: '';"
+			+ "position: absolute;"
+			+ "top: 0;"
+			+ "right: 0;"
+			+ "bottom: 0;"
+			+ "left: 0;"
+			+ "padding: inherit;"
+			+ "pointer-events: none;"
+			+ "background-image: url(" + renderDataUrl + ");"
+			+ "background-origin: content-box;"
+			+ "background-size: 100%;"
+		+ "}";
+	};
+	
 	// Init
 	// // Preparing input element
 	internal.input.contentEditable = true;
@@ -431,6 +504,24 @@ common.exposed = function(input, backgroundColor) {
 	}
 	
 	internal.input.innerHTML = machineHtml;
+	
+	// // Creating effect rendering canvas
+	internal.effectCanvas = document.createElement("canvas");
+	internal.effectCanvas.style.position = "absolute";
+	internal.effectCanvas.style.left = 0;
+	internal.effectCanvas.style.top = 0;
+	
+	internal.effectCanvas.style.right = 0;
+	internal.effectCanvas.style.bottom = 0;
+	
+	internal.effectCanvas.style.pointerEvents = "none";
+	
+	internal.effectContext = internal.effectCanvas.getContext("2d");
+	
+	if (!internal.input.id) throw new Error("The input element has no HTML id");
+	internal.styleElement = document.createElement("style");
+	internal.styleElement.type = "text/css";
+	document.head.appendChild(internal.styleElement);
 	
 	// // Auto highlighting
 	internal.input.addEventListener("keyup", function(event) {
