@@ -16,6 +16,7 @@
 // needs entityDefinitions/types/actuators/H.js
 // needs entityDefinitions/types/actuators/conveyorWheels.js
 
+// needs entityDefinitions/types/emitters/laser.js
 // needs entityDefinitions/types/emitters/Y.js
 // needs entityDefinitions/types/emitters/F.js
 

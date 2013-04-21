@@ -45,6 +45,10 @@ common.constructor = function(parent, char, cell) {
 		
 	};
 	
+	exposed.getLightDirection = function(direction) {
+		return direction;
+	};
+	
 	// // Other
 	exposed.moveBy = function(x, y) {
 		if (x == 0 && y == 0) return;

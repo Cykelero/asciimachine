@@ -19,6 +19,10 @@ MachineEntityTypesAggregator.defineAttribute("conveyorPiece", function(attr, typ
 				polarity: true
 			});
 			
+			exposed.getLightDirection = function(direction) {
+				return null;
+			};
+			
 			internal.getSlopeDirection = function(direction) {
 				var conveyorSpeed = internal.conveyorGroup.getSpeed();
 				if (!internal.polarity) conveyorSpeed = -conveyorSpeed;

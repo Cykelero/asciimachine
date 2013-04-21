@@ -205,3 +205,13 @@ E] AAAAAA E
 EA YYYYYY-E
 EH--------E
 
+
+E-------E-E]              
+EXXXXXXXEXEAXX             
+#@F>   [E-EH X             
+XXX     X |  X             
+XXX     XXEXXC>          i 
+XXX 0   X |  Y>   XXXXXXXEX
+XXX    [E-|--Y> O XF>  0<FX
+XXXXXXXYEEEXXXXXXXXE----<%#
+

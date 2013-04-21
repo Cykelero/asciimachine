@@ -18,6 +18,10 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 				internal.resetVelocities();
 			};
 			
+			exposed.getLightDirection = function(direction) {
+				return null;
+			};
+			
 			// Physics
 			internal.resetVelocities = function() {
 				var inertiaType = common.internal.forceTypes["inertia_" + common.internal.weight];

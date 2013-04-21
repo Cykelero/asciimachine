@@ -8,6 +8,10 @@ MachineEntityTypesAggregator.defineAttribute("sloped", function(attr, types) {
 				parent = this.parent,
 				self = exposed;
 			
+			exposed.getLightDirection = function(direction) {
+				return internal.getSlopeDirection(Direction.flip(direction));
+			};
+			
 			exposed.$onWinConflict = function(loser, losingForce, newLoserForceAmount) {
 				parent.exposed.$onWinConflict(loser, losingForce, newLoserForceAmount);
 				
