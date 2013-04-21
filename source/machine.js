@@ -53,7 +53,7 @@ common.constructor = function(worldText) {
 		});
 		
 		effects.forEach(function(effect) {
-			renderer.drawEffect(effect.points);
+			renderer.drawEffect(effect);
 		});
 		
 		renderer.flushFrame();
