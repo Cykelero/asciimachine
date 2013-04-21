@@ -16,6 +16,7 @@ MachineEntityTypesAggregator.defineType("C", function(attr, types) {
 				self = exposed;
 			
 			internal.color = [255, 255, 255];
+			internal.poweredColor = [255, 180, 0];
 			internal.backgroundColor = [150, 40, 40];
 			
 			internal.broadcasts = null;
