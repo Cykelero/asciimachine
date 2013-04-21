@@ -28,7 +28,9 @@ MachineEntityTypesAggregator.defineAttribute("beamer", function(attr, types) {
 				}
 			}
 			
-			internal.getBroadcasts = function() {
+			internal.getBroadcasts = function(afterPower) {
+				if (!afterPower) return;
+				
 				if (exposed.isPowered()) {
 					var broadcasts = [];
 					

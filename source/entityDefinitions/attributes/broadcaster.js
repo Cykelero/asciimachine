@@ -8,8 +8,8 @@ MachineEntityTypesAggregator.defineAttribute("broadcaster", function(attr, types
 				parent = this.parent,
 				self = exposed;
 			
-			exposed.$getBroadcasts = function() {
-				return internal.getBroadcasts();
+			exposed.$getBroadcasts = function(afterPower) {
+				return internal.getBroadcasts(afterPower);
 			};
 			
 			internal.getBroadcasts;

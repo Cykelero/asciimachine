@@ -10,7 +10,7 @@ MachineEntityTypesAggregator.defineAttribute("button", function(attr, types) {
 				parent = this.parent,
 				self = exposed;
 			
-			internal.getBroadcasts = function() {
+			internal.getBroadcasts = function(afterPower) {
 				var triggered = internal.cell.getObjects().some(function(entity) {
 					return entity.has("solid");
 				});

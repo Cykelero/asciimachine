@@ -117,7 +117,7 @@ common.constructor = function(worldText) {
 			entity.$beginFrame();
 		});
 		
-		internal.generateBroadcasts();
+		internal.generateBroadcasts(false);
 
 		exposed.getEntitiesWith("conductor").forEach(function(entity) {
 			entity.$spreadPowerState();
@@ -137,7 +137,7 @@ common.constructor = function(worldText) {
 			}, 0);
 		} while (unstableCount != previousUnstableCount);
 		
-		internal.generateBroadcasts();
+		internal.generateBroadcasts(true);
 	}
 	
 	internal.updatePhysics = function() {
@@ -249,9 +249,9 @@ common.constructor = function(worldText) {
 		});
 	};
 	
-	internal.generateBroadcasts = function() {
+	internal.generateBroadcasts = function(afterPower) {
 		exposed.getEntitiesWith("broadcaster").forEach(function(entity) {
-			var broadcasts = entity.$getBroadcasts();
+			var broadcasts = entity.$getBroadcasts(afterPower);
 			
 			if (broadcasts) {
 				broadcasts.forEach(function(broadcast) {
