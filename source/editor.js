@@ -436,7 +436,22 @@ common.exposed = function(input, backgroundColor) {
 	// // Other
 	internal.renderEffects = function() {
 		// Sizing
-		var modelChar = internal.renderTargets[0][0].element; // replace with a forEach to find a non-empty one
+		var modelChar = null;
+		
+		internal.renderTargets.some(function(column) {
+			return column.some(function(renderTarget) {
+				if (renderTarget.element) {
+					modelChar = renderTarget.element;
+					return true;
+				}
+			});
+		});
+		
+		if (!modelChar) {
+			internal.styleElement.innerHTML = "";
+			return;
+		}
+		
 		var charWidth = modelChar.offsetWidth,
 			charHeight = modelChar.offsetHeight;
 		
