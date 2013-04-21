@@ -28,6 +28,8 @@ common.constructor = function(worldText) {
 	exposed.renderTo = function(renderer) {
 		renderer.beginFrame(internal.grid.width, internal.grid.height);
 		
+		var effects = [];
+		
 		internal.entities.forEach(function(entity) {
 			if (!entity.cell.isInsideGrid()) return;
 			
@@ -46,6 +48,12 @@ common.constructor = function(worldText) {
 				backgroundColor: entityBGColor,
 				depth: entity.getDepth()
 			});
+			
+			effects = effects.concat(entity.getEffects());
+		});
+		
+		effects.forEach(function(effect) {
+			renderer.drawEffect(effect.points);
 		});
 		
 		renderer.flushFrame();

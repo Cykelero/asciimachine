@@ -92,6 +92,10 @@ common.constructor = function(parent, char, cell) {
 		return internal.backgroundColor;
 	};
 	
+	exposed.getEffects = function() {
+		return [];
+	};
+	
 	// Internal methods
 	internal.getCloseNeighbors = function() {
 		return internal.getNeighborsFrom(Direction.all());
