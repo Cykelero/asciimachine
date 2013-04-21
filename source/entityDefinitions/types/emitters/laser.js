@@ -134,7 +134,7 @@ MachineEntityTypesAggregator.defineType("C", function(attr, types) {
 				
 				if (exposed.isPowered()) effects = effects.concat(internal.laserEffects);
 				
-				return internal.laserEffects;
+				return effects;
 			};
 		};
 		
