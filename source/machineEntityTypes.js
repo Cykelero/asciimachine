@@ -12,6 +12,7 @@
 // needs entityDefinitions/types/power/XOR.js
 // needs entityDefinitions/types/power/AND.js
 // needs entityDefinitions/types/power/buttons.js
+// needs entityDefinitions/types/power/i.js
 
 // needs entityDefinitions/types/actuators/H.js
 // needs entityDefinitions/types/actuators/conveyorWheels.js

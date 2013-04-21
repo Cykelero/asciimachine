@@ -18,70 +18,69 @@ MachineEntityTypesAggregator.defineType("C", function(attr, types) {
 			internal.color = [255, 255, 255];
 			internal.backgroundColor = [150, 40, 40];
 			
+			internal.broadcasts = null;
 			internal.laserEffects = null;
+			internal.reachedCells = null;
 			
-			internal.getBroadcasts = function(afterPower) {
-				if (!afterPower) return;
+			exposed.$beginFrame = function() {
+				parent.exposed.$beginFrame();
 				
+				internal.broadcasts = [];
 				internal.laserEffects = [];
+				internal.reachedCells = [];
 				
-				if (exposed.isPowered()) {
-					var broadcasts = [];
+				internal.arrows.forEach(function(info) {
+					// Finding laser path
+					var cell = internal.cell.getInDirection(info.direction, 2),
+						direction = info.direction;
 					
-					internal.arrows.forEach(function(info) {
-						// Finding laser path
-						var cell = internal.cell.getInDirection(info.direction, 2),
-							direction = info.direction;
+					// // Preparing line effect
+					var effect = new LineEffect([255, 0, 0]);
+					effect.addPoint(internal.findPoint(cell, Direction.flip(info.direction)));
+					
+					// // Finding path
+					var previousDirection = direction;
+					
+					do {
+						// Light redirection or blocking
+						cell.getObjects().forEach(function(entity) {
+							direction = entity.getLightDirection(direction);
+						});
 						
-						// // Preparing line effect
-						var effect = new LineEffect([255, 0, 0]);
-						effect.addPoint(internal.findPoint(cell, Direction.flip(info.direction)));
+						// Blocked? Outside the grid?
+						if (direction === null) break;
+						if (!cell.isInsideGrid()) break;
 						
-						// // Finding path
-						var previousDirection = direction;
+						// All clear!
+						internal.reachedCells.push(cell);
 						
-						do {
-							// Light redirection or blocking
-							cell.getObjects().forEach(function(entity) {
-								direction = entity.getLightDirection(direction);
+						// // Completing effect
+						if (direction != previousDirection) {
+							effect.addPoint({
+								x: cell.x + .5,
+								y: cell.y + .5
 							});
-							
-							// Blocked? Outside the grid?
-							if (direction === null) break;
-							if (!cell.isInsideGrid()) break;
-							
-							// All clear!
-							// // Completing effect
-							if (direction != previousDirection) {
-								effect.addPoint({
-									x: cell.x + .5,
-									y: cell.y + .5
-								});
-							}
-							
-							effect.addPoint(internal.findPoint(cell, direction));
-							
-							// // Adding broadcast
-							broadcasts.push({
-								cell: cell,
-								type: "laser",
-								data: {
-									direction: previousDirection
-								}
-							});
-							
-							previousDirection = direction;
-						} while (cell = cell.getInDirection(direction));
-						
-						// // Did the laser actually travel?
-						if (effect.points.length > 0) {
-							internal.laserEffects.push(effect);
 						}
-					});
-				
-					return broadcasts;
+						
+						effect.addPoint(internal.findPoint(cell, direction));
+						
+						// // Adding broadcast
+						internal.broadcasts.push({
+							cell: cell,
+							type: "laser",
+							data: {
+								direction: previousDirection
+							}
+						});
+						
+						previousDirection = direction;
+					} while (cell = cell.getInDirection(direction));
 					
-				}
+					// // Did the laser actually travel?
+					if (effect.points.length > 0) {
+						internal.laserEffects.push(effect);
+					}
+				});
 			};
 			
 			internal.findPoint = function(cell, direction) {
@@ -113,8 +112,28 @@ MachineEntityTypesAggregator.defineType("C", function(attr, types) {
 				};
 			};
 			
+			internal.initializeOutputs = function() {
+				parent.internal.initializeOutputs();
+				
+				internal.reachedCells.forEach(function(cell) {
+					cell.getObjects().forEach(function(entity) {
+						internal.proposeConnection(entity, {kind: "laser"});
+					});
+				});
+			};
+			
+			internal.getBroadcasts = function(afterPower) {
+				if (!afterPower) return;
+				
+				if (exposed.isPowered()) return internal.broadcasts;
+			};
+			
 			exposed.getEffects = function() {
-				return parent.exposed.getEffects().concat(internal.laserEffects);
+				var effects = parent.exposed.getEffects();
+				
+				if (exposed.isPowered()) effects = effects.concat(internal.laserEffects);
+				
+				return internal.laserEffects;
 			};
 		};
 		
