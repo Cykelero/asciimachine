@@ -508,6 +508,7 @@ common.exposed = function(input, backgroundColor) {
 			+ "background-image: url(" + renderDataUrl + ");"
 			+ "background-origin: content-box;"
 			+ "background-size: 100%;"
+			+ "background-repeat: no-repeat;"
 		+ "}";
 	};
 	
