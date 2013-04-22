@@ -260,18 +260,19 @@ common.exposed = function(input, backgroundColor) {
 								
 				if (node.nodeType == 1) {
 					// Preceded by a br?
-					if (previousElementIsBr) {
+					if (previousElementIsBr && (node.textContent != "" || node.tagName == "BR")) {
 						previousElementIsBr = false;
 						
-						if (node.tagName != "DIV" && node.textContent != "") {
+						if (node.tagName != "DIV") {
 							currentX = 0;
 							currentY++;
 						}
 					}
 					
-					// Element
+					// Children
 					findLetters(node);
 					
+					// Element-specific stuff
 					if (node.tagName == "DIV") {
 						// If preparing to run and div is empty, adding anchor renderTarget
 						if (prepareForRunMode) {
@@ -595,8 +596,6 @@ common.exposed = function(input, backgroundColor) {
 				return false;
 			} else {
 				// Enter: helping the browser add line breaks
-				document.execCommand("insertBrOnReturn", false, "false");
-				
 				var selectionObject = window.getSelection();
 				if (selectionObject.rangeCount > 0) {
 					var range = selectionObject.getRangeAt(0);
