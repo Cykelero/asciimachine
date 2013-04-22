@@ -247,7 +247,8 @@ common.exposed = function(input, backgroundColor) {
 		
 		// Finding letters, making them into indexed spans
 		var currentX = 0,
-			currentY = 0;
+			currentY = 0,
+			previousElementIsBr = false;
 		
 		function findLetters(element) {
 			element.removeAttribute("style");
@@ -258,6 +259,16 @@ common.exposed = function(input, backgroundColor) {
 				var node = element.childNodes[i];
 								
 				if (node.nodeType == 1) {
+					// Preceded by a br?
+					if (previousElementIsBr) {
+						previousElementIsBr = false;
+						
+						if (node.tagName != "DIV" && node.textContent != "") {
+							currentX = 0;
+							currentY++;
+						}
+					}
+					
 					// Element
 					findLetters(node);
 					
@@ -279,6 +290,9 @@ common.exposed = function(input, backgroundColor) {
 						// Following characters are on a new line
 						currentX = 0;
 						currentY++;
+					} else if (node.tagName == "BR") {
+						// Following characters are on a new line, if we're not at the end of a div
+						previousElementIsBr = true;
 					}
 					
 				} else if (node.nodeType == 3) {
@@ -581,6 +595,8 @@ common.exposed = function(input, backgroundColor) {
 				return false;
 			} else {
 				// Enter: helping the browser add line breaks
+				document.execCommand("insertBrOnReturn", false, "false");
+				
 				var selectionObject = window.getSelection();
 				if (selectionObject.rangeCount > 0) {
 					var range = selectionObject.getRangeAt(0);
