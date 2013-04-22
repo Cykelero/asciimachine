@@ -251,8 +251,10 @@ common.exposed = function(input, backgroundColor) {
 			previousElementIsBr = false;
 		
 		function findLetters(element) {
-			element.removeAttribute("style");
-			element.removeAttribute("color"); // font elements…
+			if (element != internal.input) {
+				element.removeAttribute("style");
+				element.removeAttribute("color"); // font elements…
+			}
 			
 			// Searching element for letters, subelements
 			for (var i = 0 ; i < element.childNodes.length ; i++) {
