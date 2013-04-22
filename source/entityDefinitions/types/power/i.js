@@ -21,5 +21,7 @@ MachineEntityTypesAggregator.defineType("i", function(attr, types) {
 		};
 		
 		common.internal.name = "laserReceiver";
+		
+		common.internal.depth = common.internal.depths.background;
 	}];
 });
