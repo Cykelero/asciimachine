@@ -262,7 +262,7 @@ common.exposed = function(input, backgroundColor) {
 								
 				if (node.nodeType == 1) {
 					// Preceded by a br?
-					if (previousElementIsBr && (node.textContent != "" || node.tagName == "BR")) {
+					if (previousElementIsBr && (node.tagName == "BR" || node.tagName == "DIV" || node.textContent != "")) {
 						previousElementIsBr = false;
 						
 						if (node.tagName != "DIV") {
