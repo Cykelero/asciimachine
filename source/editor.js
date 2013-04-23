@@ -459,34 +459,27 @@ common.exposed = function(input, backgroundColor) {
 	// // Other
 	internal.renderEffects = function() {
 		// Sizing
-		var modelChar = null;
+		// // Canvas size
+		var inputStyle = getComputedStyle(internal.input);
 		
-		internal.renderTargets.some(function(column) {
-			return column.some(function(renderTarget) {
-				if (renderTarget.element) {
-					modelChar = renderTarget.element;
-					return true;
-				}
-			});
-		});
+		var canvasWidth = internal.input.clientWidth
+			- parseInt(inputStyle.paddingLeft)
+			- parseInt(inputStyle.paddingRight);
 		
-		if (!modelChar) {
-			internal.styleElement.innerHTML = "";
-			return;
-		}
+		var canvasHeight = internal.input.clientHeight
+			- parseInt(inputStyle.paddingTop)
+			- parseInt(inputStyle.paddingBottom);
 		
-		var charWidth = modelChar.offsetWidth,
-			charHeight = modelChar.offsetHeight;
-		
-		var width = charWidth * internal.width,
-			height = charHeight * internal.height;
-		
-		internal.effectCanvas.width = width;
-		internal.effectCanvas.height = height;
+		// // Individual character size
+		var charWidth = canvasWidth/internal.width,
+			charHeight = canvasHeight/internal.height;
 		
 		// Rendering
+		internal.effectCanvas.width = canvasWidth;
+		internal.effectCanvas.height = canvasHeight;
+		
 		var context = internal.effectContext;
-		context.clearRect(0, 0, width, height);
+		context.clearRect(0, 0, canvasWidth, canvasHeight);
 		
 		internal.machineEffects.forEach(function(effect) {
 			switch (effect.type) {
