@@ -259,7 +259,7 @@ common.exposed = function(input, backgroundColor) {
 			// Searching element for letters, subelements
 			for (var i = 0 ; i < element.childNodes.length ; i++) {
 				var node = element.childNodes[i];
-								
+				
 				if (node.nodeType == 1) {
 					// Preceded by a br?
 					if (previousElementIsBr && (node.tagName == "BR" || node.tagName == "DIV" || node.textContent != "")) {
