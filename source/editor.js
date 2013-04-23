@@ -638,7 +638,7 @@ common.internal.color = function(colorArray) {
 	return "rgba(" + colorArray.join() + ")";
 };
 
-common.internal.simulationRate = 1000/4;
+common.internal.simulationRate = 1000/3;
 
 return common.exposed;
 })();
