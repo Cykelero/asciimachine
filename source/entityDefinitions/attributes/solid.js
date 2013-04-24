@@ -158,6 +158,10 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 				return internal.cell.getWithOffset(exposed.velocities[0].amount, exposed.velocities[1].amount);
 			};
 			
+			exposed.getWeight = function() {
+				return common.internal.weight;
+			};
+			
 			// Init
 			internal.resetVelocities();
 		};
