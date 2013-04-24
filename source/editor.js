@@ -248,7 +248,8 @@ common.exposed = function(input, backgroundColor) {
 		// Finding letters, making them into indexed spans
 		var currentX = 0,
 			currentY = 0,
-			previousElementIsBr = false;
+			previousElementIsBr = false,
+			previousElementIsDiv = false;
 		
 		function findLetters(element) {
 			if (element != internal.input) {
@@ -266,6 +267,15 @@ common.exposed = function(input, backgroundColor) {
 						previousElementIsBr = false;
 						
 						if (node.tagName != "DIV") {
+							currentX = 0;
+							currentY++;
+						}
+					}
+					
+					// Line-breaking div?
+					if (node.tagName == "DIV" && !previousElementIsDiv) {
+						if (currentX > 0 || currentY > 0) {
+							// Following characters are on a new line
 							currentX = 0;
 							currentY++;
 						}
@@ -290,6 +300,9 @@ common.exposed = function(input, backgroundColor) {
 							}
 						}
 						
+						// Ending br should be ignored
+						previousElementIsBr = false;
+						
 						// Following characters are on a new line
 						currentX = 0;
 						currentY++;
@@ -297,6 +310,8 @@ common.exposed = function(input, backgroundColor) {
 						// Following characters are on a new line, if we're not at the end of a div
 						previousElementIsBr = true;
 					}
+					
+					previousElementIsDiv = (node.tagName == "DIV");
 					
 				} else if (node.nodeType == 3) {
 					// Text node
