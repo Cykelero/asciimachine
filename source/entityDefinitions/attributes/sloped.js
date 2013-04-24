@@ -24,7 +24,7 @@ MachineEntityTypesAggregator.defineAttribute("sloped", function(attr, types) {
 					loser.applyForce({
 						axis: +Direction.getAxis(slopeDirection),
 						amount: Math.abs(losingForce.amount) * Direction.getAxisAmplitude(slopeDirection),
-						type: losingForce.type
+						type: "friction_" + loser.getWeight()
 					});
 				}
 			};
