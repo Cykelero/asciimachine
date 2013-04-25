@@ -142,6 +142,10 @@ common.exposed = function(input, backgroundColor) {
 		internal.renderEffects();
 	};
 	
+	exposed.onModeChange = function(newMode) {
+		
+	};
+	
 	// // Machine rendering methods
 	exposed.beginFrame = function(width, height) {
 		internal.width = width;
@@ -465,10 +469,6 @@ common.exposed = function(input, backgroundColor) {
 				} while (element = element.parentNode);
 			});
 		});
-	};
-	
-	exposed.onModeChange = function(newMode) {
-		
 	};
 	
 	// // Other
