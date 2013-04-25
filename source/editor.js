@@ -10,7 +10,7 @@ common.exposed = function(input, backgroundColor) {
 	var self = this;
 	
 	internal.input = input;
-	internal.backgroundColor = backgroundColor || [0, 0, 0, 1];
+	internal.backgroundColor = backgroundColor || [0, 0, 0];
 	internal.scale = 1;
 	
 	internal.renderTargets = null;
@@ -642,7 +642,10 @@ common.exposed = function(input, backgroundColor) {
 common.internal = {};
 
 common.internal.color = function(colorArray) {
-	return "rgba(" + colorArray.join() + ")";
+	var colorArrayCopy = colorArray.concat();
+	if (colorArrayCopy.length < 4) colorArrayCopy[3] = 1;
+	
+	return "rgba(" + colorArrayCopy.join() + ")";
 };
 
 common.internal.simulationRate = 1000/3;
