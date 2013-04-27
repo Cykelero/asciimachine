@@ -37,10 +37,9 @@ common.exposed = function(input, backgroundColor) {
 		var newText = internal.getInputText();
 		
 		if (newText != internal.machineText) {
-			// Rendering machine
+			// Render machine
 			internal.refreshDisplay(newText);
 			
-			// Re-reading text
 			internal.machineText = internal.getInputText();
 		} else {
 			internal.renderEffects();
@@ -58,12 +57,12 @@ common.exposed = function(input, backgroundColor) {
 		internal.input.contentEditable = !run;
 		
 		if (run) {
-			// Starting simulation
-			// // Completing render targets
+			// Start simulation
+			// // Complete render targets
 			internal.initializeRenderTargets(true);
 			internal.generateMissingRenderTargets();
 			
-			// // Saving caret position
+			// // Save caret position
 			var selectedRenderTarget = internal.getSelectionPosition();
 			
 			if (selectedRenderTarget) {
@@ -78,7 +77,7 @@ common.exposed = function(input, backgroundColor) {
 				};
 			}
 			
-			// // Creating machine, scheduling ticks
+			// // Create machine, schedule ticks
 			internal.machineText = internal.getInputText();
 			internal.simulationMachine = ASCIIMachine.newMachine(internal.machineText);
 			
@@ -91,24 +90,22 @@ common.exposed = function(input, backgroundColor) {
 			
 			tick();
 			
-			// // Enabling interactivity
+			// // Enable interactivity
 			internal.input.style.cursor = "pointer";
 			internal.input.addEventListener("mousedown", internal.onMouseDown, false);
 			
 		} else {
-			// Stopping simulation
-			// // Stopping tick
+			// Stop simulation
+			// // Stop simulation interval
 			clearTimeout(internal.tickTimeout);
 			internal.tickTimeout = null;
 			internal.simulationMachine = null;
 			
-			// // Reinserting original text
+			// // Rebuild display with original text
 			internal.rebuildDisplay();
-			
-			// // Coloring text
 			internal.refreshDisplay(internal.machineText);
 			
-			// // Restoring caret position
+			// // Restore caret position
 			var selectedRenderTarget = internal.getRenderTarget(internal.savedCaretPosition.x, internal.savedCaretPosition.y);
 			
 			if (selectedRenderTarget && selectedRenderTarget.element.parentNode) {
@@ -121,7 +118,7 @@ common.exposed = function(input, backgroundColor) {
 				selectionObject.addRange(newRange);
 			}
 			
-			// // Disabling interactivity
+			// // Disable interactivity
 			internal.input.style.cursor = "";
 			internal.input.removeEventListener("mousedown", internal.onMouseDown);
 		}
@@ -153,13 +150,11 @@ common.exposed = function(input, backgroundColor) {
 		
 		internal.machineEffects = [];
 		
-		// If simulation not running: resetting render targets
 		if (!internal.isRunning) {
+			// In edition mode: initialize targets
 			internal.initializeRenderTargets();
-		}
-				
-		// If simulation running: resetting renderTargets
-		if (internal.isRunning) {
+		} else {
+			// In simulation mode: clear targets
 			internal.renderTargets.forEach(function(column) {
 				column.forEach(function(target) {
 					target.depth = Number.POSITIVE_INFINITY;
@@ -177,12 +172,13 @@ common.exposed = function(input, backgroundColor) {
 		var renderTarget = internal.getRenderTarget(info.x, info.y);
 		
 		if (renderTarget) {
-			// Depth handling
+			var span = renderTarget.element;
+			
+			// Handle depth
 			if (renderTarget.depth < info.depth) return;
 			renderTarget.depth = info.depth;
 			
-			// Coloring
-			var span = renderTarget.element;
+			// Colors
 			span.style.color = common.internal.color(info.color);
 			
 			var backgroundColor = info.backgroundColor,
@@ -195,7 +191,7 @@ common.exposed = function(input, backgroundColor) {
 			
 			span.style.backgroundColor = common.internal.color(backgroundColor);
 			
-			// Char setting
+			// Character
 			if (info.char == " ") info.char = " ";
 			if (internal.isRunning) span.textContent = info.char;
 		}
@@ -233,7 +229,7 @@ common.exposed = function(input, backgroundColor) {
 	
 	// // Rendering targets
 	internal.initializeRenderTargets = function(prepareForRunMode) {
-		// Resetting targets
+		// Reset targets
 		internal.renderTargets = [];
 		
 		for (var x = 0 ; x < internal.width ; x++) {
@@ -249,7 +245,7 @@ common.exposed = function(input, backgroundColor) {
 			};
 		};
 		
-		// Finding letters, making them into indexed spans
+		// Find & index characters
 		var currentX = 0,
 			currentY = 0,
 			previousElementIsBr = false,
@@ -261,7 +257,7 @@ common.exposed = function(input, backgroundColor) {
 				element.removeAttribute("color"); // font elements…
 			}
 			
-			// Searching element for letters, subelements
+			// Search element for characters
 			for (var i = 0 ; i < element.childNodes.length ; i++) {
 				var node = element.childNodes[i];
 				
@@ -285,13 +281,13 @@ common.exposed = function(input, backgroundColor) {
 						}
 					}
 					
-					// Children
+					// Search children as well
 					findLetters(node);
 					
 					// Element-specific stuff
 					if (node.tagName == "DIV") {
-						// If preparing to run and div is empty, adding anchor renderTarget
 						if (prepareForRunMode) {
+							// Preparing to run and div is empty: adding anchor renderTarget to allow completion
 							if (node.textContent.length == 0 || node.textContent == "\n") {
 								var firstLineTarget = internal.getRenderTarget(currentX, currentY);
 								
@@ -323,7 +319,7 @@ common.exposed = function(input, backgroundColor) {
 						newSpans = [];
 					
 					if (text.length != 1 || element.tagName != "span") {
-						// Splitting text content as spans
+						// Split text content into spans
 						for (var c = 0 ; c < text.length ; c++) {
 							var char = text[c];
 							
@@ -346,7 +342,7 @@ common.exposed = function(input, backgroundColor) {
 							newSpans.push(charSpan);
 						}
 						
-						// Replacing the text node with the spans
+						// Replace the text node with the spans
 						newSpans.forEach(function(span) {
 							element.insertBefore(span, node);
 						});
@@ -376,7 +372,7 @@ common.exposed = function(input, backgroundColor) {
 	
 	internal.generateMissingRenderTargets = function() {
 		for (var y = 0 ; y < internal.height ; y++) {
-			if (!internal.renderTargets[0][y].element.parentNode) continue; // passing empty lines for now
+			if (!internal.renderTargets[0][y].element.parentNode) continue; // pass empty lines
 			
 			for (var x = 0 ; x < internal.width ; x++) {;
 				var renderSpan = internal.renderTargets[x][y].element;
@@ -489,7 +485,7 @@ common.exposed = function(input, backgroundColor) {
 		var charWidth = canvasWidth/internal.width,
 			charHeight = canvasHeight/internal.height;
 		
-		// Rendering
+		// Render
 		internal.effectCanvas.width = canvasWidth;
 		internal.effectCanvas.height = canvasHeight;
 		
@@ -518,7 +514,7 @@ common.exposed = function(input, backgroundColor) {
 			};
 		});
 		
-		// Showing rendered effects
+		// Show rendered effects
 		var renderDataUrl = internal.effectCanvas.toDataURL();
 		
 		internal.styleElement.innerHTML = "#" + internal.input.id + ":before {"
@@ -537,10 +533,10 @@ common.exposed = function(input, backgroundColor) {
 	};
 	
 	// Init
-	// // Preparing input element
+	// // Prepare input element
 	internal.input.contentEditable = true;
 	
-	// // Putting initial text
+	// // Put initial text
 	var machineHtml = localStorage["asciiMachineEditor-autosavedMachineHtml"];
 	if (!machineHtml) {
 		var cleanedHTML = internal.input.innerHTML.replace(/\n/g, "");
@@ -551,7 +547,7 @@ common.exposed = function(input, backgroundColor) {
 	
 	internal.input.innerHTML = machineHtml;
 	
-	// // Creating effect rendering canvas
+	// // Create effect rendering canvas
 	internal.effectCanvas = document.createElement("canvas");
 	internal.effectCanvas.style.position = "absolute";
 	internal.effectCanvas.style.left = 0;
@@ -604,7 +600,7 @@ common.exposed = function(input, backgroundColor) {
 				exposed.setMode(true);
 				return false;
 			} else {
-				// Enter: helping the browser add line breaks
+				// Enter: help the browser add line breaks
 				var selectionObject = window.getSelection();
 				if (selectionObject.rangeCount > 0) {
 					var range = selectionObject.getRangeAt(0);

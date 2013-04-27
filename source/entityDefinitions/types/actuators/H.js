@@ -21,7 +21,7 @@ MachineEntityTypesAggregator.defineType("H", function(attr, types) {
 			exposed.$initializeRelationships = function() {
 				parent.exposed.$initializeRelationships();
 				
-				// Finding body width and height
+				// Find body width and height
 				function countInDirection(direction) {
 					var cell = internal.cell,
 						count = 0;
@@ -47,7 +47,7 @@ MachineEntityTypesAggregator.defineType("H", function(attr, types) {
 				internal.bodySize[1] += countInDirection(Direction.up);
 				internal.bodySize[1] += countInDirection(Direction.down);
 				
-				// Finding arms
+				// Find arms
 				function findArmInDirection(direction) {
 					var cell = internal.cell,
 						pieces = [];
@@ -118,7 +118,7 @@ MachineEntityTypesAggregator.defineType("H", function(attr, types) {
 					if (arm.isRetracting) {
 						arm.isMoving = (arm.entities.length > arm.minExposed);
 						if (arm.isMoving) {
-							// Retracting: Removing the first entity
+							// Retracting: Remove the first entity
 							var armBase = arm.entities.shift();
 							internal.detachEntity(armBase);
 							internal.parent.removeEntity(armBase);
@@ -127,7 +127,7 @@ MachineEntityTypesAggregator.defineType("H", function(attr, types) {
 						arm.isMoving = (arm.entities.length < arm.maxExposed);
 					}
 					
-					// Pushing entities
+					// Push entities
 					if (arm.isMoving) {
 						var amplitudeOnAxis = Direction.getAxisAmplitude(arm.direction);
 						if (arm.isRetracting) amplitudeOnAxis = -amplitudeOnAxis;
@@ -147,7 +147,7 @@ MachineEntityTypesAggregator.defineType("H", function(attr, types) {
 				internal.arms.forEach(function(arm) {
 					if (!arm.isRetracting && arm.isMoving) {
 						if (arm.entities[0].velocities[arm.axis].amount != 0) {
-							// Arm successfully extending: adding new piece
+							// Arm successfully extending: add new piece
 							var pieceType = arm.axis ? "I" : "=";
 							
 							var newPiece = new types[pieceType](internal.parent, pieceType, internal.cell.getInDirection(arm.direction));

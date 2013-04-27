@@ -49,7 +49,7 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 				var prevails = (type < currentForce.type);
 				
 				if (prevails) {
-					// New forces replaces current one
+					// New force replaces current one
 					exposed.velocities[axis] = {
 						amount: amount,
 						type: type

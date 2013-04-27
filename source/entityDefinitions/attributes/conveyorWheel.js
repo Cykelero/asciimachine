@@ -20,7 +20,7 @@ MachineEntityTypesAggregator.defineAttribute("conveyorWheel", function(attr, typ
 			exposed.$initializeRelationships = function() {
 				parent.exposed.$initializeRelationships();
 				
-				// Creating new internal.conveyorGroup if not already in one
+				// Create new internal.conveyorGroup if not already in one
 				if (!internal.conveyorGroup) {
 					internal.conveyorGroup = new ConveyorGroup();
 					internal.polarity = true;
@@ -28,14 +28,14 @@ MachineEntityTypesAggregator.defineAttribute("conveyorWheel", function(attr, typ
 					internal.parent.addManagedAbstraction(internal.conveyorGroup);
 				}
 				
-				// Finding belts
+				// Find belts
 				var searchForBelts = function(originCell, conveyorGroup, polarity) {
 					Direction.all().forEach(function(direction) {
 						var cell = originCell,
 							pieces = [],
 							isValidBelt = false;
 						
-						// Finding pieces
+						// Find pieces
 						while (cell = cell.getInDirection(direction)) {
 							var piece = null;
 							cell.getObjects().some(function(entity) {
@@ -65,13 +65,13 @@ MachineEntityTypesAggregator.defineAttribute("conveyorWheel", function(attr, typ
 						};
 											
 						if (isValidBelt) {
-							// Belt found: transmitting group and generating belt pieces
-							// // Wheel: simply transmitting
+							// Belt found: transmit group and generate belt pieces
+							// // Wheel: simply transmit
 							var endWheel = pieces.pop();
 							endWheel.conveyorGroup = conveyorGroup;
 							endWheel.polarity = pieces.length ? polarity : !polarity;
 							
-							// // Pipes: replacing
+							// // Pipes: replace
 							pieces.forEach(function(pipe) {
 								var beltPart = new types.conveyorBelt(internal.parent, pipe.getChar(), pipe.cell);
 								internal.parent.addEntity(beltPart);
@@ -82,7 +82,7 @@ MachineEntityTypesAggregator.defineAttribute("conveyorWheel", function(attr, typ
 								beltPart.polarity = polarity;
 							});
 							
-							// // Then, transmitting further from the wheel
+							// // Then, transmit further from the wheel
 							searchForBelts(endWheel.cell, conveyorGroup, endWheel.polarity);
 						}
 					});

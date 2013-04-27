@@ -149,8 +149,8 @@ common.constructor = function(worldText) {
 	}
 	
 	internal.updatePhysics = function() {
-		// Applying fluid pressure
-		// // Filtering out obsolete pressure points
+		// Apply fluid pressure
+		// // Filter out obsolete pressure points
 		var pressureOriginCells = [];
 		
 		internal.fluidPressurePoints = internal.fluidPressurePoints.filter(function(pressurePoint) {
@@ -166,7 +166,7 @@ common.constructor = function(worldText) {
 			}
 		});
 		
-		// // Moving fluid around
+		// // Move fluid around
 		internal.fluidPressurePoints.forEach(function(pressurePoint) {
 			var pressureCell = pressurePoint.to,
 				pressuredFluid = internal.getCellEntity(pressureCell, "fluid");
@@ -192,19 +192,19 @@ common.constructor = function(worldText) {
 					// Has cell been traversed already?
 					if (traversedCells.indexOf(neighborCell) > -1) continue;
 					
-					// No and no: continuing
+					// No and no: continue
 					var hasFluid = internal.doesCellHave(neighborCell, "fluid"),
 						hasSolid = internal.doesCellHave(neighborCell, "solid");
 					
 					if (hasFluid) {
-						// Propagating
+						// Propagate
 						wave.push(neighborCell);
 						traversedCells.push(neighborCell);
 					} else if (!hasSolid && !isPressurePoint) {
 						// Free cell found
 						if (pressurePoint.solid.has("fluid") && neighborCell.y <= pressurePoint.solid.cell.y) continue;
 						
-						// Exit point found! Moving.
+						// // Exit point found: Move the fluid entity
 						pressuredFluid.moveTo(neighborCell);
 						
 						wave.length = 0;
@@ -214,10 +214,10 @@ common.constructor = function(worldText) {
 			};
 		});
 		
-		// Resetting pressure points
+		// Reset pressure points
 		internal.fluidPressurePoints = [];
 		
-		// Generating forces
+		// Generate forces
 		exposed.getEntitiesWith("solid").forEach(function(entity) {
 			entity.$generateForces();
 		});
@@ -226,11 +226,11 @@ common.constructor = function(worldText) {
 			entity.$beginActuation();
 		});
 		
-		// Resolving conflicts
+		// Resolve conflicts
 		while (true) {
 			var conflicts = [];
 			
-			// Finding conflicts
+			// Find conflicts
 			var entitiesWithSolid = exposed.getEntitiesWith("solid");
 			for (var e = 0 ; e < entitiesWithSolid.length ; e++) {
 				conflicts = conflicts.concat(entitiesWithSolid[e].$findConflicts());
@@ -238,7 +238,7 @@ common.constructor = function(worldText) {
 				if (conflicts.length) break;
 			};
 			
-			// Resolving conflicts
+			// Resolve conflicts
 			if (conflicts.length) {
 				conflicts[0].resolve();
 			} else {
@@ -246,7 +246,7 @@ common.constructor = function(worldText) {
 			}
 		}
 		
-		// Applying forces
+		// Apply forces
 		exposed.getEntitiesWith("solid").forEach(function(entity) {
 			entity.$applyComputedForces();
 		});
@@ -289,17 +289,17 @@ common.constructor = function(worldText) {
 	// Init
 	var lines = worldText.split("\n");
 	
-	// // Finding world size
+	// // Find world size
 	var worldWidth = 0, worldHeight;
 	for (var i = 0 ; i < lines.length ; i++) {
 		worldWidth = Math.max(worldWidth, lines[i].length);
 	}
 	worldHeight = lines.length;
 	
-	// // Creating grid
+	// // Create grid
 	internal.grid = new Grid(worldWidth, worldHeight, true);
 	
-	// // Generating entities
+	// // Generate entities
 	var getOtherChar = function(x, y) {
 		if (x < 0 || y < 0 || x >= internal.grid.width || y >= internal.grid.height) return null;
 		return lines[y][x] || " ";
@@ -315,12 +315,12 @@ common.constructor = function(worldText) {
 		}
 	}
 	
-	// // Initializing entity relationships
+	// // Initialize entity relationships
 	internal.entities.forEach(function(entity) {
 		entity.$initializeRelationships();
 	});
 	
-	// // First frame
+	// // Start simulation
 	internal.fluidPressurePoints = [];
 	internal.updateInstant();
 };

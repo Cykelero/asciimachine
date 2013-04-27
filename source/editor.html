@@ -10,10 +10,10 @@
 	<script src="editor.js" type="text/javascript" language="Javascript"></script>
 	<script type="text/javascript" language="Javascript">
 		document.addEventListener("DOMContentLoaded", function() {
-			// Creating Editor
+			// Create Editor instance
 			editor = new Editor(document.querySelector("#inputField"), [28, 28, 28, 0]);
 			
-			// Handling mode toggling
+			// Prepare mode toggling handling
 			var toggleButton = document.getElementById("modeToggleButton");
 			toggleButton.addEventListener("click", function() {
 				editor.toggleMode();
@@ -31,7 +31,7 @@
 				}
 			}
 			
-			// Setting up dynamic page sizing
+			// Set up dynamic page sizing
 			// // Sizable data
 			var sizableElements = [
 				{

@@ -31,19 +31,17 @@ MachineEntityTypesAggregator.defineType("C", function(attr, types) {
 				internal.reachedCells = [];
 				
 				internal.arrows.forEach(function(info) {
-					// Finding laser path
+					// Find laser path
 					var cell = internal.cell.getInDirection(info.direction, 2),
 						direction = info.direction;
 					
-					// // Preparing line effect
 					var effect = new LineEffect([255, 0, 0]);
 					effect.addPoint(internal.findPoint(cell, Direction.flip(info.direction)));
 					
-					// // Finding path
 					var previousDirection = direction;
 					
 					do {
-						// Light redirection or blocking
+						// Redirect/block light
 						cell.getObjects().forEach(function(entity) {
 							direction = entity.getLightDirection(direction);
 						});
@@ -55,7 +53,7 @@ MachineEntityTypesAggregator.defineType("C", function(attr, types) {
 						// All clear!
 						internal.reachedCells.push(cell);
 						
-						// // Completing effect
+						// // Add effect point
 						if (direction != previousDirection) {
 							effect.addPoint({
 								x: cell.x + .5,
@@ -65,7 +63,7 @@ MachineEntityTypesAggregator.defineType("C", function(attr, types) {
 						
 						effect.addPoint(internal.findPoint(cell, direction));
 						
-						// // Adding broadcast
+						// // Add broadcast
 						internal.broadcasts.push({
 							cell: cell,
 							type: "laser",

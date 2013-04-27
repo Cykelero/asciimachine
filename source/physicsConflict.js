@@ -21,7 +21,7 @@ common.constructor = function(entityA, entityB, axis) {
 		var forceA = internal.entityA.velocities[internal.axis],
 			forceB = internal.entityB.velocities[internal.axis];
 		
-		// Picking winner
+		// Pick winner
 		var aWins = forceA.type < forceB.type;
 		
 		var winnerEntity = aWins ? entityA : entityB,
@@ -50,7 +50,7 @@ common.constructor = function(entityA, entityB, axis) {
 			}
 		}
 		
-		// Didn't delegate: Computing loser force amount clamping
+		// Didn't delegate: Compute loser force amount clamping
 		var direction = (winnerForce.amount != 0) ?
 			(winnerForce.amount > 0 ? 1 : -1)
 			: (loserForce.amount > 0 ? -1 : 1);
@@ -58,12 +58,12 @@ common.constructor = function(entityA, entityB, axis) {
 		var winnerProjection = winnerEntity.cell[internal.getAxisLetter()] + winnerForce.amount,
 			newLoserForceAmount = winnerProjection - loserEntity.cell[internal.getAxisLetter()] + direction;
 		
-		// Calling onWin callback
+		// Call onWin callback
 		var vetoValue = winnerEntity.$onWinConflict(loserEntity, loserForce, newLoserForceAmount);
 		
 		if (vetoValue != undefined && !vetoValue) return; // $onWinConflict can prevent resolution
 		
-		// Applying changes to loser force
+		// Apply changes to loser force
 		loserForce.type = winnerForce.type;
 		loserForce.amount = newLoserForceAmount;
 		
