@@ -108,7 +108,8 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 							otherYVelocityDirection = (other.velocities[1].amount/Math.abs(other.velocities[1].amount));
 						
 						if (selfProjected == otherProjected || selfYVelocityDirection != otherYVelocityDirection) {
-							return new PhysicsConflict(self, other, 0);
+							var conflict = internal.makeConflictWith(other, 0);
+							if (conflict) return conflict;
 						}
 					}
 				}
@@ -120,7 +121,8 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 							otherXVelocityDirection = (other.velocities[0].amount/Math.abs(other.velocities[0].amount));
 						
 						if (selfProjected == otherProjected || selfXVelocityDirection != otherXVelocityDirection) {
-							return new PhysicsConflict(self, other, 1);
+							var conflict = internal.makeConflictWith(other, 1);
+							if (conflict) return conflict;
 						}
 					}
 				}
@@ -128,7 +130,8 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 				// Complete movement
 				if (xSpeed && ySpeed) {
 					if (selfProjected == otherProjected) {
-						return new PhysicsConflict(self, other, strongestAxis);
+						var conflict = internal.makeConflictWith(other, strongestAxis);
+						if (conflict) return conflict;
 					}
 				}
 				
@@ -147,11 +150,22 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 							conflictAxis = 1;
 						}
 						
-						return new PhysicsConflict(self, other, conflictAxis);
+						var conflict = internal.makeConflictWith(other, conflictAxis);
+						if (conflict) return conflict;
 					}
 				}
 				
 				return null;
+			};
+			
+			internal.makeConflictWith = function(other, axis) {
+				if (exposed.doesCollideWith(other) && other.doesCollideWith(self)) {
+					return new PhysicsConflict(self, other, axis);
+				}
+			};
+			
+			exposed.doesCollideWith = function(other) {
+				return true;
 			};
 			
 			exposed.getProjectedPosition = function() {
