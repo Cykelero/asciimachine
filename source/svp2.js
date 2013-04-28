@@ -84,7 +84,7 @@ common.exposed = function(defineList, isStatic) {
 			};
 		}
 		
-		// Applying definition functions
+		// Apply definition functions
 		// // Definition function environment
 		var defineEnv = {};
 		
@@ -111,28 +111,28 @@ common.exposed = function(defineList, isStatic) {
 		
 		// // Definition function application
 		for (var currentDefinitionLevel = 0 ; currentDefinitionLevel < internal.defineList.length ; currentDefinitionLevel++) {
-			// Calling
+			// Call
 			var defineFunction = internal.defineList[currentDefinitionLevel];
 			defineFunction.call(defineEnv, commonParameter);
 			
 			var constructorFunction = constructors[currentDefinitionLevel];
 			if (!constructorFunction) {
-				// Adding a default pass-through constructor
+				// Add a default pass-through constructor
 				var standIn = function() {};
 				standIn.isPassthrough = true;
 				commonParameter.constructor = standIn;
 			} else if (defineFunction.withPassthroughConstructor) {
-				// Applying requested oass-through status
+				// Apply requested oass-through status
 				constructorFunction.isPassthrough = true;
 			}
 		}
 		
-		// Preparing instance construction
+		// Prepare instance construction
 		var callConstructor = function(instance, instanceInternal, level, args) {
 			var constructorFunction = constructors[level],
 				parentCaller = null;
 			
-			// Preparing super constructors
+			// Prepare super constructors
 			if (level > 0) {
 				parentCaller = function() {
 					callConstructor(instance, instanceInternal, level-1, arguments);
@@ -155,7 +155,7 @@ common.exposed = function(defineList, isStatic) {
 				};
 			}
 			
-			// Preparing environment
+			// Prepare environment
 			var constructorEnv = {
 				exposed: instance,
 				internal: instanceInternal,
@@ -190,7 +190,7 @@ common.exposed = function(defineList, isStatic) {
 				parentCaller.apply(constructorEnv, args);
 			}
 			
-			// (finally) Executing constructor
+			// (finally) Execute constructor
 			constructorFunction.apply(constructorEnv, args);
 		};
 		
@@ -198,7 +198,7 @@ common.exposed = function(defineList, isStatic) {
 			callConstructor(instance, {}, constructors.length-1, args);
 		};
 		
-		// Finalizing returnedProduct object
+		// Finalize returnedProduct object
 		returnedProduct._SVP2 = self;
 		returnedProduct.__defineGetter__("naked", function() {
 			return internal.defineList[internal.defineList.length-1];

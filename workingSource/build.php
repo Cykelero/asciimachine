@@ -63,7 +63,7 @@ $author = $authorResults[1];
 preg_match('/"description"\s*:\s*"(([^"]|\\\\")+)"/', $makefileContents, $descriptionResults);
 $description = $descriptionResults[1];
 
-// Preparing file info objects
+// Prepare file info objects
 $fileInfoList = array();
 
 function addFile($url) {
@@ -121,7 +121,7 @@ for ($i = 0 ; $i < count($fileInfoList) ; $i++) {
 					}
 				}
 				
-				// Not already in the list: adding
+				// Not already in the list: add
 				addFile($neededFile);
 				
 				break;
@@ -129,7 +129,7 @@ for ($i = 0 ; $i < count($fileInfoList) ; $i++) {
 	}
 }
 
-// Computing internal classes list (makeshift method)
+// Compute internal classes list (makeshift method)
 foreach ($fileInfoList as $file) {
 	$filepath = $file["path"];
 	$fileInfo = pathinfo($filepath);
@@ -160,7 +160,7 @@ while ($iterationCount++ < $maxDepencyOrderingIterationCount) {
 	break;
 }
 
-// Building
+// Build
 $urlList = $libraryList;
 foreach ($fileInfoList as $file) {
 	$urlList[] = $file["path"];
@@ -183,7 +183,7 @@ foreach ($provided as $providedName) {
 
 $compiled .= "\n";
 
-// // Wrapping
+// // Wrap
 $compiled .= '(function() {'."\n\n";
 
 // // Prereferences
@@ -199,12 +199,12 @@ if (count($internalClasses)) {
 foreach ($urlList as $filepath) {
 	$fileContents = file_get_contents("$sourceFolderPath$filepath");
 	
-	// Stripping metadata
+	// Strip metadata
 	preg_match($metadataAreaRegexp, $fileContents, $fileMetadataAreaResults);
 	$fileMetadataAreaSize = strlen($fileMetadataAreaResults[0]);
 	$fileContents = substr($fileContents, $fileMetadataAreaSize);
 	
-	// Appending
+	// Append
 	$compiled .= "/* $filepath */"."\n\n";
 	$compiled .= $fileContents."\n";
 	
@@ -213,13 +213,13 @@ foreach ($urlList as $filepath) {
 
 $compiled .= "})();\n";
 
-// Writing
+// Write
 file_put_contents($compiledDestination.$productName, $compiled);
 foreach ($staticFileList as $staticFile) {
 	file_put_contents($compiledDestination.$staticFile, file_get_contents($sourceFolderPath.$staticFile));
 }
 
-// Returning
+// Return
 if (!$shouldReturnCompiled) {
 	echo $scriptTagsList;
 } else {
