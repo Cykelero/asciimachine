@@ -75,6 +75,20 @@ common.constructor = function(entityA, entityB, axis, priority) {
 		return internal.priority;
 	};
 	
+	exposed.getStrongestForceType = function() {
+		var forceTypeA = internal.entityA.velocities[internal.axis].type,
+			forceTypeB = internal.entityB.velocities[internal.axis].type;
+		
+		return Math.min(forceTypeA, forceTypeB);
+	};
+	
+	exposed.getForceTypeTotal = function() {
+		var forceTypeA = internal.entityA.velocities[internal.axis].type,
+			forceTypeB = internal.entityB.velocities[internal.axis].type;
+		
+		return forceTypeA + forceTypeB;
+	};
+	
 	// Internal methods
 	internal.getAxisLetter = function() {
 		return internal.axis ? "y" : "x";
