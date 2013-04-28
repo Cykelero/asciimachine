@@ -1,7 +1,7 @@
 
 var PhysicsConflict = SVP2.class(function(common) {
 
-common.constructor = function(entityA, entityB, axis) {
+common.constructor = function(entityA, entityB, axis, priority) {
 	var exposed = this.exposed,
 		internal = this.internal,
 		self = exposed;
@@ -9,6 +9,8 @@ common.constructor = function(entityA, entityB, axis) {
 	internal.entityA = entityA;
 	internal.entityB = entityB;
 	internal.axis = axis;
+	
+	internal.priority = (priority !== undefined) ? priority : Number.POSITIVE_INFINITY;
 	
 	// Exposed methods
 	this.expose({
@@ -67,6 +69,10 @@ common.constructor = function(entityA, entityB, axis) {
 		loserForce.type = winnerForce.type;
 		loserForce.amount = newLoserForceAmount;
 		
+	};
+	
+	exposed.getPriority = function() {
+		return internal.priority;
 	};
 	
 	// Internal methods
