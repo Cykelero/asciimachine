@@ -20,6 +20,7 @@
 // needs entityDefinitions/types/emitters/C.js
 // needs entityDefinitions/types/emitters/Y.js
 // needs entityDefinitions/types/emitters/F.js
+// needs entityDefinitions/types/emitters/U.js
 
 // needs entityDefinitions/types/mobile/O.js
 // needs entityDefinitions/types/mobile/balloon.js
