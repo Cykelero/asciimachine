@@ -15,7 +15,7 @@ MachineEntityTypesAggregator.defineType("horizontalCrossedWire", function(attr, 
 		
 		common.internal.name = "crossedWire-horizontal";
 		
-		common.internal.depth = common.internal.depths.background;
+		common.internal.depth = common.internal.depths.staticBackground;
 	}];
 });
 
@@ -32,6 +32,6 @@ MachineEntityTypesAggregator.defineType("verticalCrossedWire", function(attr, ty
 		
 		common.internal.name = "crossedWire-vertical";
 		
-		common.internal.depth = common.internal.depths.background;
+		common.internal.depth = common.internal.depths.staticBackground;
 	}];
 });

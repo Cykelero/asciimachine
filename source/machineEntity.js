@@ -153,7 +153,8 @@ common.exposed.setHasAttribute = function(attributeName, has) {
 common.internal.depths = [
 	"overlay",
 	"normal",
-	"background"
+	"background",
+	"staticBackground"
 ].reduce(function(map, item, index) {
 	map[item] = index;
 	return map;

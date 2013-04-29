@@ -20,7 +20,7 @@ MachineEntityTypesAggregator.defineType("-", function(attr, types) {
 		
 		common.internal.name = "wire-horizontal";
 		
-		common.internal.depth = common.internal.depths.background;
+		common.internal.depth = common.internal.depths.staticBackground;
 	}];
 });
 
@@ -42,7 +42,7 @@ MachineEntityTypesAggregator.defineType("|", function(attr, types) {
 		
 		common.internal.name = "wire-vertical";
 		
-		common.internal.depth = common.internal.depths.background;
+		common.internal.depth = common.internal.depths.staticBackground;
 	}];
 });
 
@@ -58,6 +58,6 @@ MachineEntityTypesAggregator.defineType("e", function(attr, types) {
 		
 		common.internal.name = "wire-both";
 		
-		common.internal.depth = common.internal.depths.background;
+		common.internal.depth = common.internal.depths.staticBackground;
 	}];
 });
