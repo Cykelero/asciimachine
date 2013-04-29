@@ -149,17 +149,17 @@ e#
 
 
 
-    O <HH
-    XAX @#
+#U> O  
+    XAX
 HH>_ IX
 e<&#XIX
-  |e-H
-  |H H
-  |H 
-  |H  
-  |I 
-  |V
-  #]
+  |e-H 
+  |H H 
+  |H   
+  |H   
+  |I   
+  |V   
+  #]   
 
 
  
