@@ -82,9 +82,19 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 			exposed.$findConflicts = function() {
 				var conflicts = [];
 				
+				// Find all conflicts
 				internal.parent.getEntitiesWith("solid").forEach(function(other) {
 					var conflict = exposed.findConflictWith(other);
 					if (conflict) conflicts.push(conflict);
+				});
+				
+				// Sort conflicts
+				conflicts.sort(function(a, b) {
+					var priorityDifference = a.getPriority() - b.getPriority(),
+						strongestForceDifference = a.getStrongestForceType() - b.getStrongestForceType(),
+						forceTotalDifference = a.getForceTypeTotal() - b.getForceTypeTotal();
+					
+					return priorityDifference || strongestForceDifference || forceTotalDifference;
 				});
 				
 				return conflicts;
@@ -108,7 +118,7 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 							otherYVelocityDirection = (other.velocities[1].amount/Math.abs(other.velocities[1].amount));
 						
 						if (selfProjected == otherProjected || selfYVelocityDirection != otherYVelocityDirection) {
-							var conflict = internal.makeConflictWith(other, 0);
+							var conflict = internal.makeConflictWith(other, 0, 1);
 							if (conflict) return conflict;
 						}
 					}
@@ -121,7 +131,7 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 							otherXVelocityDirection = (other.velocities[0].amount/Math.abs(other.velocities[0].amount));
 						
 						if (selfProjected == otherProjected || selfXVelocityDirection != otherXVelocityDirection) {
-							var conflict = internal.makeConflictWith(other, 1);
+							var conflict = internal.makeConflictWith(other, 1, 1);
 							if (conflict) return conflict;
 						}
 					}
@@ -130,7 +140,7 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 				// Complete movement
 				if (xSpeed && ySpeed) {
 					if (selfProjected == otherProjected) {
-						var conflict = internal.makeConflictWith(other, strongestAxis);
+						var conflict = internal.makeConflictWith(other, strongestAxis, 2);
 						if (conflict) return conflict;
 					}
 				}
@@ -150,7 +160,7 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 							conflictAxis = 1;
 						}
 						
-						var conflict = internal.makeConflictWith(other, conflictAxis);
+						var conflict = internal.makeConflictWith(other, conflictAxis, 0);
 						if (conflict) return conflict;
 					}
 				}
@@ -158,9 +168,9 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 				return null;
 			};
 			
-			internal.makeConflictWith = function(other, axis) {
+			internal.makeConflictWith = function(other, axis, priority) {
 				if (exposed.doesCollideWith(other) && other.doesCollideWith(self)) {
-					return new PhysicsConflict(self, other, axis);
+					return new PhysicsConflict(self, other, axis, priority);
 				}
 			};
 			
