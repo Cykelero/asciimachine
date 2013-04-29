@@ -120,7 +120,7 @@ H<%@#@%>H
        
       
    XXX 
-#--@H>O
+#--@H>0
 HXXXXXX   XXX
 |     X <==HH
 |     X X XX@
