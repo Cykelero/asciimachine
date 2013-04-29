@@ -194,7 +194,9 @@ common.constructor = function(worldText) {
 					
 					// No and no: continue
 					var hasFluid = internal.doesCellHave(neighborCell, "fluid"),
-						hasSolid = internal.doesCellHave(neighborCell, "solid");
+						hasSolid = neighborCell.getObjects().some(function(entity) {
+							return pressuredFluid.doesCollideWith(entity);
+						});
 					
 					if (hasFluid) {
 						// Propagate
