@@ -161,6 +161,7 @@ common.exposed = function(input, backgroundColor) {
 					
 					target.element.textContent = " ";
 					target.element.style.backgroundColor = common.internal.color(internal.backgroundColor);
+					target.drawnList = [];
 				});
 			});
 		}
@@ -174,26 +175,38 @@ common.exposed = function(input, backgroundColor) {
 		if (renderTarget) {
 			var span = renderTarget.element;
 			
-			// Handle depth
-			if (renderTarget.depth < info.depth) return;
-			renderTarget.depth = info.depth;
+			renderTarget.drawnList.push(info);
+			renderTarget.drawnList.sort(function(a, b) {
+				return (b.depth - a.depth);
+			});
 			
-			// Colors
-			span.style.color = common.internal.color(info.color);
+			// Background color
+			var backgroundColor = internal.backgroundColor.concat();
 			
-			var backgroundColor = info.backgroundColor,
-				seeThroughFactor = 1 - backgroundColor[3];
-			
-			backgroundColor[0] = Math.round(backgroundColor[0] * backgroundColor[3] + internal.backgroundColor[0] * seeThroughFactor);
-			backgroundColor[1] = Math.round(backgroundColor[1] * backgroundColor[3] + internal.backgroundColor[1] * seeThroughFactor);
-			backgroundColor[2] = Math.round(backgroundColor[2] * backgroundColor[3] + internal.backgroundColor[2] * seeThroughFactor);
-			backgroundColor[3] = 1;
-			
+			for (var i = 0 ; i < renderTarget.drawnList.length ; i++) {
+				var depthInfo = renderTarget.drawnList[i];
+				
+				var depthColor = depthInfo.backgroundColor,
+					opacity = depthColor[3],
+					backgroundOpacity = 1 - opacity;
+				
+				backgroundColor[0] = Math.round(depthColor[0] * opacity + backgroundColor[0] * backgroundOpacity);
+				backgroundColor[1] = Math.round(depthColor[1] * opacity + backgroundColor[1] * backgroundOpacity);
+				backgroundColor[2] = Math.round(depthColor[2] * opacity + backgroundColor[2] * backgroundOpacity);
+				backgroundColor[3] = Math.round(opacity + backgroundColor[3] * backgroundOpacity);
+			}
+				
 			span.style.backgroundColor = common.internal.color(backgroundColor);
 			
-			// Character
-			if (info.char == " ") info.char = " ";
-			if (internal.isRunning) span.textContent = info.char;
+			// Color and character
+			if (info.depth <= renderTarget.depth) {
+				renderTarget.depth = info.depth;
+				
+				span.style.color = common.internal.color(info.color);
+				
+				if (info.char == " ") info.char = " ";
+				if (internal.isRunning) span.textContent = info.char;
+			}
 		}
 	};
 	
@@ -240,7 +253,8 @@ common.exposed = function(input, backgroundColor) {
 					x: x,
 					y: y,
 					element: span,
-					depth: Number.POSITIVE_INFINITY
+					depth: Number.POSITIVE_INFINITY,
+					drawnList: []
 				};
 			};
 		};
