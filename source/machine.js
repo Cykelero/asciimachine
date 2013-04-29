@@ -313,6 +313,7 @@ common.constructor = function(worldText) {
 			var char = line[x],
 				cell = internal.grid.getCell(x, y);
 			
+			if (char == " ") continue;
 			exposed.addEntity(MachineEntityFactory.makeEntity(getOtherChar, self, char, cell));
 		}
 	}
