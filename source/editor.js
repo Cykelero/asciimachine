@@ -556,6 +556,7 @@ common.exposed = function(input, backgroundColor) {
 	// Init
 	// // Prepare input element
 	internal.input.contentEditable = true;
+	internal.input.style.whiteSpace = "nowrap";
 	
 	// // Put initial text
 	var machineHtml = localStorage["asciiMachineEditor-autosavedMachineHtml"];
