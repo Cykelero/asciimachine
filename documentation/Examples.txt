@@ -1,0 +1,78 @@
+﻿Copy any of those examples in the editor to try them out.
+
+
+This is a piston:
+
+HH>
+
+
+Pistons can be powered using electricity. Here, we are using a battery.
+
+#-HH>
+
+
+This one can be manually triggered by clicking the switch.
+
+#-@-HH>
+
+
+This one will push the ball off the platform.
+
+#-@H>O 
+XXXXXXX
+
+
+ASCII Machine gives you a few types of elements to play with. You can use things like conveyors, slopes, water, balloons.
+
+H>O          
+EXX\
+E@# _     O
+XXE-Ex======x 
+XXX_   XXX   
+XXX#~~~XX    
+XHHH===>X    
+XX|X   XX    
+XX|X\ /XX    
+XXE-E XXXX  
+XXXXX  H>0  
+XXXXXXXXXX
+
+
+Or lasers, XOR gates, ice, heaters, steam, inverted push buttons. (ice, heaters, steam: not yet, actually)
+
+XXXEE-EEEEEEEWEEX
+XXX|X XXXXXX/ XAX
+XXX|X XXXXX/  E%#
+XXX|X XXXX/  \ XX
+XXXH> X#X    X XX
+C>    i%>C   X~XX
+E     XX V   X#XX
+E     XX       XX
+#@-H=>XEi   \XXXX
+XXXXX0X|X\ss/XXXX
+XXXXXXX|XX  XXXXX
+XXXXXXXE--MMXXXXX
+
+
+Also fans, wall-mounted push buttons, (piston-based memories), overlapping wires, gravity reversers, directional gravity reversers.
+
+E-------E-E]              
+EXXXXXXXEXEAXX             
+#@F>   [E-EH X             
+XXX     X |  X             
+XXX     XXEXXC>          i 
+XXX 0   X |  Y>   XXXXXXXEX
+XXX    [E-|--Y> O XF>  0<FX
+XXXXXXXYEEEXXXXXXXXE----<%#
+
+
+And directional magnets, grabber on conveyors, alternate direction conveyor drivers, glass. (glass: not yet either)
+
+               
+iU>X_  O  _X<Ui
+SXXXEEE#EEEXXXS
+SE--EXXXXXE--ES
+Sx===========+S
+\  <C]   [C>  /
+    e--#--e    
+     0         
