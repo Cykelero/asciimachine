@@ -56,6 +56,13 @@ common.exposed = function(input, backgroundColor) {
 		
 		internal.input.contentEditable = !run;
 		
+		var userSelect = run ? "none" : "";
+		internal.input.style["-webkit-user-select"] = userSelect;
+		internal.input.style["-khtml-user-select"] = userSelect;
+		internal.input.style["-moz-user-select"] = userSelect;
+		internal.input.style["-ms-user-select"] = userSelect;
+		internal.input.style["user-select"] = userSelect;
+		
 		if (run) {
 			// Start simulation
 			// // Complete render targets
