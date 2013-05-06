@@ -1,0 +1,41 @@
+Quick reference
+===============
+
+Battery, wires, conductor block, switch:
+#  - | e  E  @
+
+Piston, platform, ball:
+HH> XXX O
+
+Slopes, balloon:
+/ \  0
+
+Buttons:
+_ [ ] ¨
+
+Conveyor belt:
+x==+
+
+Gravity reverser, fan, magnet:
+Y  F>  U>
+
+Laser, mirrors, laser receivers:
+C>  / \  i
+
+XOR gate, AND gate:
+%>  &>
+
+Water:
+~
+
+Vertical pistons, pre-extended pistons, and vertical conveyors:
+H  A  x
+I  I  I
+V  H  +
+
+(not yet implemented)
+Water heater, freezer, ice:
+M  W  s
+
+Glass:
+S
