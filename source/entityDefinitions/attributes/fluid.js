@@ -21,8 +21,14 @@ MachineEntityTypesAggregator.defineAttribute("fluid", function(attr, types) {
 			exposed.$generateForces = function() {
 				parent.exposed.$generateForces();
 				
+				function hasEligibleSolid(cell) {
+					return cell.getObjects().some(function(entity) {
+							return exposed.doesCollideWith(entity);
+						});
+				};
+				
 				var bottomHasSolid = internal.cell.getBottom().getObjects().some(function(entity) {
-					return entity.has("solid") && !entity.has("fluid");
+					return entity.has("solid") && exposed.doesCollideWith(entity) && !entity.has("fluid");
 				});
 				
 				if (internal.parent.getCurrentFrame() == 0) return;
@@ -43,14 +49,10 @@ MachineEntityTypesAggregator.defineAttribute("fluid", function(attr, types) {
 					var neighborCell = internal.cell.getWithOffset(xOffset, 0),
 						lowerCell = internal.cell.getWithOffset(xOffset, 1);
 					
-					var neighborHasSolid = neighborCell.getObjects().some(function(entity) {
-						return entity.has("solid");
-					});
-					
-					var lowerHasSolid = lowerCell.getObjects().some(function(entity) {
-						return entity.has("solid");
-					});
-					
+					var neighborHasSolid = hasEligibleSolid(neighborCell);
+										
+					var lowerHasSolid = hasEligibleSolid(lowerCell);
+										
 					var lowerHasFluid = lowerCell.getObjects().some(function(entity) {
 						return entity.has("fluid");
 					});
