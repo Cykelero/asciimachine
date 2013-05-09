@@ -11,7 +11,7 @@ The best way to try out ASCII Machine is to open [the examples](http://github.co
 And when you start making your own machines, make sure to keep the [Quick Reference](http://github.com/cykelero/asciimachine/blob/master/documentation/Quick%20reference.txt)
  handy.
  
-<img src="http://www.cykeprojects.com/images/asciimachine-screenshot.png" alt="" width="423" height="591">
+<img src="http://http://www.cykeprojects.com/entryFiles/asciiMachine/screenshot.png" alt="" width="423" height="591">
 
 # Compiling
 
