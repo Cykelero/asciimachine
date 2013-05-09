@@ -70,7 +70,8 @@ MachineEntityTypesAggregator.defineAttribute("fluid", function(attr, types) {
 			
 			exposed.doesCollideWith = function(entity) {
 				return parent.exposed.doesCollideWith(entity)
-					&& (entity.has("solid") && entity.getWeight() == "static") || entity.has("fluid");
+					&& (entity.has("solid") && entity.getWeight() == "static")
+					|| (entity.has("fluid") && entity.getFluidType() == exposed.getFluidType());
 			};
 			
 			exposed.$onWinConflict = function(loser, losingForce, newLoserForceAmount) {
@@ -86,10 +87,16 @@ MachineEntityTypesAggregator.defineAttribute("fluid", function(attr, types) {
 				}
 			};
 			
+			exposed.getFluidType = function() {
+				return common.internal.fluidType;
+			};
+			
 			internal.color = [0, 0, 0];
 			internal.backgroundColor = [255, 255, 255, .5];
 		};
 		
 		common.internal.weight = "extralight";
+		
+		common.internal.fluidType;
 	}];
 });

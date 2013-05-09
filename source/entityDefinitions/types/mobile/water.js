@@ -19,5 +19,7 @@ MachineEntityTypesAggregator.defineType("~", function(attr, types) {
 		common.internal.name = "water";
 		
 		common.internal.depth = common.internal.depths.background;
+		
+		common.internal.fluidType = "liquid";
 	}];
 });
