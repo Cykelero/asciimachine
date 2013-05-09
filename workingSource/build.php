@@ -216,7 +216,10 @@ $compiled .= "})();\n";
 // Write
 file_put_contents($compiledDestination.$productName, $compiled);
 foreach ($staticFileList as $staticFile) {
-	file_put_contents($compiledDestination.$staticFile, file_get_contents($sourceFolderPath.$staticFile));
+	$content = file_get_contents($sourceFolderPath.$staticFile);
+	$content = str_replace("./../build/", "", $content);
+	
+	file_put_contents($compiledDestination.$staticFile, $content);
 }
 
 // Return
