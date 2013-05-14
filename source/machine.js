@@ -12,7 +12,8 @@ common.constructor = function(worldText) {
 	internal.entities = [];
 	internal.managedAbstractions = [];
 	
-	internal.broadcasts = null;
+	internal.broadcasts = {};
+	internal.previousBroadcasts = null;
 	internal.fluidPressurePoints = null;
 	
 	internal.simulationFrame = 0;
@@ -97,6 +98,10 @@ common.constructor = function(worldText) {
 		return internal.broadcasts[cell] || [];
 	};
 	
+	exposed.getPreviousBroadcastsForCell = function(cell) {
+		return internal.previousBroadcasts[cell] || [];
+	};
+	
 	exposed.addManagedAbstraction = function(abstraction) {
 		internal.managedAbstractions.push(abstraction);
 	};
@@ -119,6 +124,7 @@ common.constructor = function(worldText) {
 		});
 		
 		// Generic entity behavior
+		internal.previousBroadcasts = internal.broadcasts;
 		internal.broadcasts = {};
 		
 		internal.entities.forEach(function(entity) {

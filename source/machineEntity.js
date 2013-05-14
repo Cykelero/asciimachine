@@ -125,18 +125,22 @@ common.constructor = function(parent, char, cell) {
 		return neighbors;
 	};
 	
-	internal.getAffectingBroadcasts = function() {
-		return internal.parent.getBroadcastsForCell(internal.cell);
+	internal.getAffectingBroadcasts = function(previous) {
+		if (!previous) {
+			return internal.parent.getBroadcastsForCell(internal.cell);
+		} else {
+			return internal.parent.getPreviousBroadcastsForCell(internal.cell);
+		}
 	};
 	
-	internal.getAffectingBroadcastsOfType = function(type) {
-		return internal.getAffectingBroadcasts().filter(function(broadcast) {
+	internal.getAffectingBroadcastsOfType = function(type, previous) {
+		return internal.getAffectingBroadcasts(previous).filter(function(broadcast) {
 			return (broadcast.type == type);
 		});
 	};
 	
-	internal.isAffectedBy = function(type) {
-		return (internal.getAffectingBroadcastsOfType(type).length > 0);
+	internal.isAffectedBy = function(type, previous) {
+		return (internal.getAffectingBroadcastsOfType(type, previous).length > 0);
 	};
 	
 };
