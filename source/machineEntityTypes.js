@@ -3,6 +3,7 @@
 
 // needs entityDefinitions/types/basic/X.js
 // needs entityDefinitions/types/basic/slopes.js
+// needs entityDefinitions/types/basic/s.js
 
 // needs entityDefinitions/types/power/battery.js
 // needs entityDefinitions/types/power/wires.js
@@ -26,6 +27,7 @@
 // needs entityDefinitions/types/mobile/O.js
 // needs entityDefinitions/types/mobile/balloon.js
 // needs entityDefinitions/types/mobile/water.js
+// needs entityDefinitions/types/mobile/steam.js
 
 // needs entityDefinitions/types/misc/arrows.js
 // needs entityDefinitions/types/misc/pipes.js
