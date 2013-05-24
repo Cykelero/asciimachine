@@ -83,7 +83,7 @@ common.constructor = function(worldText) {
 	exposed.removeEntity = function(entity) {
 		entity.cell.removeObject(entity);
 		var entityIndex = internal.entities.indexOf(entity);
-		if (entityIndex > -1) internal.entities.splice(entityIndex, 1);
+		if (entityIndex > -1) delete(internal.entities[entityIndex]);
 		return entity;
 	};
 	
@@ -108,7 +108,7 @@ common.constructor = function(worldText) {
 	
 	exposed.removeManagedAbstraction = function(abstraction) {
 		var abstractionIndex = internal.managedAbstractions.indexOf(abstraction);
-		if (abstractionIndex > -1) internal.managedAbstractions.splice(abstractionIndex, 1);
+		if (abstractionIndex > -1) delete(internal.managedAbstractions[abstractionIndex]);
 		return abstraction;
 	};
 	
