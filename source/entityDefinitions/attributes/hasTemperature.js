@@ -19,6 +19,10 @@ MachineEntityTypesAggregator.defineAttribute("hasTemperature", function(attr, ty
 				var heatCount = internal.getAffectingBroadcastsOfType("heat", true).length,
 					coolCount = internal.getAffectingBroadcastsOfType("cool", true).length;
 				
+				if (tempParameters.isHeatedByLasers) {
+					heatCount += internal.getAffectingBroadcastsOfType("laser", true).length;
+				}
+				
 				if (heatCount || coolCount) {
 					// Heating/cooling
 					internal.temperature += heatCount;
@@ -56,6 +60,7 @@ MachineEntityTypesAggregator.defineAttribute("hasTemperature", function(attr, ty
 		
 		common.internal.tempParameters = {
 			zeroRestorationSpeed: null,
+			isHeatedByLasers: false,
 			negativeThreshold: null,
 			negativeResultType: null,
 			positiveThreshold: null,
