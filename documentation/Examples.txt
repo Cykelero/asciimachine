@@ -40,19 +40,18 @@ XXXXXXXXXX
 
 Or lasers, XOR gates, ice, heaters, steam, inverted push buttons. (ice, heaters, steam: not yet, actually)
 
-XXXEE-EEEEEEEWEEX
-XXX|X XXXXXX/ XAX
-XXX|X XXXXX/  E%#
-XXX|X XXXX/  \ XX
-XXXH> X#X    X XX
-C>    i%>C   X~XX
-E     XX V   X#XX
-E     XX       XX
-#@-H=>XEi   \XXXX
-XXXXX0X|X\ss/XXXX
-XXXXXXX|XX  XXXXX
-XXXXXXXE--MMXXXXX
-
+XXXEE--EEEEEEMEEX
+XXXEX  XXXXX/ \AX
+XXXEX  XXXX/   %#
+XXXEX  XXX/    EX
+XXHH> X#X    \ EX
+C>    i%>C   X XX
+|      X V   X~XX
+|      X     X#XX
+#@HH=>XEi O \XXXX
+XXXXX0 EX\ss/XXXX
+XXXXX  EEE  XXXXX
+XXXXX  XXXWWXXXXX
 
 Also fans, wall-mounted push buttons, (piston-based memories), overlapping wires, gravity reversers, directional gravity reversers.
 
