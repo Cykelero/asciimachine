@@ -21,6 +21,8 @@ MachineEntityTypesAggregator.defineAttribute("fluid", function(attr, types) {
 			exposed.$generateForces = function() {
 				parent.exposed.$generateForces();
 				
+				// Flowing behavior
+				// // Only flow in certain cases
 				function hasEligibleSolid(cell) {
 					return cell.getObjects().some(function(entity) {
 							return exposed.doesCollideWith(entity);
@@ -39,6 +41,7 @@ MachineEntityTypesAggregator.defineAttribute("fluid", function(attr, types) {
 				
 				if (exposed.velocities[0].amount || exposed.velocities[1].amount) return;
 				
+				// // Check both flow directions; order is random
 				var xOffsets = Math.round(Math.random()) ?
 					[-1, 1]
 					: [1, -1];
@@ -46,6 +49,7 @@ MachineEntityTypesAggregator.defineAttribute("fluid", function(attr, types) {
 				for (var o = 0; o < xOffsets.length ; o++) {
 					var xOffset = xOffsets[o];
 					
+					// Side-specific checks
 					var neighborCell = internal.cell.getWithOffset(xOffset, 0),
 						lowerCell = internal.cell.getWithOffset(xOffset, 1);
 					
@@ -57,6 +61,7 @@ MachineEntityTypesAggregator.defineAttribute("fluid", function(attr, types) {
 						return entity.has("fluid");
 					});
 					
+					// Flow
 					if (!neighborHasSolid && (!lowerHasSolid || lowerHasFluid)) {
 						exposed.applyForce({
 							axis: 0,
