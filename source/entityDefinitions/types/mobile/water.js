@@ -15,6 +15,10 @@ MachineEntityTypesAggregator.defineType("~", function(attr, types) {
 			
 			internal.color = [255, 255, 255];
 			internal.backgroundColor = [40, 90, 150];
+	
+			exposed.getLightDirection = function(direction) {
+				return direction;
+			};
 		};
 		
 		common.internal.name = "water";

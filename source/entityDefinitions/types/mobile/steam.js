@@ -15,6 +15,10 @@ MachineEntityTypesAggregator.defineType("§", function(attr, types) {
 			
 			internal.color = [200, 200, 200, .7];
 			internal.backgroundColor = [255, 255, 255, .2];
+	
+			exposed.getLightDirection = function(direction) {
+				return direction;
+			};
 		};
 		
 		common.internal.name = "steam";
