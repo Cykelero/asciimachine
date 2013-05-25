@@ -200,7 +200,7 @@ common.exposed = function(input, backgroundColor) {
 				backgroundColor[0] = Math.round(depthColor[0] * opacity + backgroundColor[0] * backgroundOpacity);
 				backgroundColor[1] = Math.round(depthColor[1] * opacity + backgroundColor[1] * backgroundOpacity);
 				backgroundColor[2] = Math.round(depthColor[2] * opacity + backgroundColor[2] * backgroundOpacity);
-				backgroundColor[3] = Math.round(opacity + backgroundColor[3] * backgroundOpacity);
+				backgroundColor[3] = opacity + backgroundColor[3] * backgroundOpacity;
 			}
 				
 			span.style.backgroundColor = common.internal.color(backgroundColor);
