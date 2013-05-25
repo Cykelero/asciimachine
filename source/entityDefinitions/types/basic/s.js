@@ -13,12 +13,17 @@ MachineEntityTypesAggregator.defineType("s", function(attr, types) {
 			
 			internal.color = [255, 255, 255, .8];
 			internal.backgroundColor = [40, 130, 160];
+	
+			exposed.getLightDirection = function(direction) {
+				return direction;
+			};
 		};
 		
 		common.internal.name = "ice";
 		
 		common.internal.tempParameters = {
 			zeroRestorationSpeed: 1,
+			isHeatedByLasers: true,
 			positiveThreshold: 2,
 			positiveResultType: "~"
 		};
