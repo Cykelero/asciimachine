@@ -66,7 +66,7 @@ MachineEntityTypesAggregator.defineAttribute("fluid", function(attr, types) {
 						exposed.applyForce({
 							axis: 0,
 							amount: xOffset,
-							type: "gravity_"+common.internal.weight
+							type: "inertia_"+common.internal.weight
 						});
 						break;
 					}
