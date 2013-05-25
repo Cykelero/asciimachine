@@ -202,6 +202,7 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 			"friction_light",
 			"inertia_light",
 			"gravity_extralight",
+			"friction_extralight",
 			"inertia_extralight"
 		].reduce(function(map, item, index) {
 			map[item] = index;
