@@ -69,9 +69,11 @@ MachineEntityTypesAggregator.defineAttribute("fluid", function(attr, types) {
 			};
 			
 			exposed.doesCollideWith = function(entity) {
-				return parent.exposed.doesCollideWith(entity)
-					&& (entity.has("solid") && entity.getWeight() == "static")
+				var collides = (entity.has("solid") && entity.getWeight() == "static")
 					|| (entity.has("fluid") && entity.getFluidType() == exposed.getFluidType());
+				
+				return parent.exposed.doesCollideWith(entity)
+					&& collides;
 			};
 			
 			exposed.$onWinConflict = function(loser, losingForce, newLoserForceAmount) {
