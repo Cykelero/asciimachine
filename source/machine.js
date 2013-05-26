@@ -164,7 +164,7 @@ common.constructor = function(worldText) {
 				return entity.has("solid");
 			});
 			
-			var pressuredFluid = internal.doesCellHave(pressurePoint.to, "fluid");
+			var pressuredFluid = internal.getCellFluid(pressurePoint.to, pressurePoint.fluid.getFluidType());
 			
 			if (pressuringEntityPresent && pressuredFluid) {
 				pressureOriginCells.push(pressurePoint.from);
@@ -174,8 +174,12 @@ common.constructor = function(worldText) {
 		
 		// // Move fluid around
 		internal.fluidPressurePoints.forEach(function(pressurePoint) {
+			var fluidType = pressurePoint.fluid.getFluidType();
+			
 			var pressureCell = pressurePoint.to,
-				pressuredFluid = internal.getCellEntity(pressureCell, "fluid");
+				pressuredFluid = internal.getCellFluid(pressureCell, fluidType);
+			
+			if (!pressuredFluid) return; // I don't know why. I'm sorry.
 			
 			var wave = [pressureCell],
 				traversedCells = [pressureCell];
@@ -199,7 +203,7 @@ common.constructor = function(worldText) {
 					if (traversedCells.indexOf(neighborCell) > -1) continue;
 					
 					// No and no: continue
-					var hasFluid = internal.doesCellHave(neighborCell, "fluid"),
+					var hasFluid = !!internal.getCellFluid(neighborCell, fluidType),
 						hasSolid = neighborCell.getObjects().some(function(entity) {
 							return pressuredFluid.doesCollideWith(entity);
 						});
@@ -210,7 +214,12 @@ common.constructor = function(worldText) {
 						traversedCells.push(neighborCell);
 					} else if (!hasSolid && !isPressurePoint) {
 						// Free cell found
-						if (pressurePoint.solid.has("fluid") && neighborCell.y <= pressurePoint.solid.cell.y) continue;
+						var pressurerIsFluid = pressurePoint.solid.has("fluid");
+						
+						if (pressurerIsFluid) {
+							// Is the neighbor higher than the original pressure point?
+							if (neighborCell.y <= pressurePoint.solid.cell.y) continue;
+						}
 						
 						// // Exit point found: Move the fluid entity
 						pressuredFluid.moveTo(neighborCell);
@@ -286,6 +295,17 @@ common.constructor = function(worldText) {
 		for (var i = 0 ; i < entities.length ; i++) {
 			var entity = entities[i];
 			if (!type || entity.has(type)) return entity;
+		}
+		return null;
+	};
+	
+	internal.getCellFluid = function(cell, type) {
+		var entities = cell.getObjects();
+		for (var i = 0 ; i < entities.length ; i++) {
+			var entity = entities[i];
+			if (entity.has("fluid")) {
+				if (!type || entity.getFluidType() == type) return entity;
+			}
 		}
 		return null;
 	};
