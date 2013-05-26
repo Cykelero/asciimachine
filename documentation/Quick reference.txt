@@ -33,9 +33,8 @@ H  A  x
 I  I  I
 V  H  +
 
-(not yet implemented)
-Water heater, freezer, ice:
-M  W  s
+Water heater, freezer, ice, steam:
+M  W  s  §
 
 Glass:
 S

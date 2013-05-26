@@ -38,7 +38,7 @@ XXXXX  H>0
 XXXXXXXXXX
 
 
-Or lasers, XOR gates, ice, heaters, steam, inverted push buttons. (ice, heaters, steam: not yet, actually)
+Or lasers, XOR gates, ice, heaters, steam, inverted push buttons.
 
 XXXEE--EEEEEEMEEX
 XXXEX  XXXXX/ \AX
@@ -53,6 +53,7 @@ XXXXX0 EX\ss/XXXX
 XXXXX  EEE  XXXXX
 XXXXX  XXXWWXXXXX
 
+
 Also fans, wall-mounted push buttons, (piston-based memories), overlapping wires, gravity reversers, directional gravity reversers.
 
 E-------E-E]              
@@ -65,7 +66,7 @@ XXX    [E-|--Y> O XF>  0<FX
 XXXXXXXYEEEXXXXXXXXE----<%#
 
 
-And directional magnets, grabber on conveyors, alternate direction conveyor drivers, glass. (glass: not yet either)
+And directional magnets, alternate direction conveyor drivers, glass.
 
                
 iU>X_  O  _X<Ui
