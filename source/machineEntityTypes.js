@@ -3,6 +3,7 @@
 
 // needs entityDefinitions/types/basic/X.js
 // needs entityDefinitions/types/basic/slopes.js
+// needs entityDefinitions/types/basic/glass.js
 // needs entityDefinitions/types/basic/s.js
 
 // needs entityDefinitions/types/power/battery.js
