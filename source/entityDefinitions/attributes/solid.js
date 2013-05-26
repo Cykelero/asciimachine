@@ -55,8 +55,20 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 						type: type
 					};
 				} else if (type == currentForce.type) {
-					// New force adds to (or cancels) current one
-					//currentForce.amount += amount;
+					// Combine forces in a weird way
+					var absoluteMax = Math.max(Math.abs(amount), Math.abs(currentForce.amount));
+					
+					var totalAmount = amount + currentForce.amount,
+						totalSign = totalAmount > 0 ? 1 : -1,
+						signedMax = absoluteMax * totalSign;
+					
+					if (totalSign == 1) {
+						totalAmount = Math.min(signedMax, totalAmount);
+					} else {
+						totalAmount = Math.max(signedMax, totalAmount);
+					}
+					
+					currentForce.amount = totalAmount;
 				}
 			};
 			
