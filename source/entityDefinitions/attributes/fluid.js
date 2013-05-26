@@ -22,6 +22,8 @@ MachineEntityTypesAggregator.defineAttribute("fluid", function(attr, types) {
 				parent.exposed.$generateForces();
 				
 				// Flowing behavior
+				var goesDown = !exposed.has("antiGravity");
+				
 				// // Only flow in certain cases
 				function hasEligibleSolid(cell) {
 					return cell.getObjects().some(function(entity) {
@@ -29,7 +31,9 @@ MachineEntityTypesAggregator.defineAttribute("fluid", function(attr, types) {
 						});
 				};
 				
-				var bottomHasSolid = internal.cell.getBottom().getObjects().some(function(entity) {
+				var bottomCell = goesDown ? internal.cell.getBottom() : internal.cell.getTop();
+				
+				var bottomHasSolid = bottomCell.getObjects().some(function(entity) {
 					return entity.has("solid") && exposed.doesCollideWith(entity) && !entity.has("fluid");
 				});
 				
@@ -51,7 +55,7 @@ MachineEntityTypesAggregator.defineAttribute("fluid", function(attr, types) {
 					
 					// Side-specific checks
 					var neighborCell = internal.cell.getWithOffset(xOffset, 0),
-						lowerCell = internal.cell.getWithOffset(xOffset, 1);
+						lowerCell = internal.cell.getWithOffset(xOffset, goesDown ? 1 : -1);
 					
 					var neighborHasSolid = hasEligibleSolid(neighborCell);
 										

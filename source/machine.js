@@ -174,7 +174,8 @@ common.constructor = function(worldText) {
 		
 		// // Move fluid around
 		internal.fluidPressurePoints.forEach(function(pressurePoint) {
-			var fluidType = pressurePoint.fluid.getFluidType();
+			var fluidType = pressurePoint.fluid.getFluidType(),
+				fluidHasGravity = !pressurePoint.fluid.has("antiGravity");
 			
 			var pressureCell = pressurePoint.to,
 				pressuredFluid = internal.getCellFluid(pressureCell, fluidType);
@@ -189,10 +190,10 @@ common.constructor = function(worldText) {
 				
 				var leftFirst = Math.round(Math.random());
 				var neighborDirections = [
-					Direction.down,
+					fluidHasGravity ? Direction.down : Direction.up,
 					leftFirst ? Direction.left : Direction.right,
 					leftFirst ? Direction.right : Direction.left,
-					Direction.up
+					fluidHasGravity ? Direction.up : Direction.down
 				];
 				
 				for (var d = 0 ; d < neighborDirections.length ; d++) {
@@ -218,7 +219,11 @@ common.constructor = function(worldText) {
 						
 						if (pressurerIsFluid) {
 							// Is the neighbor higher than the original pressure point?
-							if (neighborCell.y <= pressurePoint.solid.cell.y) continue;
+							if (fluidHasGravity) {
+								if (neighborCell.y <= pressurePoint.solid.cell.y) continue;
+							} else {
+								if (neighborCell.y >= pressurePoint.solid.cell.y) continue;
+							}
 						}
 						
 						// // Exit point found: Move the fluid entity
