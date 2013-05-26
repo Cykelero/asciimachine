@@ -13,7 +13,7 @@ MachineEntityTypesAggregator.defineType("§", function(attr, types) {
 				parent = this.parent,
 				self = exposed;
 			
-			internal.color = [200, 200, 200, .7];
+			internal.color = [0, 0, 0];
 			internal.backgroundColor = [255, 255, 255, .25];
 	
 			exposed.getLightDirection = function(direction) {
