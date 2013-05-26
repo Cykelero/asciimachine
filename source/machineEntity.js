@@ -158,6 +158,7 @@ common.internal.depths = [
 	"overlay",
 	"normal",
 	"background",
+	"background2",
 	"staticBackground"
 ].reduce(function(map, item, index) {
 	map[item] = index;
