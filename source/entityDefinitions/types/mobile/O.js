@@ -15,5 +15,7 @@ MachineEntityTypesAggregator.defineType("O", function(attr, types) {
 		};
 		
 		common.internal.name = "ball";
+		
+		common.internal.specialForceTypes = ["wind", "magnetic"];
 	}];
 });

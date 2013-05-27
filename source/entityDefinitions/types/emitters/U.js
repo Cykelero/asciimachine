@@ -31,8 +31,9 @@ MachineEntityTypesAggregator.defineType("U", function(attr, types) {
 						force: {
 							axis: Direction.getAxis(direction),
 							amount: Direction.getAxisAmplitude(direction),
-							type: "magnetic_normal"
-						}
+							type: "magnetic_normal",
+						},
+						kind: "magnetic"
 					}
 				};
 			};

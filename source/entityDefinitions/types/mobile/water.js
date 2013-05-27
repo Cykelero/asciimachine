@@ -25,6 +25,8 @@ MachineEntityTypesAggregator.defineType("~", function(attr, types) {
 		
 		common.internal.depth = common.internal.depths.background2;
 		
+		common.internal.specialForceTypes = [];
+		
 		common.internal.fluidType = "liquid";
 		
 		common.internal.tempParameters = {

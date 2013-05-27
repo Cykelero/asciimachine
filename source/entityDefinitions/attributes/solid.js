@@ -36,7 +36,9 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 				var remoteForces = internal.getAffectingBroadcastsOfType("applyForce");
 				
 				remoteForces.forEach(function(info) {
-					exposed.applyForce(info.data.force);
+					if (common.internal.specialForceTypes.indexOf(info.data.kind) > -1) {
+						exposed.applyForce(info.data.force);
+					}
 				});
 			};
 			
@@ -222,5 +224,7 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 		}, {});
 		
 		common.internal.weight = "normal";
+		
+		common.internal.specialForceTypes = ["wind"];
 	}];
 });

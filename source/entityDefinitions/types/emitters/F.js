@@ -29,7 +29,8 @@ MachineEntityTypesAggregator.defineType("F", function(attr, types) {
 							axis: Direction.getAxis(direction),
 							amount: Direction.getAxisAmplitude(direction),
 							type: "wind_light"
-						}
+						},
+						kind: "wind"
 					}
 				};
 			};
