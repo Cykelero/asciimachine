@@ -97,10 +97,19 @@ MachineEntityTypesAggregator.defineAttribute("solid", function(attr, types) {
 				var conflicts = [];
 				
 				// Find all conflicts
-				internal.parent.getEntitiesWith("solid").forEach(function(other) {
-					var conflict = exposed.findConflictWith(other);
-					if (conflict) conflicts.push(conflict);
-				});
+				var maxDistance = 3; // slightly arbitrary. related to max speed (1)
+				
+				for (var x = -maxDistance ; x <= maxDistance ; x++) {
+					for (var y = -maxDistance ; y <= maxDistance ; y++) {
+						var cell = internal.cell.getWithOffset(x, y);
+						cell.getObjects().filter(function(entity) {
+							return entity.has("solid");
+						}).forEach(function(other) {
+							var conflict = exposed.findConflictWith(other);
+							if (conflict) conflicts.push(conflict);
+						});
+					}
+				}
 				
 				// Sort conflicts
 				conflicts.sort(function(a, b) {
